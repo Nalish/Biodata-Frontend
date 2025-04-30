@@ -43,7 +43,6 @@ onSubmit():void {
     return;
   }
   this.login.loginChristian(this.form.value).subscribe(
-    
     (response) => {
       localStorage.setItem('user', JSON.stringify(response))
       console.log('Login successful:', response);
@@ -62,7 +61,7 @@ onSubmit():void {
   navigateToDashboard(): void {
     setTimeout(() => {
       this.router.navigate(['/dashboard']);
-    }, 1500); // Delay to show success message
+    }, 1000); // Delay to show success message
   }
 
   navigateToRegister(): void {

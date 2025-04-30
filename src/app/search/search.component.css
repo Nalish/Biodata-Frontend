@@ -85,6 +85,7 @@ body {
     transition: transform 0.2s ease, box-shadow 0.3s ease;
     text-align:justify;
     color: #333;
+    position: sticky;
 }
 .christian-details h2,h3{
     margin-top: 0;

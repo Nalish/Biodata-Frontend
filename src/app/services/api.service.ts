@@ -24,10 +24,10 @@ export class ApiService {
 
 
   loginChristian(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/login`, data, { withCredentials: true });
+    return this.http.post(`${this.baseUrl}/auth/login`, data);
   }
   registerChristian(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/register`, data, { withCredentials: true });
+    return this.http.post(`${this.baseUrl}/auth/register`, data);
   }
 
   logoutChristian(): Observable<any> {
