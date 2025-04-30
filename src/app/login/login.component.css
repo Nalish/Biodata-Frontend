@@ -1,0 +1,96 @@
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+}
+
+
+
+.auth-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-container h2 {
+    color: #4a004a;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px;
+    border: 1px solid #c2ae6d;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4A002A;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c2ae6d;
+    color: #4A002A;
+}
+
+a {
+    margin-top: 16px;
+    text-decoration: none;
+    color: #4a002a;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+a:hover {
+    color: #c2ae6d;
+}
+
+/* NEW: Error and Success Message Styling */
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.success {
+    color: green;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+/* Optional: Focus style for accessibility */
+input:focus,
+button:focus {
+    outline: 2px solid #c2ae6d;
+    outline-offset: 2px;
+}
+
+input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
+    border-left: 5px solid #a94442;
+}
+
+input.ng-touched.ng-valid, select.ng-touched.ng-valid{
+    border-left: 5px solid green;
+}
+
+div p {
+    color: red;
+}

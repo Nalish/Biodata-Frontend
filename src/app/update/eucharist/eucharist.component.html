@@ -1,0 +1,21 @@
+<body>
+    <div class="container">
+        <h2>Eucharist Form</h2>
+        <form [formGroup]="eucharistForm" (ngSubmit)="onSubmitEucharistForm()" class="formContainer">
+            <div class="section">
+                <h3>Eucharist Information</h3>
+                <label for="eucharist_place">Place:</label>
+                <input type="text" id="eucharist_place" formControlName="eucharist_place">
+
+                <label for="eucharist_date">Date:</label>
+                <input type="date" id="eucharist_date" formControlName="eucharist_date">
+            </div>
+
+            <div class="div-btns">
+                <button type="button" (click)="navigateToPersonalInfo()">Back</button>
+                <button type="submit" [disabled]="eucharistForm.invalid">Save       </button>
+                <button type="button" (click)="navigateToConfirmation()">Next</button>
+            </div>
+        </form>
+    </div>
+</body>

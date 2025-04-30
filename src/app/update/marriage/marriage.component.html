@@ -1,0 +1,26 @@
+<body>
+    <div class="container">
+        <h2>Marriage Form</h2>
+        <form [formGroup]="marriageForm" (ngSubmit)="onSubmitMarriageForm()" class="formContainer">
+            <div class="section">
+                <h3>Marriage Information</h3>
+                <label for="spouse">Spouse:</label>
+                <input type="text" id="spouse" formControlName="spouse">
+
+                <label for="marriage_place">Place of Marriage:</label>
+                <input type="text" id="marriage_place" formControlName="marriage_place">
+
+                <label for="marriage_date">Date:</label>
+                <input type="date" id="marriage_date" formControlName="marriage_date">
+
+                <label for="marriage_no">Marriage No:</label>
+                <input type="text" id="marriage_no" formControlName="marriage_no">
+            </div>
+
+            <div class="div-btns">
+                <button type="button" (click)="navigateTOConfirmation()">Back</button>
+                <button type="submit" [disabled]="marriageForm.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>

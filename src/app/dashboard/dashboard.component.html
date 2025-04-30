@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christian Dashboard</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <button  (click)="navigateToSearch()">Search Christian</button>
+        <button (click)="navigateToForm()">Add Christian</button>
+        <button (click)="logoutChristian()">Logout</button>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard">
+        <h1>Christian Data Management</h1>
+        <div class="total-christians" (change)="loadUserCount()">
+            Total Christians: <span id="christianCount">{{ christianCount }}</span>
+        </div>
+    </div>
+
+    <script>
+        // Dummy function to simulate adding Christians
+     
+    </script>
+
+</body>
+
+</html>

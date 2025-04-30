@@ -1,0 +1,28 @@
+<body>
+    <div class="container">
+        <h2>Confirmation Form</h2>
+        <form [formGroup]="confirmationForm" (ngSubmit)="onSubmitConfirmationForm()" class="formContainer">
+            <div class="section">
+                <h3>Confirmation Information</h3>
+                <label for="confirmation_place">Place:</label>
+                <input type="text" id="confirmation_place" formControlName="confirmation_place">
+
+                <label for="confirmation_date">Date:</label>
+                <input type="date" id="confirmation_date" formControlName="confirmation_date">
+
+                <label for="confirmed_by">Confirmed By:</label>
+                <input type="text" id="confirmed_by" formControlName="confirmed_by">
+
+                <label for="confirmation_no">Confirmation No:</label>
+                <input type="text" id="confirmation_no" formControlName="confirmation_no">
+            </div>
+
+
+            <div class="div-btns">
+                <button type="button" (click)="navigateToEucharist()">Back</button>
+                <button type="submit" [disabled]="confirmationForm.invalid">Save       </button>
+                <button type="button" (click)="navigateToMarriage()">Next</button>
+            </div>
+        </form>
+    </div>
+</body>

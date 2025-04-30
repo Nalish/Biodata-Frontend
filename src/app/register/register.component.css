@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /* background-image: url(images/sunset-sky.jpg); */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.auth-container {
+    background-color:  rgba(255, 255, 255, 0.484);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 350px;
+}
+
+.auth-container h2 {
+    color: #4A002A;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #C2AE6D;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4A002A;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #C2AE6D;
+}
+
+a {
+    margin-top: 10px;
+    text-decoration: none;
+    color: #4A002A;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #C2AE6D;
+}
+
+input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
+    border-left: 5px solid #a94442;
+}
+
+input.ng-touched.ng-valid, select.ng-touched.ng-valid{
+    border-left: 5px solid green;
+}
+
+div p {
+    color: red;
+}

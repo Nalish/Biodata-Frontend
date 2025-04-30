@@ -1,0 +1,83 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(../../../../public/sunset-sky.jpg);
+    color: black;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    max-width: 600px;
+    background: #F1E9E9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+h2 {
+    text-align: center;
+    color: #333;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+input, select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ffb433;
+    border-radius: 5px;
+    display: block;
+}
+button {
+    background: #6d5507;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 30%;
+    margin-top: 15px;
+}
+
+.div-btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+button:hover {
+    background:#C2AE6D;
+}
+button:disabled{
+    background-color: #d3d3d3; /* Light gray */
+    color: #a9a9a9; /* Darker gray for text */
+    cursor: not-allowed;
+}
+.section {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #4A002A;
+    border-radius: 5px;
+    background: #C2AE6D;
+}
+
+input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
+    border-left: 5px solid #a94442;
+}
+
+input.ng-touched.ng-valid, select.ng-touched.ng-valid{
+    border-left: 5px solid green;
+}
+
+div p {
+    color: red;
+}

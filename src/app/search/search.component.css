@@ -1,0 +1,165 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fbf8ef;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+
+}
+
+.header {
+    background-color: #4a002a;
+    padding: 20px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-container {
+    margin: 20px auto;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #c2ae6d;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    background-color: #c2ae6d;
+}
+
+.search-button {
+    background-color: #c2ae6d;
+    color: white;
+    border: none;
+    border-left: #fff 2px solid;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 0 20px 20px 0;
+}
+
+.search-button:hover {
+    background-color: #8d7f50;
+}
+
+/* .details-container {
+    background: rgb(112, 23, 78);
+    padding: 20px;
+    margin: 20px auto;
+    width: 50%;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 2px solid black;
+} */
+/* .display-christians {
+    background: rgb(163, 70, 127);
+    padding: 20px;
+    margin: 20px auto;
+    width: 50%;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 2px solid black;
+} */
+
+.christian-details {
+    display: flex;
+    justify-content: space-between;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    background-color: #fff;
+    border: 2px solid #c2ae6d;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: 20px auto;
+    margin-bottom: 5px;
+    /* width: 80%; */
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    text-align:justify;
+    color: #333;
+}
+.christian-details h2,h3{
+    margin-top: 0;
+    color: #4a002a;
+}
+
+.baptism-details{
+    margin-top: 49px;
+}
+.eucharist-details{
+    margin-top: 49px;
+}
+.confirmation-details{
+    margin-top: 49px;
+}
+.marriage-details{
+    margin-top: 49px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+
+.update-button {
+    background-color: #c2ae6d;
+    background: linear-gradient(90deg, #b4aa89, #4e401a);
+    border: 1px solid #4a002a;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.update-button:hover {
+    transform: scale(1.05);
+    transform: rotateX('90deg');
+    /* transform: rotateY('30deg'); */
+    /* transform: rotate3d(0, 1, 0, 30deg); */
+    background: linear-gradient(90deg, #55233f, #b4aa89);
+    transition: all 0.3s ease-in-out;
+}
+
+.styled-christian-card {
+    background-color: #fff;
+    border: 2px solid #c2ae6d;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: 20px auto;
+    width: 60%;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    text-align: left;
+    color: #333;
+}
+
+.styled-christian-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.styled-christian-card h2 {
+    margin-top: 0;
+    color: #4a002a;
+}
+
+.styled-christian-card p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+.highlighted {
+    border: 3px solid #4a002a;
+    background-color: #fff2d6;
+    box-shadow: 0 0 15px rgba(74, 0, 42, 0.5);
+}

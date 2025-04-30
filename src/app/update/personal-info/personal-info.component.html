@@ -1,0 +1,89 @@
+<body>
+    <div class="container">
+        <h2>Personal Information Form</h2>
+        <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
+            <div class="section">
+                <h3>Personal Information</h3>
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" formControlName="name" required>
+                <div *ngIf="!christianForm.controls.name?.valid && christianForm.controls.name.touched">
+                    <p *ngIf="christianForm.controls.name.errors?.['required']">
+                        Full name is required!
+                    </p>
+                </div>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" formControlName="email" placeholder="example@gmail.com">
+                <div *ngIf="!christianForm.controls.email?.valid && christianForm.controls.email.touched">
+                    <p *ngIf="christianForm.controls.email.errors?.['required']">
+                        Email is required!
+                    </p>
+                    <p *ngIf="christianForm.controls.email.errors?.['email']">
+                        Email is invalid!
+                    </p>
+                </div>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" formControlName="password" placeholder="include(@#$%^&*()_+)">
+                <div *ngIf="!christianForm.controls.password?.valid && christianForm.controls.password.touched">
+                    <p *ngIf="christianForm.controls.password.errors?.['required']">
+                        Password is required!
+                    </p>
+                    <!-- <p *ngIf="christianForm.controls.password.errors?.['minlength']">
+                        Password must be at least 6 characters long!
+                    </p> -->
+                </div>
+
+
+                <label for="role">Role</label>
+                <select id="role" formControlName="role" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Clergy">Clergy</option>
+                    <option value="Member">Member</option>
+                </select>
+                <div *ngIf="!christianForm.controls.role?.valid && christianForm.controls.role.touched">
+                    <p *ngIf="christianForm.controls.role.errors?.['required']">
+                        Role is required!
+                    </p>
+                </div>
+
+                <label for="father">Father's Name:</label>
+                <input type="text" id="father" formControlName="father">
+
+                <label for="mother">Mother's Name:</label>
+                <input type="text" id="mother" formControlName="mother">
+
+                <label for="tribe">Tribe:</label>
+                <input type="text" id="tribe" formControlName="tribe">
+
+                <label for="clan">Clan:</label>
+                <input type="text" id="clan" formControlName="clan">
+
+                <label for="birth_place">Place of Birth:</label>
+                <input type="text" id="birth_place" formControlName="birth_place">
+
+                <label for="birth_date">Date of Birth:</label>
+                <input type="date" id="birth_date" formControlName="birth_date">
+                <div *ngIf="!christianForm.controls.birth_date?.valid && christianForm.controls.birth_date.touched">
+                    <p *ngIf="christianForm.controls.birth_date.errors?.['required']">
+                        Date of birth is required!
+                    </p>
+                </div>
+
+                <label for="sub_county">Subcounty:</label>
+                <input type="text" id="sub_county" formControlName="sub_county">
+
+                <label for="residence">Residence:</label>
+                <input type="text" id="residence" formControlName="residence">
+            </div>
+
+            <div class="div-btns">
+                <button type="button" (click)="navigateToDashboard()">Back</button>
+                <button type="submit" [disabled]="christianForm.invalid">Save </button>
+                <button type="button" (click)="navigateToBaptism()">Next</button>
+            </div>
+
+        </form>
+    </div>
+</body>

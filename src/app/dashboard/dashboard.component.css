@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    background-image:url(../../../public/dashboard2.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #e7c75f78; /* Dominant gold color */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h2 {
+    color: white;
+    margin-bottom: 30px;
+}
+
+/* Sidebar buttons */
+.sidebar button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    background-color: #4A002A;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Button hover effect */
+.sidebar button:hover {
+    background-color: #4a002a3f;
+}
+
+/* Main dashboard section */
+.dashboard {
+    flex-grow: 1;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Total Christians display */
+.total-christians {
+    background-color: #4A002A;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow */
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 50px;
+    color: white;
+}
