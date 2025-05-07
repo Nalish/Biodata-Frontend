@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-baptism',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './baptism.component.html',
   styleUrl: './baptism.component.css'
 })
@@ -24,6 +25,7 @@ constructor(
     user_id: [''],
   })
 
+
   errorMessage = '';
   successMessage = '';
   userId: any // Variable to store the user ID
@@ -37,26 +39,62 @@ constructor(
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-    const userId = localStorage.getItem('userId') || ''; // Ensure userId is a string
-    this.baptismForm.value['user_id'] = userId; // Assign userId from local storage to the form data
-    this.baptismService.updateBaptism(userId, this.baptismForm.value).subscribe(
-      (response) => {
-        console.log('Baptism information added successfully:', response); // Log the successful registration response
-        console.log(this.baptismForm); // Log the form data
-        this.successMessage = 'Baptism Information Added successfully! Redirecting to next page...'; // Set success message
-        this.navigateToEucharist(); // Navigate to the login page after a delay
-      })
+    const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const userId = parsedData?.id;
+
+      this.baptismForm.value['user_id'] = userId; // Assign userId from local storage to the form data
+
+      // Check if the record already exists
+      this.baptismService.getBaptismByUserId(userId).subscribe(
+        (existingRecord: any) => {
+          if (existingRecord) {
+            // If record exists, update it
+            
+            this.baptismService.updateBaptism(userId, this.baptismForm.value).subscribe(
+              (response) => {
+                console.log('Baptism information updated successfully:', response); // Log the successful update response
+                this.successMessage = 'Baptism Information updated successfully!'; // Set success message
+                this.navigateToEucharist(); // Navigate to the next page after a delay
+              },
+              (error: any) => {
+                console.error('Error updating baptism information:', error); // Log any error
+                this.errorMessage = 'Failed to update baptism information. Please try again.';
+              }
+            );
+          } else {
+            // If record does not exist, create a new one
+            this.baptismService.createBaptism(this.baptismForm.value).subscribe(
+              (response) => {
+                console.log('Baptism information added successfully:', response); // Log the successful creation response
+                this.successMessage = 'Baptism Information added successfully!'; // Set success message
+                this.navigateToEucharist(); // Navigate to the next page after a delay
+              },
+              (error) => {
+                console.error('Error adding baptism information:', error); // Log any error
+                this.errorMessage = 'Failed to add baptism information. Please try again.';
+              }
+            );
+          }
+        },
+        (error: any) => {
+          console.error('Error checking existing baptism record:', error); // Log any error
+          this.errorMessage = 'Failed to check existing baptism record. Please try again.';
+        }
+      );
+    }
   }
 
   navigateToEucharist() {
     setTimeout(() => {
-      this.router.navigate(['/eucharist']); // Navigate to the eucharist page
-    }, 1000); // Delay of 2 seconds before navigation
+      this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
+    }, 3000); // Delay of 2 seconds before navigation
   }
 
   navigateToPersonalInfo() {
     setTimeout(() => {
-      this.router.navigate(['/personal-info']); // Navigate to the personal info page
+      this.router.navigate(['/edit-personal-info']); // Navigate to the personal info page
     }, 1000); // Delay of 2 seconds before navigation
   }
 

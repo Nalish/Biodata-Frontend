@@ -34,8 +34,11 @@ export class ConfirmationComponent {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-
-    this.confirmationForm.value['user_id'] = localStorage.getItem('userId');
+    const localStorageData = localStorage.getItem('addedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const userId = parsedData?.id;
+    this.confirmationForm.value['user_id'] = userId;
     this.confirmationService.createConfirmation(this.confirmationForm.value).subscribe(
       (response) => {
         console.log('Confirmation information added successfully:', response); // Log the successful registration response
@@ -43,6 +46,7 @@ export class ConfirmationComponent {
         this.successMessage = 'Confirmation Information Added successfully! Redirecting to next page...'; // Set success message
         this.navigateToMarriage(); // Navigate to the login page after a delay
       })
+    }
   }
 
   navigateToMarriage() {

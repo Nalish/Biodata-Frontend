@@ -13,14 +13,12 @@
     <div class="auth-container">
         <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
             <h2>Register</h2>
-            <p>
-                <input type="text" id="name" name="name" placeholder="Full Name" formControlName="name">
-            </p>
-            <div *ngIf="!form.controls.name?.valid && form.controls.name.touched">
-                <p *ngIf="form.controls.name.errors?.['required']">
-                    Full name is required!
-                </p>
-            </div>
+                <input type="text" id="name" placeholder="Full Name" formControlName="name" required>
+                <div *ngIf="!form.controls.name?.valid && form.controls.name.touched">
+                    <p *ngIf="form.controls.name.errors?.['required']">
+                        Full name is required!
+                    </p>
+                </div>
             <p>
                 <input type="email" id="email" placeholder="Email Address" formControlName="email">
             </p>
@@ -44,74 +42,17 @@
                 </p>
             </div>
 
-            <p>
-                <input type="text" id="role" placeholder="Role(Admin, Clergy or Member)" formControlName="role">
-            </p>
+            <select id="role" formControlName="role" required>
+                <option value="" disabled selected>Role</option>
+                <option value="Admin">Admin</option>
+                <option value="Clergy">Clergy</option>
+            </select>
             <div *ngIf="!form.controls.role.valid && form.controls.role.touched">
                 <p *ngIf="form.controls.role.errors?.['required']">
                     Role is required!
                 </p>
             </div>
-            <p>
-                <input type="text" id="father" placeholder="Father" formControlName="father">
-            </p>
-            <div *ngIf="!form.controls.father.valid && form.controls.father.touched">
-                <p *ngIf="form.controls.father.errors?.['required']">
-                    Father is required!
-                </p>
-            </div>
-            <p>
-                <input type="text" id="mother" placeholder="Mother" formControlName="mother">
-            </p>
-            <div *ngIf="!form.controls.mother.valid && form.controls.mother.touched">
-                <p *ngIf="form.controls.mother.errors?.['required']">
-                    Mother is required!
-                </p>
-            </div>
-            <p>
-                <input type="text" id="tribe" placeholder="Tribe" formControlName="tribe">
-            </p>
-            <div *ngIf="!form.controls.father.valid && form.controls.father.touched">
-                <p *ngIf="form.controls.father.errors?.['required']">
-                    Father is required!
-                </p>
-            </div>
-            <p>
-                <input type="text" id="clan" placeholder="Clan" formControlName="clan">
-            </p>
-            <p>
-                <input type="text" id="birth_place" placeholder="Birth place" formControlName="birth_place">
-            </p>
-            <div *ngIf="!form.controls.birth_place.valid && form.controls.birth_place.touched">
-                <p *ngIf="form.controls.birth_place.errors?.['required']">
-                    Birth place is required!
-                </p>
-            </div>
-            <p>
-                <input type="date" id="birth_date" placeholder="Birth date" formControlName="birth_date">
-            </p>
-            <div *ngIf="!form.controls.birth_date.valid && form.controls.birth_date.touched">
-                <p *ngIf="form.controls.birth_date.errors?.['required']">
-                    Birth date is required!
-                </p>
-            </div>
-            <p>
-                <input type="text" id="sub_county" placeholder="Sub County" formControlName="sub_county">
-            </p>
-            <p>
-                <input type="text" id="residence" placeholder="Residence" formControlName="residence">
-            </p>
-            <div *ngIf="!form.controls.residence.valid && form.controls.residence.touched">
-                <p *ngIf="form.controls.residence.errors?.['required']">
-                    Residence is required!
-                </p>
-            </div>
-
-
-
-
-
-
+            
             <button type="submit" [disabled]="form.invalid">Register</button>
             <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p>
             <p style="color: black;">Already have an account? <span><a routerLink="/login">Login</a></span></p>

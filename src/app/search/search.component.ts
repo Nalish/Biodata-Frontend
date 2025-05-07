@@ -43,7 +43,7 @@ export class SearchComponent implements OnInit {
     this.apiService.getChristians().subscribe((data) => {
       this.christians = data
       this.christians.sort((a, b) => a.name.localeCompare(b.name));
-      console.log(this.christians); // Check the structure of the data received
+      // console.log(this.christians); // Check the structure of the data received
     });
   }
   searchChristianById(id: string): void {
@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit {
       const email = christianData.email;
       // Redirect to the update Christian page with the ID and email
       setTimeout(() => {
-        this.router.navigate(['/baptism'], { queryParams: { id } });
+        this.router.navigate(['/edit-personal-info'], { queryParams: { id } });
       }, 1000);
         } else {
       console.error('No Christian selected for redirection.');
@@ -88,8 +88,8 @@ export class SearchComponent implements OnInit {
 
       if (found) {
 
-        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role })); // Store the selected Christian in local storage
-        localStorage.setItem('userId', found.id); // Store the user ID in local storage
+        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name})); // Store the selected Christian in local storage
+        // localStorage.setItem('userId', found.id); // Store the user ID in local storage
 
         this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
           const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === found.id);

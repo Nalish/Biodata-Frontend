@@ -1,5 +1,8 @@
 <body>
     <div class="container">
+        <div class="div-home">
+            <a type="button" href="/dashboard">Home</a>
+        </div>
         <h2>Baptism Form</h2>
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">
@@ -15,10 +18,13 @@
 
                 <label for="administrator">Administrator(Msimamizi):</label>
                 <input type="text" id="administrator" formControlName="administrator">
+
+                <p *ngIf="successMessage">{{ successMessage }}</p>
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
             <div class="div-btns">
                 <button type="button" (click)="navigateToPersonalInfo()">Back</button>
-                <button type="submit" [disabled]="baptismForm.invalid">Save       </button>
+                <button type="submit" [disabled]="baptismForm.invalid">Save</button>
                 <button type="button" (click)="navigateToEucharist()">Next</button>
             </div>
         </form>

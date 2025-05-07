@@ -51,6 +51,10 @@ getChristianCount(): Observable < any > {
   return this.http.get(`${this.baseUrl}/users/count`);
 }
 
+addChristian(data: any): Observable < any > {
+  return this.http.post(`${this.baseUrl}/users`, data);
+}
+
 updateChristian(id: string, data: any): Observable < any > {
   return this.http.put(`${this.baseUrl}/users/${id}`, data);
 }
@@ -63,6 +67,9 @@ getBaptisms(): Observable < any > {
 }
 getBaptismById(id: string): Observable < any > {
   return this.http.get(`${this.baseUrl}/baptism/${id}`);
+}
+getBaptismByUserId(userId: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/baptism/user/${userId}`);
 }
 createBaptism(data: any): Observable < any > {
   return this.http.post(`${this.baseUrl}/baptism`, data);
@@ -80,6 +87,9 @@ getEucharists(): Observable < any > {
 getEucharistById(id: string): Observable < any > {
   return this.http.get(`${this.baseUrl}/eucharist/${id}`);
 }
+getEucharistByUserId(userId: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/eucharist/user/${userId}`);
+}
 createEucharist(data: any): Observable < any > {
   return this.http.post(`${this.baseUrl}/eucharist`, data);
 }
@@ -96,6 +106,9 @@ getConfirmations(): Observable < any > {
 getConfirmationById(id: string): Observable < any > {
   return this.http.get(`${this.baseUrl}/confirmation/${id}`);
 }
+getConfirmationByUserId(userId: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/confirmation/user/${userId}`);
+}
 createConfirmation(data: any): Observable < any > {
   return this.http.post(`${this.baseUrl}/confirmation`, data);
 }
@@ -111,6 +124,9 @@ getMarriages(): Observable < any > {
 }
 getMarriageById(id: string): Observable < any > {
   return this.http.get(`${this.baseUrl}/marriage/${id}`);
+}
+getMarriageByUserId(userId: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/marriage/user/${userId}`);
 }
 createMarriage(data: any): Observable < any > {
   return this.http.post(`${this.baseUrl}/marriage`, data);

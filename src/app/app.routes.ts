@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'eucharist', component: EucharistComponent },
     { path: 'confirmation', component: ConfirmationComponent },
     { path: 'marriage', component: MarriageComponent },
-    {path: 'edit-personal-info  ', component: PersonalInfoUpdateComponent},
+    {path: 'edit-personal-info', component: PersonalInfoUpdateComponent},
     {path: 'edit-baptism', component: BaptismUpdateComponent},
     {path: 'edit-eucharist', component: EucharistUpdateComponent},
     {path: 'edit-confirmation', component: ConfirmationUpdateComponent},

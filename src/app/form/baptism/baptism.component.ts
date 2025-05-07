@@ -37,7 +37,11 @@ constructor(
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-    this.baptismForm.value['user_id'] = localStorage.getItem('userId'); // Assign userId from local storage to the form data
+    const localStorageData = localStorage.getItem('addedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const userId = parsedData?.id;
+    this.baptismForm.value['user_id'] = userId // Assign userId from local storage to the form data
     this.baptismService.createBaptism(this.baptismForm.value).subscribe(
       (response) => {
         console.log('Baptism information added successfully:', response); // Log the successful registration response
@@ -45,6 +49,7 @@ constructor(
         this.successMessage = 'Baptism Information Added successfully! Redirecting to next page...'; // Set success message
         this.navigateToEucharist(); // Navigate to the login page after a delay
       })
+    }
   }
 
   navigateToEucharist() {

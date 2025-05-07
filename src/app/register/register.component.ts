@@ -17,19 +17,11 @@ constructor(private register: ApiService, private router: Router) { }
 
 private fb = inject(FormBuilder)
 form = this.fb.group({
-  name: ['',Validators.required],
+  name: ['', Validators.required],
   email: ['',Validators.required],
   password: ['',Validators.required],
   role:['',Validators.required],
-  father: ['',Validators.required],
-  mother: ['',Validators.required],
-  tribe: ['',Validators.required],
-  clan: ['',Validators.required],
-  birth_place: ['',Validators.required],
-  birth_date: ['',Validators.required],
-  sub_county: ['',Validators.required],
-  residence: ['',Validators.required],
-})
+  })
 
 errorMessage = '';
 successMessage = '';

@@ -33,8 +33,11 @@ export class MarriageComponent {
       this.errorMessage = 'Please fill in all required fields.'; // Set error message
       return; // Exit the function if the form is invalid
     }
-
-    this.marriageForm.value['user_id'] = localStorage.getItem('userId');
+    const localStorageData = localStorage.getItem('addedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const userId = parsedData?.id;
+    this.marriageForm.value['user_id'] = userId;
     this.marriageService.createMarriage(this.marriageForm.value).subscribe( // Call the API to create marriage information
       (response) => {
         console.log('Marriage information added successfully:', response); // Log the successful registration response
@@ -43,6 +46,7 @@ export class MarriageComponent {
         // localStorage.removeItem('userId');
         this.navigateToDashboard(); // Navigate to the next page after a delay
       })
+    }
   }
   navigateToDashboard() { // Function to navigate to the next page
     setTimeout(() => {

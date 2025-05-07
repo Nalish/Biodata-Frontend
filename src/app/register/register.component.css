@@ -30,6 +30,17 @@ input {
     border-radius: 5px;
 }
 
+    
+
+input, select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ffb433;
+    border-radius: 5px;
+    display: block;
+}
+
 button {
     width: 100%;
     padding: 10px;

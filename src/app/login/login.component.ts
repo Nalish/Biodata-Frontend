@@ -44,7 +44,7 @@ onSubmit():void {
   }
   this.login.loginChristian(this.form.value).subscribe(
     (response) => {
-      localStorage.setItem('user', JSON.stringify(response))
+      localStorage.setItem('userLoggedIn', JSON.stringify(response))
       console.log('Login successful:', response);
       console.log(this.form);
       // Store the token in local storage or session storage

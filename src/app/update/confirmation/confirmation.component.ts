@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-confirmation',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
@@ -35,25 +36,61 @@ export class ConfirmationUpdateComponent {
       return;
     }
 
-    this.confirmationForm.value['user_id'] = localStorage.getItem('userId');
-    this.confirmationService.createConfirmation(this.confirmationForm.value).subscribe(
-      (response) => {
-        console.log('Confirmation information added successfully:', response); // Log the successful registration response
-        console.log(this.confirmationForm); // Log the form data
-        this.successMessage = 'Confirmation Information Added successfully! Redirecting to next page...'; // Set success message
-        this.navigateToMarriage(); // Navigate to the login page after a delay
-      })
+    const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const userId = parsedData?.id;
+
+      this.confirmationForm.value['user_id'] = userId; // Assign userId from local storage to the form data
+
+      // Check if the record already exists
+      this.confirmationService.getConfirmationByUserId(userId).subscribe(
+        (existingRecord: any) => {
+          if (existingRecord) {
+            // If record exists, update it
+            this.confirmationService.updateConfirmation(userId, this.confirmationForm.value).subscribe(
+              (response) => {
+                console.log('Confirmation information updated successfully:', response); // Log the successful update response
+                this.successMessage = 'Confirmation Information updated successfully!'; // Set success message
+                this.navigateToMarriage(); // Navigate to the next page after a delay
+              },
+              (error: any) => {
+                console.error('Error updating confirmation information:', error); // Log any error
+                this.errorMessage = 'Failed to update confirmation information. Please try again.';
+              }
+            );
+          } else {
+            // If record does not exist, create a new one
+            this.confirmationService.createConfirmation(this.confirmationForm.value).subscribe(
+              (response) => {
+                console.log('Confirmation information added successfully:', response); // Log the successful creation response
+                this.successMessage = 'Confirmation Information added successfully!'; // Set success message
+                this.navigateToMarriage(); // Navigate to the next page after a delay
+              },
+              (error) => {
+                console.error('Error adding confirmation information:', error); // Log any error
+                this.errorMessage = 'Failed to add confirmation information. Please try again.';
+              }
+            );
+          }
+        },
+        (error: any) => {
+          console.error('Error checking existing confirmation record:', error); // Log any error
+          this.errorMessage = 'Failed to check existing confirmation record. Please try again.';
+        }
+      );
+    }
   }
 
   navigateToMarriage() {
     setTimeout(() => {
-      this.router.navigate(['/marriage']); // Navigate to the marriage page
+      this.router.navigate(['/edit-marriage']); // Navigate to the marriage page
     }, 1000); // Delay of 2 seconds before navigation
   }
 
   navigateToEucharist() {
     setTimeout(() => {
-      this.router.navigate(['/eucharist']); // Navigate to the eucharist page
+      this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
     }, 1000); // Delay of 2 seconds before navigation
   }
 }

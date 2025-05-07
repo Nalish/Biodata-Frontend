@@ -1,5 +1,8 @@
 <body>
     <div class="container">
+        <div class="div-home">
+            <a type="button" href="/dashboard">Home</a>
+        </div>
         <h2>Eucharist Form</h2>
         <form [formGroup]="eucharistForm" (ngSubmit)="onSubmitEucharistForm()" class="formContainer">
             <div class="section">
@@ -9,13 +12,17 @@
 
                 <label for="eucharist_date">Date:</label>
                 <input type="date" id="eucharist_date" formControlName="eucharist_date">
+
+                <p *ngIf="successMessage">{{ successMessage }}</p>
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
 
             <div class="div-btns">
-                <button type="button" (click)="navigateToPersonalInfo()">Back</button>
+                <button type="button" (click)="navigateToBaptism()">Back</button>
                 <button type="submit" [disabled]="eucharistForm.invalid">Save       </button>
                 <button type="button" (click)="navigateToConfirmation()">Next</button>
             </div>
+
         </form>
     </div>
 </body>

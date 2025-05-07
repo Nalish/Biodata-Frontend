@@ -31,6 +31,8 @@ input, select {
     width: calc(100% - 22px);
     padding: 10px;
     margin: 5px 0;
+    color: #4A002A;
+    font-weight: bold;
     border: 1px solid #ffb433;
     border-radius: 5px;
     display: block;
@@ -53,6 +55,23 @@ button {
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.div-home{
+    a {
+        text-decoration: none;
+        background: #6d5507;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    a:hover {
+        background: #C2AE6D;
+    }
 }
 button:hover {
     background:#C2AE6D;

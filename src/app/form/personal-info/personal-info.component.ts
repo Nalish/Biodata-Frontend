@@ -51,18 +51,16 @@ export class PersonalInfoComponent {
       console.log('Please fill in all required fields.');
       return;
     }
-    this.personalInfo.registerChristian(this.christianForm.value).subscribe(
+    this.personalInfo.addChristian(this.christianForm.value).subscribe(
       (response) => {
         this.getUser.getChristians().subscribe(
           (data) => {
-            console.log('Fetched data:', data); // Log the fetched data
+            // console.log('Fetched data:', data); // Log the fetched data
 
             this.userId = data?.reduce((max: any, user: any) => user.id > max ? user.id : max, 0); // Get the greatest id from the data
             const user = data?.find((user: any) => user.id === this.userId);
             if (user) {
-              localStorage.setItem('email', user.email);
-              localStorage.setItem('role', user.role);
-              localStorage.setItem('userId', user.id);
+              localStorage.setItem('addedChristian',JSON.stringify({ id: user.id, email: user.email, role: user.role }))
             }
             console.log('Fetched userId:', this.userId); // Log the fetched userId
             this.successMessage = 'Personal Information Added successfully! Redirecting to next page...'; // Set success message

@@ -35,8 +35,11 @@ export class EucharistComponent {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-
-    this.eucharistForm.value['user_id'] = localStorage.getItem('userId');
+    const localStorageData = localStorage.getItem('addedChristian'); // Get the user ID from local storage
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      // const userId = parsedData?.id;
+    this.eucharistForm.value['user_id'] = parsedData?.id;
     this.eucharistService.createEucharist(this.eucharistForm.value).subscribe(
       (response) => {
         console.log('Eucharist information added successfully:', response); // Log the successful registration response
@@ -44,6 +47,7 @@ export class EucharistComponent {
         this.successMessage = 'Eucharist Information Added successfully! Redirecting to next page...'; // Set success message
         this.navigateToConfirmation(); // Navigate to the login page after a delay
       })
+    }
   }
 
   navigateToConfirmation() {
@@ -52,9 +56,9 @@ export class EucharistComponent {
     }, 1000); // Delay of 2 seconds before navigation
   }
 
-  navigateToPersonalInfo() {
+  navigateToBaptism() {
     setTimeout(() => {
-      this.router.navigate(['/personal-info']); // Navigate to the personal info page
+      this.router.navigate(['/baptism']); // Navigate to the personal info page
     }, 1000); // Delay of 2 seconds before navigation
   }
 
