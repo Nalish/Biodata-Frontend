@@ -18,6 +18,9 @@
 
                 <label for="confirmation_no">Confirmation No:</label>
                 <input type="text" id="confirmation_no" formControlName="confirmation_no">
+
+                <p *ngIf="successMessage">{{ successMessage }}</p>
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
 
 

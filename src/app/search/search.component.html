@@ -41,10 +41,10 @@
                 <p><strong>Date of Birth:</strong> <span id="placeOfBirth"></span> {{selectedChristian.birth_date}}</p>
                 <p><strong>Sub County:</strong> <span id="placeOfBirth"></span> {{selectedChristian.sub_county}}</p>
                 <p><strong>Residence:</strong> <span id="residence"></span> {{selectedChristian.residence}}</p>
-                <p *ngIf="!selectedBaptism" style="color: red;">This Christian is not yet baptised</p>
-                <p *ngIf="!selectedEucharist" style="color: red;">This Christian is yet to receive eucharist</p>
-                <p *ngIf="!selectedConfirmation" style="color: red;">This Christian is not yet confirmed</p>
-                <p *ngIf="!selectedMarriage" style="color: red;">This Christian is not yet married</p>
+                <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.name }} is not yet baptised</p>
+                <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.name }} is yet to receive eucharist</p>
+                <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.name }} is not yet confirmed</p>
+                <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.name }} is not yet married</p>
 
             </div>
             <div *ngIf="selectedBaptism" class="baptism-details">

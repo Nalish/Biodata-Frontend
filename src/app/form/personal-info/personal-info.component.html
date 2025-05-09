@@ -79,6 +79,9 @@
 
                 <label for="residence">Residence:</label>
                 <input type="text" id="residence" formControlName="residence">
+
+                <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
+                <!-- <p style="color: black;" *ngIf="errorMessage">{{ errorMessage }}</p> -->
             </div>
 
             <div class="div-btns">

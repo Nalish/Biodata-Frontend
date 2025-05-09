@@ -74,7 +74,7 @@ export class ConfirmationUpdateComponent implements OnInit {
               },
               (error) => {
                 console.error('Error adding confirmation information:', error); // Log any error
-                this.errorMessage = 'Failed to add confirmation information. Please try again.';
+                this.errorMessage = 'Failed to add confirmation information. Fill in all the fields to continue...';
               }
             );
           }

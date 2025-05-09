@@ -76,7 +76,7 @@ export class BaptismUpdateComponent implements OnInit {
               },
               (error) => {
                 console.error('Error adding baptism information:', error); // Log any error
-                this.errorMessage = 'Failed to add baptism information. Please try again.';
+                this.errorMessage = 'Failed to add baptism information. Fill in all the fields to continue...';
               }
             );
           }

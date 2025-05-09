@@ -12,130 +12,123 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
 
-
-
-  getDummyChristianCount(): Observable<any> {
-    const dummyData = { count: 42 }; // Replace 42 with any dummy count value
-    return new Observable(observer => {
-      observer.next(dummyData);
-      observer.complete();
-    });
-  }
-
-
   loginChristian(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/login`, data);
+    return this.http.post(`${this.baseUrl}/auth/login`, data, { withCredentials: true });
   }
   registerChristian(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/register`, data);
   }
 
-  logoutChristian(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/logout`, { withCredentials: true });
+  logoutChristian(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/logout`, data, { withCredentials: true });
   }
+
+  // logoutChristian(data: any): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}/auth/logout`, data);
+  // }
 
 
 
 getChristians(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/users`);
+  return this.http.get(`${this.baseUrl}/users`, { withCredentials: true });
 }
 
 getChristianById(id: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/users/${id}`);
+  return this.http.get(`${this.baseUrl}/users/${id}`, { withCredentials: true });
 }
 getChristianByName(name: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/users/name/${name}`);
+  return this.http.get(`${this.baseUrl}/users/name/${name}`, { withCredentials: true });
 }
 
 getChristianCount(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/users/count`);
+  return this.http.get(`${this.baseUrl}/users/count`, { withCredentials: true });
 }
 
 addChristian(data: any): Observable < any > {
-  return this.http.post(`${this.baseUrl}/users`, data);
+  return this.http.post(`${this.baseUrl}/users`, data, { withCredentials: true });
 }
 
 updateChristian(id: string, data: any): Observable < any > {
-  return this.http.put(`${this.baseUrl}/users/${id}`, data);
+  return this.http.put(`${this.baseUrl}/users/${id}`, data, { withCredentials: true });
 }
 deleteChristian(id: string): Observable < any > {
-  return this.http.delete(`${this.baseUrl}/users/${id}`);
+  return this.http.delete(`${this.baseUrl}/users/${id}`, { withCredentials: true });
 }
 
 getBaptisms(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/baptism`);
+  return this.http.get(`${this.baseUrl}/baptism`, { withCredentials: true });
 }
 getBaptismById(id: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/baptism/${id}`);
+  return this.http.get(`${this.baseUrl}/baptism/${id}`, { withCredentials: true });
 }
 getBaptismByUserId(userId: string): Observable<any> {
-  return this.http.get(`${this.baseUrl}/baptism/user/${userId}`);
+  return this.http.get(`${this.baseUrl}/baptism/user/${userId}`, { withCredentials: true });
 }
 createBaptism(data: any): Observable < any > {
-  return this.http.post(`${this.baseUrl}/baptism`, data);
+  return this.http.post(`${this.baseUrl}/baptism`, data, { withCredentials: true });
 }
 updateBaptism(id: string, data: any): Observable < any > {
-  return this.http.put(`${this.baseUrl}/baptism/${id}`, data);
+  return this.http.put(`${this.baseUrl}/baptism/${id}`, data, { withCredentials: true });
 }
 deleteBaptism(id: string): Observable < any > {
-  return this.http.delete(`${this.baseUrl}/baptism/${id}`);
+  return this.http.delete(`${this.baseUrl}/baptism/${id}`, { withCredentials: true });
 }
 
 getEucharists(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/eucharist`);
+  return this.http.get(`${this.baseUrl}/eucharist`, { withCredentials: true });
 }
 getEucharistById(id: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/eucharist/${id}`);
+  return this.http.get(`${this.baseUrl}/eucharist/${id}`, { withCredentials: true });
 }
 getEucharistByUserId(userId: string): Observable<any> {
-  return this.http.get(`${this.baseUrl}/eucharist/user/${userId}`);
+  return this.http.get(`${this.baseUrl}/eucharist/user/${userId}`, { withCredentials: true });
 }
 createEucharist(data: any): Observable < any > {
-  return this.http.post(`${this.baseUrl}/eucharist`, data);
+  return this.http.post(`${this.baseUrl}/eucharist`, data, { withCredentials: true });
 }
 updateEucharist(id: string, data: any): Observable < any > {
-  return this.http.put(`${this.baseUrl}/eucharist/${id}`, data);
+  return this.http.put(`${this.baseUrl}/eucharist/${id}`, data, { withCredentials: true });
 }
 deleteEucharist(id: string): Observable < any > {
-  return this.http.delete(`${this.baseUrl}/eucharist/${id}`);
+  return this.http.delete(`${this.baseUrl}/eucharist/${id}`, { withCredentials: true });
 }
 
 getConfirmations(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/confirmation`);
+  return this.http.get(`${this.baseUrl}/confirmation`, { withCredentials: true });
 }
 getConfirmationById(id: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/confirmation/${id}`);
+  return this.http.get(`${this.baseUrl}/confirmation/${id}`, { withCredentials: true });
 }
 getConfirmationByUserId(userId: string): Observable<any> {
-  return this.http.get(`${this.baseUrl}/confirmation/user/${userId}`);
+  return this.http.get(`${this.baseUrl}/confirmation/user/${userId}`, { withCredentials: true });
 }
 createConfirmation(data: any): Observable < any > {
-  return this.http.post(`${this.baseUrl}/confirmation`, data);
+  return this.http.post(`${this.baseUrl}/confirmation`, data, { withCredentials: true });
 }
 updateConfirmation(id: string, data: any): Observable < any > {
-  return this.http.put(`${this.baseUrl}/confirmation/${id}`, data);
+  return this.http.put(`${this.baseUrl}/confirmation/${id}`, data, { withCredentials: true });
 }
 deleteConfirmation(id: string): Observable < any > {
-  return this.http.delete(`${this.baseUrl}/confirmation/${id}`);
+  return this.http.delete(`${this.baseUrl}/confirmation/${id}`, { withCredentials: true });
 }
 
 getMarriages(): Observable < any > {
-  return this.http.get(`${this.baseUrl}/marriage`);
+  return this.http.get(`${this.baseUrl}/marriage`, { withCredentials: true });
 }
 getMarriageById(id: string): Observable < any > {
-  return this.http.get(`${this.baseUrl}/marriage/${id}`);
+  return this.http.get(`${this.baseUrl}/marriage/${id}`, { withCredentials: true });
 }
 getMarriageByUserId(userId: string): Observable<any> {
-  return this.http.get(`${this.baseUrl}/marriage/user/${userId}`);
+  return this.http.get(`${this.baseUrl}/marriage/user/${userId}`, { withCredentials: true });
 }
 createMarriage(data: any): Observable < any > {
-  return this.http.post(`${this.baseUrl}/marriage`, data);
+  return this.http.post(`${this.baseUrl}/marriage`, data, { withCredentials: true });
 }
 updateMarriage(id: string, data: any): Observable < any > {
-  return this.http.put(`${this.baseUrl}/marriage/${id}`, data);
+  return this.http.put(`${this.baseUrl}/marriage/${id}`, data, { withCredentials: true });
 }
 deleteMarriage(id: string): Observable < any > {
-  return this.http.delete(`${this.baseUrl}/marriage/${id}`);
+  return this.http.delete(`${this.baseUrl}/marriage/${id}`, { withCredentials: true });
 }
 
 

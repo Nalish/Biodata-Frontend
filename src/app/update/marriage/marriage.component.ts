@@ -69,11 +69,12 @@ export class MarriageUpdateComponent implements OnInit {
               (response) => {
                 console.log('Marriage information added successfully:', response); // Log the successful creation response
                 this.successMessage = 'Marriage Information added successfully!'; // Set success message
+                localStorage.removeItem('selectedChristian'); // Remove the item from local storage
                 this.navigateToDashboard(); // Navigate to the next page after a delay
               },
               (error) => {
                 console.error('Error adding marriage information:', error); // Log any error
-                this.errorMessage = 'Failed to add marriage information. Please try again.';
+                this.errorMessage = 'Failed to add marriage information. Fill in all the fields to continue...';
               }
             );
           }

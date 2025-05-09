@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-eucharist',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })
@@ -53,7 +54,7 @@ export class EucharistComponent {
   navigateToConfirmation() {
     setTimeout(() => {
       this.router.navigate(['/confirmation']); // Navigate to the confirmation page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 2 seconds before navigation
   }
 
   navigateToBaptism() {

@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirmation',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
@@ -52,7 +53,7 @@ export class ConfirmationComponent {
   navigateToMarriage() {
     setTimeout(() => {
       this.router.navigate(['/marriage']); // Navigate to the marriage page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 2 seconds before navigation
   }
 
   navigateToEucharist() {

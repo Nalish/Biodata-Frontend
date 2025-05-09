@@ -12,6 +12,9 @@
 
                 <label for="eucharist_date">Date:</label>
                 <input type="date" id="eucharist_date" formControlName="eucharist_date">
+
+                <p *ngIf="successMessage">{{ successMessage }}</p>
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
 
             <div class="div-btns">

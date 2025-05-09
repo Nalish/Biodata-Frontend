@@ -86,12 +86,12 @@ export class PersonalInfoUpdateComponent implements OnInit {
               this.navigateToBaptism(); // Navigate to the login page after a delay
             }
           );
-          console.log('Christian Added successfully:', response); // Log the successful registration response
+          console.log('Christian Updated successfully:', response); // Log the successful registration response
           console.log(this.christianForm); // Log the form data
         },
         // Handle the error response from the API
         (error: any) => {
-          console.error('Error Adding this Christian:', error); // Log the error response
+          console.error(`Error Updating this ${parsedData?.name}:`, error); // Log the error response
           this.errorMessage = error.error.message; // Set the error message
         }
       )

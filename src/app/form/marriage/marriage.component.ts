@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-marriage',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './marriage.component.html',
   styleUrl: './marriage.component.css'
 })
@@ -43,7 +44,7 @@ export class MarriageComponent {
         console.log('Marriage information added successfully:', response); // Log the successful registration response
         console.log(this.marriageForm); // Log the form data
         this.successMessage = 'Marriage Information Added successfully! Redirecting to next page...'; // Set success message
-        // localStorage.removeItem('userId');
+        localStorage.removeItem('addedChristian'); // Remove the user ID from local storage
         this.navigateToDashboard(); // Navigate to the next page after a delay
       })
     }
@@ -51,7 +52,7 @@ export class MarriageComponent {
   navigateToDashboard() { // Function to navigate to the next page
     setTimeout(() => {
       this.router.navigate(['/dashboard']); // Navigate to the family page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 2 seconds before navigation
   }
 
   navigateTOConfirmation() { // Function to navigate to the confirmation page

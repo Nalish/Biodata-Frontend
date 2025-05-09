@@ -72,7 +72,7 @@ export class EucharistUpdateComponent implements OnInit {
               },
               (error) => {
                 console.error('Error adding eucharist information:', error); // Log any error
-                this.errorMessage = 'Failed to add eucharist information. Please try again.';
+                this.errorMessage = 'Failed to add eucharist information. Fill in all the fields to continue...';
               }
             );
           }

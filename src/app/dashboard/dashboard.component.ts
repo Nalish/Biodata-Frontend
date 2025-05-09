@@ -23,7 +23,7 @@ export class DashboardComponent {
       (response: any) => {
         this.christianCount = response.userCount;
         console.log('User count:', this.christianCount);
-    },
+      },
       (error) => {
         console.error('Error fetching user count:', error);
       }
@@ -44,21 +44,30 @@ export class DashboardComponent {
   }
 
   logoutChristian() {
-    const email = localStorage.getItem('user'); // Retrieve the email from local storage
-    if (email) {
-      this.apiService.logoutChristian().subscribe(
-        (response) => {
-          console.log('Logout successful:', response);
-          localStorage.removeItem('user'); // Clear the email from local storage
-          alert('Logout successful! Redirecting to login...');
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 1000);
-        },
-        (error: any) => {
-          console.error('Logout failed:', error);
-        }
-      );
+    const localStorageData = localStorage.getItem('userLoggedIn');
+    // if (localStorageData) {
+    //   const parsedData = JSON.parse(localStorageData);
+    //   const email = parsedData?.user.email;
+    //   console.log("The logged in email is:", email);
+    // }
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      const email = parsedData?.user.email;
+      if (email) {
+        this.apiService.logoutChristian(email).subscribe(
+          (response) => {
+            console.log('Logout successful:', response);
+            localStorage.removeItem('userLoggedIn'); // Clear the email from local storage
+            alert('Logout successful! Redirecting to login...');
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          },
+          (error: any) => {
+            console.error('Logout failed:', error);
+          }
+        );
+      }
     } else {
       console.error('No email found in local storage.');
       alert('Logout failed: No user information found.');

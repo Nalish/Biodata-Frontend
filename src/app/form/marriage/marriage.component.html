@@ -18,6 +18,9 @@
 
                 <label for="marriage_no">Marriage No:</label>
                 <input type="text" id="marriage_no" formControlName="marriage_no">
+
+                <p *ngIf="successMessage">{{ successMessage }}</p>
+                <p *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
 
             <div class="div-btns">
