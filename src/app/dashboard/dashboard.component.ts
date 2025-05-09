@@ -19,8 +19,10 @@ export class DashboardComponent {
   }
 
   loadUserCount(): void {
-    this.apiService.getDummyChristianCount().subscribe((data) => {
-      this.christianCount = data.count; // Update the class property with the count value 
+    this.apiService.getChristianCount().subscribe(
+      (response: any) => {
+        this.christianCount = response.userCount;
+        console.log('User count:', this.christianCount);
     },
       (error) => {
         console.error('Error fetching user count:', error);

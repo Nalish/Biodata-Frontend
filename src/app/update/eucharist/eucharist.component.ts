@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -10,9 +10,9 @@ import { NgIf } from '@angular/common';
   templateUrl: './eucharist.component.html',
   styleUrl: './eucharist.component.css'
 })
-export class EucharistUpdateComponent {
+export class EucharistUpdateComponent implements OnInit {
   constructor(
-    private router: Router,
+    private router: Router, // Inject Router for navigation
     private eucharistService: ApiService // Inject ApiService for API calls
   ) { }
 
@@ -25,9 +25,9 @@ export class EucharistUpdateComponent {
 
   errorMessage = '';
   successMessage = '';
+  userId: any; // Variable to store the user ID
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-    // this.onSubmitEucharistForm();
     console.log("Fill in the eucharist form");
   }
 
@@ -40,16 +40,18 @@ export class EucharistUpdateComponent {
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const userId = parsedData?.id;
+      this.userId = parsedData?.id;
 
-      this.eucharistForm.value['user_id'] = userId; // Assign userId from local storage to the form data
+      this.eucharistForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
 
       // Check if the record already exists
-      this.eucharistService.getEucharistByUserId(userId).subscribe(
+      this.eucharistService.getEucharistByUserId(this.userId).subscribe(
         (existingRecord: any) => {
-          if (existingRecord) {
+          if (existingRecord.length > 0) {
             // If record exists, update it
-            this.eucharistService.updateEucharist(userId, this.eucharistForm.value).subscribe(
+            console.log("This is the fetched existing record: ", existingRecord);
+            const eucharistId = existingRecord[0].eucharist_id;
+            this.eucharistService.updateEucharist(eucharistId, this.eucharistForm.value).subscribe(
               (response) => {
                 console.log('Eucharist information updated successfully:', response); // Log the successful update response
                 this.successMessage = 'Eucharist Information updated successfully!'; // Set success message
@@ -86,14 +88,12 @@ export class EucharistUpdateComponent {
   navigateToConfirmation() {
     setTimeout(() => {
       this.router.navigate(['/edit-confirmation']); // Navigate to the confirmation page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 5 seconds before navigation
   }
 
   navigateToBaptism() {
     setTimeout(() => {
-      this.router.navigate(['/edit-baptism']); // Navigate to the personal info page
+      this.router.navigate(['/edit-baptism']); // Navigate to the baptism page
     }, 1000); // Delay of 2 seconds before navigation
   }
-
-
 }

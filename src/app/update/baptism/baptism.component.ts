@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
@@ -10,11 +10,11 @@ import { CommonModule, NgIf } from '@angular/common';
   templateUrl: './baptism.component.html',
   styleUrl: './baptism.component.css'
 })
-export class BaptismUpdateComponent {
-constructor(
-  private router: Router, // Inject Router for navigation
-  private baptismService: ApiService // Inject ApiService for API calls
-){}
+export class BaptismUpdateComponent implements OnInit {
+  constructor(
+    private router: Router, // Inject Router for navigation
+    private baptismService: ApiService // Inject ApiService for API calls
+  ) { }
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
   baptismForm = this.fb.group({ // Create a form group for the baptism form
@@ -42,17 +42,20 @@ constructor(
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const userId = parsedData?.id;
+      this.userId = parsedData?.id;
 
-      this.baptismForm.value['user_id'] = userId; // Assign userId from local storage to the form data
+      this.baptismForm.patchValue({ user_id: this.userId });  // Assign userId from local storage to the form data
 
       // Check if the record already exists
-      this.baptismService.getBaptismByUserId(userId).subscribe(
+      this.baptismService.getBaptismByUserId(this.userId).subscribe(
         (existingRecord: any) => {
-          if (existingRecord) {
+          if (existingRecord.length > 0) {
             // If record exists, update it
-            
-            this.baptismService.updateBaptism(userId, this.baptismForm.value).subscribe(
+            console.log("This is the fetched existing record: ",existingRecord);
+            const baptismId = existingRecord[0].baptism_id;
+            this.baptismService.updateBaptism(baptismId, this.baptismForm.value).subscribe(
+
+
               (response) => {
                 console.log('Baptism information updated successfully:', response); // Log the successful update response
                 this.successMessage = 'Baptism Information updated successfully!'; // Set success message
@@ -89,7 +92,7 @@ constructor(
   navigateToEucharist() {
     setTimeout(() => {
       this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
-    }, 3000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 5 seconds before navigation
   }
 
   navigateToPersonalInfo() {

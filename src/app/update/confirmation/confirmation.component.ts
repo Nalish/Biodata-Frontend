@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { NgIf } from '@angular/common';
@@ -10,26 +10,29 @@ import { NgIf } from '@angular/common';
   templateUrl: './confirmation.component.html',
   styleUrl: './confirmation.component.css'
 })
-export class ConfirmationUpdateComponent {
+export class ConfirmationUpdateComponent implements OnInit {
   constructor(
     private router: Router, // Inject Router for navigation
     private confirmationService: ApiService // Inject ApiService for API calls
-  ) { } // Constructor for the component
-  private fb = inject(FormBuilder) // Inject FormBuilder for form creation
+  ) { }
 
+  private fb = inject(FormBuilder); // Inject FormBuilder for form creation
   confirmationForm = this.fb.group({ // Create a form group for the confirmation form
     confirmation_place: [''],
     confirmation_date: [''],
     confirmed_by: [''],
     confirmation_no: [''],
     user_id: ['']
-  })
-  errorMessage = ''; 
+  });
+
+  errorMessage = '';
   successMessage = '';
+  userId: any; // Variable to store the user ID
+
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-    // this.onSubmitConfirmationForm();
     console.log("Fill in the confirmation form");
   }
+
   onSubmitConfirmationForm(): void {
     if (this.confirmationForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
@@ -39,16 +42,18 @@ export class ConfirmationUpdateComponent {
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const userId = parsedData?.id;
+      this.userId = parsedData?.id;
 
-      this.confirmationForm.value['user_id'] = userId; // Assign userId from local storage to the form data
+      this.confirmationForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
 
       // Check if the record already exists
-      this.confirmationService.getConfirmationByUserId(userId).subscribe(
+      this.confirmationService.getConfirmationByUserId(this.userId).subscribe(
         (existingRecord: any) => {
-          if (existingRecord) {
+          if (existingRecord.length > 0) {
             // If record exists, update it
-            this.confirmationService.updateConfirmation(userId, this.confirmationForm.value).subscribe(
+            console.log("This is the fetched existing record: ", existingRecord);
+            const confirmationId = existingRecord[0].confirmation_id;
+            this.confirmationService.updateConfirmation(confirmationId, this.confirmationForm.value).subscribe(
               (response) => {
                 console.log('Confirmation information updated successfully:', response); // Log the successful update response
                 this.successMessage = 'Confirmation Information updated successfully!'; // Set success message
@@ -85,12 +90,12 @@ export class ConfirmationUpdateComponent {
   navigateToMarriage() {
     setTimeout(() => {
       this.router.navigate(['/edit-marriage']); // Navigate to the marriage page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 5000); // Delay of 5 seconds before navigation
   }
 
   navigateToEucharist() {
     setTimeout(() => {
       this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 1000); // Delay of 1 second before navigation
   }
 }

@@ -52,6 +52,10 @@
                     Role is required!
                 </p>
             </div>
+
+            <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
+            <p style="color: red;" *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p style="color: black" *ngIf="registerMessage">{{ registerMessage }}</p>
             
             <button type="submit" [disabled]="form.invalid">Register</button>
             <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p>

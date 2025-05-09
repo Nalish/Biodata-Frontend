@@ -104,7 +104,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
     setTimeout(() => {
       this.router.navigate(['/edit-baptism']); // Navigate to the baptism page
     }
-      , 1000);
+      , 5000);
   } // End of navigateToBaptism method
 
   navigateToDashboard() {

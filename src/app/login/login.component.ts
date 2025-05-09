@@ -21,12 +21,13 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   successMessage = '';
+  loginMessage = '';
 
   isLoading: boolean = false; // To indicate loading state
 
-  constructor(private router: Router, private apiservice: ApiService) {}
+  constructor(private router: Router, private login: ApiService) {}
 
-  private login = inject(ApiService)
+  // private login = inject(ApiService)
   private fb = inject(FormBuilder)
   form = this.fb.group({
     email: ['',[Validators.required, Validators.email]],
@@ -34,14 +35,15 @@ export class LoginComponent {
   })
 
 ngOnInit(): void {
-  this.onSubmit();
+  if (this.form.invalid) {
+    this.loginMessage = 'Please fill in all required fields.';
+    return;
+  }
+  // this.onSubmit();
 }
 
 onSubmit():void {
-  if (this.form.invalid) {
-    this.errorMessage = 'Please fill in all required fields.';
-    return;
-  }
+  
   this.login.loginChristian(this.form.value).subscribe(
     (response) => {
       localStorage.setItem('userLoggedIn', JSON.stringify(response))
@@ -49,7 +51,10 @@ onSubmit():void {
       console.log(this.form);
       // Store the token in local storage or session storage
       // localStorage.setItem('token', response.token); // Adjust according to your API response
-      this.successMessage = 'Login successful! Redirecting to dashboard...';
+      this.loginMessage = '';
+      this.successMessage = 'Login successful! Redirecting to dashboard in 5 seconds...';
+      // Set loading state to true
+      // this.isLoading = true;
       this.navigateToDashboard();
     },
     (error: any) => {
@@ -61,7 +66,7 @@ onSubmit():void {
   navigateToDashboard(): void {
     setTimeout(() => {
       this.router.navigate(['/dashboard']);
-    }, 1000); // Delay to show success message
+    }, 5000); // Delay to show success message
   }
 
   navigateToRegister(): void {
