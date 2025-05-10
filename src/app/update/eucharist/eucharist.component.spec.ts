@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EucharistComponent } from './eucharist.component';
+import { EucharistUpdateComponent } from './eucharist.component';
 
-describe('EucharistComponent', () => {
-  let component: EucharistComponent;
-  let fixture: ComponentFixture<EucharistComponent>;
+describe('EucharistUpdateComponent', () => {
+  let component: EucharistUpdateComponent;
+  let fixture: ComponentFixture<EucharistUpdateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EucharistComponent]
+      imports: [EucharistUpdateComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EucharistComponent);
+    fixture = TestBed.createComponent(EucharistUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
