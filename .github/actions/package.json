@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "ng test"
+    "test": "ng test",
+    "build": "ng build",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
 
   },
   "keywords": [],
