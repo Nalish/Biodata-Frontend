@@ -26,7 +26,7 @@
                     </p>
                 </div>
 
-                <label for="password">Password <span class="required-asterisk">*</span></label>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password" formControlName="password" placeholder="include(@#$%^&*()_+)">
                 <div *ngIf="!christianForm.controls.password?.valid && christianForm.controls.password.touched">
                     <p *ngIf="christianForm.controls.password.errors?.['required']">
