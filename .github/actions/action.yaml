@@ -1,14 +1,9 @@
-name: 'Deploy the site to an S3 bucket'
-description: 'Deploy a static website via S3'
+name: 'Deploy the site to Vercel'
+description: 'Deploy a static website to Vercel'
 inputs:
-  bucket:
-    description: 'The name of the S3 bucket to deploy to'
+  vercel-token:
+    description: 'The Vercel token for authentication'
     required: true
-  bucket-region:
-    description: 'The region of the S3 bucket to deploy to'
-    required: false
-    default: 'us-east-1'
-    
 
   dist-folder:
     description: 'The folder containing the deployable files'
