@@ -8,7 +8,7 @@ async function run() {
         const distFolder = core.getInput('dist-folder', { required: true })
 
         // Deploy to Vercel
-        await exec.exec(`npx vercel --prod --token ${vercelToken} --cwd ${distFolder}`)
+        await exec.exec(`npx vercel --prod --yes --token ${vercelToken} --cwd ${distFolder}`, [], options)
 
         // Set output for deployment URL
         const deployUrl = await getDeployUrl(distFolder, vercelToken)
