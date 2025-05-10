@@ -57,9 +57,9 @@ export class DashboardComponent {
         this.apiService.logoutChristian(email).subscribe(
           (response) => {
             console.log('Logout successful:', response);
-            localStorage.removeItem('userLoggedIn'); // Clear the email from local storage
             alert('Logout successful! Redirecting to login...');
             setTimeout(() => {
+              localStorage.removeItem('userLoggedIn'); // Clear the email from local storage
               this.router.navigate(['/login']);
             }, 2000);
           },
