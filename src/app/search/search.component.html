@@ -59,6 +59,7 @@
             </div>
             <div *ngIf="selectedMarriage" class="marriage-details">
                 <h3>Marriage Details</h3>
+                <p><strong>Spouse:</strong> <span id="spouseName">{{selectedMarriage.spouse_name}}</span></p>
                 <p><strong>Place:</strong> <span id="marriagePlace">{{selectedMarriage.marriage_place}}</span></p>
                 <p><strong>Date:</strong> <span id="marriageDate">{{selectedMarriage.marriage_date}}</span></p>
                 <p><strong>Marriage Number:</strong> <span id="marriageNumber">{{selectedMarriage.marriage_no}}</span></p>
