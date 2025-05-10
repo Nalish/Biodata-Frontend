@@ -7,7 +7,7 @@
         <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
             <div class="section">
                 <h3>Personal Information</h3>
-                <label for="name">Full Name:</label>
+                <label for="name">Full Name: <span class="required-asterisk">*</span></label>
                 <input type="text" id="name" formControlName="name" required>
                 <div *ngIf="!christianForm.controls.name?.valid && christianForm.controls.name.touched">
                     <p *ngIf="christianForm.controls.name.errors?.['required']">
@@ -15,7 +15,7 @@
                     </p>
                 </div>
 
-                <label for="email">Email</label>
+                <label for="email">Email <span class="required-asterisk">*</span></label>
                 <input type="email" id="email" name="email" formControlName="email" placeholder="example@gmail.com">
                 <div *ngIf="!christianForm.controls.email?.valid && christianForm.controls.email.touched">
                     <p *ngIf="christianForm.controls.email.errors?.['required']">
@@ -26,7 +26,7 @@
                     </p>
                 </div>
 
-                <label for="password">Password</label>
+                <label for="password">Password <span class="required-asterisk">*</span></label>
                 <input type="password" id="password" name="password" formControlName="password" placeholder="include(@#$%^&*()_+)">
                 <div *ngIf="!christianForm.controls.password?.valid && christianForm.controls.password.touched">
                     <p *ngIf="christianForm.controls.password.errors?.['required']">
@@ -38,7 +38,7 @@
                 </div>
 
 
-                <label for="role">Role</label>
+                <label for="role">Role <span class="required-asterisk">*</span></label>
                 <select id="role" formControlName="role" required>
                     <option value="" disabled selected>Select your role</option>
                     <option value="Admin">Admin</option>
@@ -66,7 +66,7 @@
                 <label for="birth_place">Place of Birth:</label>
                 <input type="text" id="birth_place" formControlName="birth_place">
 
-                <label for="birth_date">Date of Birth:</label>
+                <label for="birth_date">Date of Birth: <span class="required-asterisk">*</span></label>
                 <input type="date" id="birth_date" formControlName="birth_date">
                 <div *ngIf="!christianForm.controls.birth_date?.valid && christianForm.controls.birth_date.touched">
                     <p *ngIf="christianForm.controls.birth_date.errors?.['required']">

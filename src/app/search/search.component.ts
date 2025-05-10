@@ -29,7 +29,7 @@ export class SearchComponent implements OnInit {
   selectedMarriage: any = null; // Added to store marriage data
 
   constructor(private apiService: ApiService,
-    private router:Router
+    private router: Router
   ) { }
   // Method to handle search functionality
 
@@ -53,13 +53,149 @@ export class SearchComponent implements OnInit {
   }
 
 
+  selectChristian(christian: any): void {
+    this.selectedChristian = christian;
+    console.clear();
+    console.log(christian);
+    localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
+
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (christian) {
+      localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
+
+      this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
+        const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === christian.id);
+        console.log(baptism);
+        if (baptism) {
+          this.apiService.getBaptismById(baptism.baptism_id.toString()).subscribe((detailedBaptismData) => {
+            this.selectedBaptism = detailedBaptismData;
+            this.selectedChristian = christian;
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
+          }, error => {
+            this.selectedBaptism = null;
+            this.selectedChristian = christian;
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            console.error('Error fetching detailed baptism data:', error);
+            this.errorMessage = '';
+          });
+        } else {
+          this.selectedBaptism = null;
+          this.selectedChristian = christian;
+          this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          console.error('No matching baptism found for the selected Christian');
+          this.errorMessage = '';
+        }
+      }, error => {
+        this.selectedBaptism = null;
+        console.error('Error fetching baptism data:', error);
+        this.errorMessage = 'Error fetching baptism data.';
+      });
+
+      this.apiService.getEucharists().subscribe((eucharistData: { user_id: number; eucharist_id: number }[]) => {
+        const eucharist = eucharistData.find((e: { user_id: number; eucharist_id: number }) => e.user_id === christian.id);
+        console.log(eucharist);
+        if (eucharist) {
+          this.apiService.getEucharistById(eucharist.eucharist_id.toString()).subscribe((detailedEucharistData) => {
+            this.selectedEucharist = detailedEucharistData;
+            this.selectedChristian = christian;
+            this.errorMessage = '';
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          }, error => {
+            this.selectedEucharist = null;
+            this.selectedChristian = christian;
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            console.error('Error fetching detailed eucharist data:', error);
+            this.errorMessage = '';
+          });
+        } else {
+          this.selectedEucharist = null;
+          this.selectedChristian = christian;
+          this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          this.errorMessage = '';
+          console.error('No matching eucharist found for the selected Christian');
+        }
+      }, error => {
+        this.selectedEucharist = null;
+        console.error('Error fetching eucharist data:', error);
+        this.errorMessage = 'Error fetching eucharist data.';
+      });
+
+      this.apiService.getConfirmations().subscribe((confirmationData: { user_id: number; confirmation_id: number }[]) => {
+        const confirmation = confirmationData.find((c: { user_id: number; confirmation_id: number }) => c.user_id === christian.id);
+        console.log(confirmation);
+        if (confirmation) {
+          this.apiService.getConfirmationById(confirmation.confirmation_id.toString()).subscribe((detailedConfirmationData) => {
+            this.selectedConfirmation = detailedConfirmationData;
+            this.selectedChristian = christian;
+            this.errorMessage = '';
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          }, error => {
+            this.selectedConfirmation = null;
+            this.selectedChristian = christian;
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
+            console.error('Error fetching detailed confirmation data:', error);
+          });
+        } else {
+          this.selectedConfirmation = null;
+          this.selectedChristian = christian;
+          this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          this.errorMessage = '';
+          console.error('No matching confirmation found for the selected Christian');
+        }
+      }, error => {
+        this.selectedConfirmation = null;
+        console.error('Error fetching confirmation data:', error);
+        this.errorMessage = 'Error fetching confirmation data.';
+      });
+
+      this.apiService.getMarriages().subscribe((marriageData: { user_id: number; marriage_id: number }[]) => {
+        const marriage = marriageData.find((m: { user_id: number; marriage_id: number }) => m.user_id === christian.id);
+        console.log(marriage);
+        if (marriage) {
+          this.apiService.getMarriageById(marriage.marriage_id.toString()).subscribe((detailedMarriageData) => {
+            this.selectedMarriage = detailedMarriageData;
+            this.selectedChristian = christian;
+            this.errorMessage = '';
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          }, error => {
+            this.selectedMarriage = null;
+            this.selectedChristian = christian;
+            this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
+            console.error('Error fetching detailed marriage data:', error);
+          });
+        } else {
+          this.selectedMarriage = null;
+          this.selectedChristian = christian;
+          this.christians.sort((a, b) => a.name.localeCompare(b.name));
+          this.errorMessage = '';
+          console.error('No matching marriage found for the selected Christian');
+        }
+      }, error => {
+        this.selectedMarriage = null;
+        console.error('Error fetching marriage data:', error);
+        this.errorMessage = 'Error fetching marriage data.';
+      });
+    } else {
+      this.selectedChristian = null;
+      console.error('Christian not found');
+      this.errorMessage = 'Christian not found.';
+      this.christians.sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }
+
+
   clearSearch(): void {
     this.searchQuery = '';
     this.displayChristians(); // Reset to all Christians if search query is cleared 
   }
 
 
-  redirectToUpdateChristian(){
+  redirectToUpdateChristian() {
     const selectedChristian = localStorage.getItem('selectedChristian');
     if (selectedChristian) {
       const christianData = JSON.parse(selectedChristian);
@@ -69,7 +205,7 @@ export class SearchComponent implements OnInit {
       setTimeout(() => {
         this.router.navigate(['/edit-personal-info'], { queryParams: { id } });
       }, 1000);
-        } else {
+    } else {
       console.error('No Christian selected for redirection.');
     }
   }
@@ -85,10 +221,12 @@ export class SearchComponent implements OnInit {
       );
       console.log(found); // Check the found Christian
 
+      // Scroll to the top of the page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       if (found) {
 
-        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name})); // Store the selected Christian in local storage
+        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name })); // Store the selected Christian in local storage
         // localStorage.setItem('userId', found.id); // Store the user ID in local storage
 
         this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
@@ -100,12 +238,14 @@ export class SearchComponent implements OnInit {
               this.selectedChristian = found; // Set the selectedChristian to the found Christian
               // Sort the Christians in alphabetical order by name
               this.christians.sort((a, b) => a.name.localeCompare(b.name));
+              this.errorMessage = '';
             }, error => {
               this.selectedBaptism = null;
               this.selectedChristian = found;
               this.christians.sort((a, b) => a.name.localeCompare(b.name));
               // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
               console.error('Error fetching detailed baptism data:', error);
+              this.errorMessage = '';
               // this.errorMessage = 'Error fetching detailed baptism data.';
             });
           } else {
@@ -114,6 +254,7 @@ export class SearchComponent implements OnInit {
             this.christians.sort((a, b) => a.name.localeCompare(b.name));
             // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
             console.error('No matching baptism found for the selected Christian');
+            this.errorMessage = '';
 
             // this.errorMessage = 'No matching Baptism found for the selected Christian.';
 
@@ -142,11 +283,13 @@ export class SearchComponent implements OnInit {
               this.christians.sort((a, b) => a.name.localeCompare(b.name));
               // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
               console.error('Error fetching detailed eucharist data:', error);
+              this.errorMessage = '';
             });
           } else {
             this.selectedEucharist = null;
             this.selectedChristian = found;
             this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
             // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
             console.error('No matching eucharist found for the selected Christian');
           }
@@ -172,6 +315,7 @@ export class SearchComponent implements OnInit {
               this.selectedConfirmation = null;
               this.selectedChristian = found;
               this.christians.sort((a, b) => a.name.localeCompare(b.name));
+              this.errorMessage = '';
               // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
               console.error('Error fetching detailed confirmation data:', error);
             });
@@ -179,6 +323,7 @@ export class SearchComponent implements OnInit {
             this.selectedConfirmation = null;
             this.selectedChristian = found;
             this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
             // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
             console.error('No matching confirmation found for the selected Christian');
           }
@@ -204,6 +349,7 @@ export class SearchComponent implements OnInit {
               this.selectedMarriage = null;
               this.selectedChristian = found;
               this.christians.sort((a, b) => a.name.localeCompare(b.name));
+              this.errorMessage = '';
               // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
               console.error('Error fetching detailed marriage data:', error);
             });
@@ -211,6 +357,7 @@ export class SearchComponent implements OnInit {
             this.selectedMarriage = null;
             this.selectedChristian = found;
             this.christians.sort((a, b) => a.name.localeCompare(b.name));
+            this.errorMessage = '';
             // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
             console.error('No matching marriage found for the selected Christian');
           }
@@ -225,12 +372,13 @@ export class SearchComponent implements OnInit {
         this.selectedChristian = null;
         console.error('Christian not found');
         this.errorMessage = 'Christian not found.';
-        this.christians = [];
+        // this.christians = [];
+        this.christians.sort((a, b) => a.name.localeCompare(b.name));
       }
     }
       , error => {
         console.error('Something went wrong while fetching Christians. Try again.', error);
-        this.errorMessage = 'Something went wrong while fetching Christians. Try again.';
+        this.errorMessage = error.error.message || 'Something went wrong while fetching Christians. Try again.';
       }
     );
 
