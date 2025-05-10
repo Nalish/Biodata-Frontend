@@ -58,13 +58,14 @@ export class DashboardComponent {
           (response) => {
             console.log('Logout successful:', response);
             alert('Logout successful! Redirecting to login...');
+            localStorage.removeItem('userLoggedIn');
             setTimeout(() => {
-              localStorage.removeItem('userLoggedIn'); // Clear the email from local storage
               this.router.navigate(['/login']);
             }, 2000);
           },
           (error: any) => {
             console.error('Logout failed:', error);
+            alert('Logout failed: ' + error.error.message);
           }
         );
       }
