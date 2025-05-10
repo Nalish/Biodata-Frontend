@@ -74,7 +74,7 @@
 
 
         <div type="button" *ngFor="let christian of christians" class="styled-christian-card" (click)="selectChristian(christian)">
-            <h2>{{ christian.name }}</h2>
+            <h2>{{ christian?.name }}</h2>
             <p><strong>Email:</strong> {{christian.email}}</p>
             <p><strong>Role:</strong> {{christian.role}}</p>
         </div>
