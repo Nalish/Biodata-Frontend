@@ -18,7 +18,7 @@ export class MarriageUpdateComponent implements OnInit {
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
   marriageForm = this.fb.group({ // Create a form group for the marriage form
-    spouse: [''],
+    spouse_name: [''],
     marriage_place: [''],
     marriage_date: [''],
     marriage_no: [''],
