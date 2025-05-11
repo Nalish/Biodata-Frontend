@@ -12,7 +12,7 @@
 
     <div class="auth-container">
         <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
-            <h2>Register</h2>
+            <h2>Register Account</h2>
                 <input type="text" id="name" placeholder="Full Name" formControlName="name" required>
                 <div *ngIf="!form.controls.name?.valid && form.controls.name.touched">
                     <p *ngIf="form.controls.name.errors?.['required']">
@@ -42,6 +42,8 @@
                 </p>
             </div>
 
+            
+            <label for="role">Select Role</label>
             <select id="role" formControlName="role" required>
                 <option value="" disabled selected>Role</option>
                 <option value="Admin">Admin</option>
@@ -58,7 +60,7 @@
             <p style="color: black" *ngIf="registerMessage">{{ registerMessage }}</p>
             
             <button type="submit" [disabled]="form.invalid">Register</button>
-            <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p>
+            <!-- <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p> -->
             <p style="color: black;">Already have an account? <span><a routerLink="/login">Login</a></span></p>
         </form>
     </div>

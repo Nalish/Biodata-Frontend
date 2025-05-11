@@ -34,13 +34,13 @@ export class DashboardComponent {
   navigateToSearch() {
     setTimeout(() => {
       this.router.navigate(['/search'])
-    }, 1000);
+    }, 1500);
   }
 
   navigateToForm() {
     setTimeout(() => {
       this.router.navigate(['/personal-info'])
-    }, 1000);
+    }, 1500);
   }
 
   logoutChristian() {
@@ -61,7 +61,7 @@ export class DashboardComponent {
             localStorage.removeItem('userLoggedIn');
             setTimeout(() => {
               this.router.navigate(['/login']);
-            }, 2000);
+            }, 1500);
           },
           (error: any) => {
             console.error('Logout failed:', error);

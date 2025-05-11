@@ -35,7 +35,7 @@ export class LoginComponent {
   })
 
   ngOnInit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid && this.form.touched) {
       this.loginMessage = 'Please fill in all required fields.';
       return;
     }
@@ -52,7 +52,8 @@ export class LoginComponent {
         // Store the token in local storage or session storage
         // localStorage.setItem('token', response.token); // Adjust according to your API response
         this.loginMessage = '';
-        this.successMessage = 'Login successful! Redirecting to dashboard in 5 seconds...';
+        this.errorMessage = '';
+        this.successMessage = 'Login successful! Redirecting to dashboard...';
         // Set loading state to true
         // this.isLoading = true;
         this.navigateToDashboard();
@@ -66,7 +67,7 @@ export class LoginComponent {
   navigateToDashboard(): void {
     setTimeout(() => {
       this.router.navigate(['/dashboard']);
-    }, 5000); // Delay to show success message
+    }, 1500); // Delay to show success message
   }
 
   navigateToRegister(): void {

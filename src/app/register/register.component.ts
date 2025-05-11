@@ -30,14 +30,14 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid && this.form.touched) {
       this.registerMessage = 'Please fill in all required fields.';
       return;
     }
     // this.onSubmitForm();
   }
 
-  onSubmit(): void {
+  onSubmitForm(): void {
 
     this.register.registerChristian(this.form.value).subscribe(
       (response) => {
@@ -46,6 +46,7 @@ export class RegisterComponent implements OnInit {
         // Store the token in local storage or session storage
         // localStorage.setItem('token', response.token); // Adjust according to your API response
         this.registerMessage = '';
+        this.errorMessage = '';
         this.successMessage = 'Registration successful! Redirecting to login...';
         // Set loading state to true
         // this.isLoading = true;
@@ -63,23 +64,23 @@ export class RegisterComponent implements OnInit {
   navigateToLogin(): void {
     setTimeout(() => {
       this.router.navigate(['/login']);
-    }, 5000);
-  }
-
-  onSubmitForm(): void {
-    setTimeout(() => {
-      this.register.registerChristian(this.form.value).subscribe(
-        (response) => {
-          console.log('Registration successful:', response);
-          this.successMessage = 'Registration successful! Redirecting to login in 5 seconds...';
-          this.navigateToLogin();
-        },
-        (error: any) => {
-          console.error('Registration failed:', error);
-          this.errorMessage = error.error.message || 'Registration failed. Please try again.';
-        }
-      );
     }, 1500);
-
   }
+
+  // onSubmitForm(): void {
+  //   setTimeout(() => {
+  //     this.register.registerChristian(this.form.value).subscribe(
+  //       (response) => {
+  //         console.log('Registration successful:', response);
+  //         this.successMessage = 'Registration successful! Redirecting to login in 5 seconds...';
+  //         this.navigateToLogin();
+  //       },
+  //       (error: any) => {
+  //         console.error('Registration failed:', error);
+  //         this.errorMessage = error.error.message || 'Registration failed. Please try again.';
+  //       }
+  //     );
+  //   }, 1500);
+
+  // }
 }
