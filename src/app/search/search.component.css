@@ -4,7 +4,6 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
-
 }
 
 .header {
@@ -20,14 +19,15 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    width: 50%;
+    width: 90%;
+    max-width: 600px;
     display: flex;
     justify-content: center;
 }
 
 .search-box {
     padding: 10px;
-    width: 300px;
+    width: 70%;
     border: 2px solid #c2ae6d;
     border-radius: 20px 0 0 20px;
     outline: none;
@@ -49,7 +49,7 @@ body {
 }
 
 #christianName {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     color: #4a002a;
     text-align: center;
@@ -60,24 +60,27 @@ body {
     border-radius: 12px;
     background-color: #fff2d6;
     width: fit-content;
+    max-width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
 }
 
 .christian-details {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     background-color: #fff;
     border: 2px solid #c2ae6d;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 15px;
     margin: 20px auto;
     margin-top: 0px;
     margin-bottom: 5px;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-    text-align: justify;
+    text-align: left;
     color: #333;
-    position: sticky;
+    width: 90%;
+    max-width: 800px;
 }
 
 .christian-details h1 {
@@ -87,24 +90,31 @@ body {
 }
 
 .christian-details h3 {
-    margin-top: 0;
+    margin-top: 15px;
     color: #4a002a;
+    border-bottom: 1px solid #c2ae6d;
+    padding-bottom: 5px;
+}
+
+.personal-details {
+    margin-bottom: 15px;
 }
 
 .baptism-details,
 .eucharist-details,
 .confirmation-details,
 .marriage-details {
-    margin-top: 49px;
-    border-left: 2px solid #c2ae6d;
-    padding-left: 15px;
+    margin-top: 10px;
+    border-left: none;
+    border-top: 2px solid #c2ae6d;
+    padding-top: 10px;
+    padding-left: 0;
 }
 
 .error {
     color: red;
     margin-top: 10px;
 }
-
 
 .update-button {
     background-color: #c2ae6d;
@@ -116,13 +126,12 @@ body {
     border-radius: 5px;
     margin-top: 0px;
     margin-bottom: 20px;
+    width: 80%;
+    max-width: 300px;
 }
 
 .update-button:hover {
     transform: scale(1.05);
-    transform: rotateX('90deg');
-    /* transform: rotateY('30deg'); */
-    /* transform: rotate3d(0, 1, 0, 30deg); */
     background: linear-gradient(90deg, #55233f, #b4aa89);
     transition: all 0.3s ease-in-out;
 }
@@ -133,15 +142,15 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    margin: 10px;
-    width: 30%;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 300px;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
     text-align: left;
     color: #333;
     display: inline-block;
     vertical-align: top;
 }
-
 
 .styled-christian-card:hover {
     transform: translateY(-5px) scale(1.03);
@@ -154,14 +163,80 @@ body {
 .styled-christian-card h2 {
     margin-top: 0;
     color: #4a002a;
+    font-size: 18px;
+    word-break: break-word;
 }
 
 .styled-christian-card p {
     margin: 8px 0;
-    font-size: 16px;
+    font-size: 14px;
+    word-break: break-word;
 }
+
 .highlighted {
     border: 3px solid #4a002a;
     background-color: #fff2d6;
     box-shadow: 0 0 15px rgba(74, 0, 42, 0.5);
 }
+
+/* Media Queries for Responsive Design */
+@media screen and (min-width: 768px) {
+    .christian-details {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 25px;
+    }
+    
+    .baptism-details,
+    .eucharist-details,
+    .confirmation-details,
+    .marriage-details {
+        margin-top: 49px;
+        border-left: 2px solid #c2ae6d;
+        border-top: none;
+        padding-left: 15px;
+        padding-top: 0;
+    }
+    
+    .styled-christian-card {
+        width: 30%;
+        margin: 10px;
+    }
+    
+    #christianName {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .search-container {
+        width: 95%;
+    }
+    
+    .search-box {
+        width: 65%;
+    }
+    
+    .search-button {
+        padding: 10px 15px;
+    }
+    
+    .christian-details {
+        padding: 10px;
+    }
+    
+    .styled-christian-card {
+        width: 85%;
+    }
+    
+    .christian-details p {
+        font-size: 14px;
+    }
+    
+    #christianName {
+        font-size: 20px;
+        padding: 8px;
+    }
+}
+
+/* Add viewport meta tag in index.html */

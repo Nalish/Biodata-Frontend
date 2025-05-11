@@ -1,86 +1,82 @@
 <body>
-
     <div class="header">Search Christians</div>
-
-
 
     <div class="search-container">
         <input type="search" (search)="searchChristianByName(searchQuery)" class="search-box"
-            placeholder="Search by Name to View Details" [(ngModel)]="searchQuery" />
+            placeholder="Search by Name" [(ngModel)]="searchQuery" />
         <button class="search-button" (click)="searchChristianByName(searchQuery)">Search</button>
     </div>
 
-
-
     <!-- Christian Details -->
-    <div class="details">
+    <div class="details" *ngIf="selectedChristian">
         <h1 id="christianName">{{ selectedChristian.name }}'s Details</h1>
-        <div *ngIf="selectedChristian" class="christian-details"
+        <div class="christian-details"
             [ngClass]="{'highlighted': selectedChristian?.id === selectedChristian.id}">
             <div class="personal-details">
-                <!-- <h1 style="border: solid 3px;" id="christianName">{{ selectedChristian.name }}'s Details</h1> -->
-
                 <h3>Personal Details</h3>
-                <p><strong>Email:</strong> <span id="email"></span> {{selectedChristian.email}}</p>
-                <p><strong>Role:</strong> <span id="role"> {{selectedChristian.role}}</span></p>
-                <p><strong>Father's Name:</strong> <span id="fatherName"> {{selectedChristian.father}}</span></p>
-                <p><strong>Mother's Name:</strong> <span id="motherName"> {{selectedChristian.mother}}</span></p>
-                <p><strong>Tribe:</strong> <span id="tribe"> {{selectedChristian.tribe}}</span></p>
-                <p><strong>Clan:</strong> <span id="clan"></span> {{selectedChristian.clan}}</p>
-                <p><strong>Place of Birth:</strong> <span id="placeOfBirth"></span> {{selectedChristian.birth_place}}
-                </p>
-                <p><strong>Date of Birth:</strong> <span id="placeOfBirth"></span> {{selectedChristian.birth_date}}</p>
-                <p><strong>Sub County:</strong> <span id="placeOfBirth"></span> {{selectedChristian.sub_county}}</p>
-                <p><strong>Residence:</strong> <span id="residence"></span> {{selectedChristian.residence}}</p>
+                <p><strong>Email:</strong> {{selectedChristian.email}}</p>
+                <p><strong>Role:</strong> {{selectedChristian.role}}</p>
+                <p><strong>Father's Name:</strong> {{selectedChristian.father}}</p>
+                <p><strong>Mother's Name:</strong> {{selectedChristian.mother}}</p>
+                <p><strong>Tribe:</strong> {{selectedChristian.tribe}}</p>
+                <p><strong>Clan:</strong> {{selectedChristian.clan}}</p>
+                <p><strong>Place of Birth:</strong> {{selectedChristian.birth_place}}</p>
+                <p><strong>Date of Birth:</strong> {{selectedChristian.birth_date}}</p>
+                <p><strong>Sub County:</strong> {{selectedChristian.sub_county}}</p>
+                <p><strong>Residence:</strong> {{selectedChristian.residence}}</p>
                 <p *ngIf="!selectedBaptism" style="color: red;">{{ selectedChristian.name }} is not yet baptised</p>
                 <p *ngIf="!selectedEucharist" style="color: red;">{{ selectedChristian.name }} is yet to receive eucharist</p>
                 <p *ngIf="!selectedConfirmation" style="color: red;">{{ selectedChristian.name }} is not yet confirmed</p>
                 <p *ngIf="!selectedMarriage" style="color: red;">{{ selectedChristian.name }} is not yet married</p>
-
             </div>
+            
             <div *ngIf="selectedBaptism" class="baptism-details">
                 <h3>Baptism Details</h3>
-                <p><strong>Place:</strong> <span id="baptismPlace">{{selectedBaptism.baptism_place}}</span></p>
-                <p><strong>Date:</strong> <span id="baptismDate">{{selectedBaptism.baptism_date}}</span></p>
-                <!-- <p><strong>Baptism No:</strong> <span id="baptismNo">{{selectedBaptism.baptism_no}}</span></p> -->
-                <p><strong>Baptised By:</strong> <span id="baptisedBy">{{selectedBaptism.baptised_by}}</span></p>
-                <p><strong>Administrator:</strong> <span id="baptismAdministrator">{{selectedBaptism.administrator}}</span></p>
+                <p><strong>Place:</strong> {{selectedBaptism.baptism_place}}</p>
+                <p><strong>Date:</strong> {{selectedBaptism.baptism_date}}</p>
+                <p><strong>Baptised By:</strong> {{selectedBaptism.baptised_by}}</p>
+                <p><strong>Administrator:</strong> {{selectedBaptism.administrator}}</p>
             </div>
+            
             <div *ngIf="selectedEucharist" class="eucharist-details">
                 <h3>Eucharist Details</h3>
-                <p><strong>Place:</strong> <span id="eucharistPlace">{{selectedEucharist.eucharist_place}}</span></p>
-                <p><strong>Date:</strong> <span id="eucharistDate">{{selectedEucharist.eucharist_date}}</span></p>
+                <p><strong>Place:</strong> {{selectedEucharist.eucharist_place}}</p>
+                <p><strong>Date:</strong> {{selectedEucharist.eucharist_date}}</p>
             </div>
+            
             <div *ngIf="selectedConfirmation" class="confirmation-details">
                 <h3>Confirmation Details</h3>
-                <p><strong>Place:</strong> <span id="confirmationPlace">{{selectedConfirmation.confirmation_place}}</span></p>
-                <p><strong>Date:</strong> <span id="confirmationDate">{{selectedConfirmation.confirmation_date}}</span></p>
-                <p><strong>Confirmation Number:</strong> <span id="confirmationNumber">{{selectedConfirmation.confirmation_no}}</span></p>
+                <p><strong>Place:</strong> {{selectedConfirmation.confirmation_place}}</p>
+                <p><strong>Date:</strong> {{selectedConfirmation.confirmation_date}}</p>
+                <p><strong>Confirmation Number:</strong> {{selectedConfirmation.confirmation_no}}</p>
             </div>
+            
             <div *ngIf="selectedMarriage" class="marriage-details">
                 <h3>Marriage Details</h3>
-                <p><strong>Spouse:</strong> <span id="spouseName">{{selectedMarriage.spouse_name}}</span></p>
-                <p><strong>Place:</strong> <span id="marriagePlace">{{selectedMarriage.marriage_place}}</span></p>
-                <p><strong>Date:</strong> <span id="marriageDate">{{selectedMarriage.marriage_date}}</span></p>
-                <p><strong>Marriage Number:</strong> <span id="marriageNumber">{{selectedMarriage.marriage_no}}</span></p>
+                <p><strong>Spouse:</strong> {{selectedMarriage.spouse_name}}</p>
+                <p><strong>Place:</strong> {{selectedMarriage.marriage_place}}</p>
+                <p><strong>Date:</strong> {{selectedMarriage.marriage_date}}</p>
+                <p><strong>Marriage Number:</strong> {{selectedMarriage.marriage_no}}</p>
             </div>
         </div>
 
-        <div *ngIf="selectedChristian" class="christian-actions" >
-            <button class="update-button"  (click)="redirectToUpdateChristian()"><strong>Edit {{selectedChristian.name}}'s Details</strong></button>
+        <div class="christian-actions">
+            <button class="update-button" (click)="redirectToUpdateChristian()">
+                <strong>Edit {{selectedChristian.name}}'s Details</strong>
+            </button>
         </div>
-        <!-- Error Message -->
-        <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    </div>
+    
+    <!-- Error Message -->
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 
-
-
-        <div type="button" *ngFor="let christian of christians" class="styled-christian-card" (click)="selectChristian(christian)">
+    <!-- Christians List -->
+    <div>
+        <div type="button" *ngFor="let christian of christians" class="styled-christian-card" 
+            (click)="selectChristian(christian)">
             <h2>{{ christian?.name }}</h2>
             <p><strong>Email:</strong> {{christian.email}}</p>
             <p><strong>Role:</strong> {{christian.role}}</p>
         </div>
-
     </div>
-
-
 </body>
