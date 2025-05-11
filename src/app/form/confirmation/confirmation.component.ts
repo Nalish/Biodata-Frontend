@@ -31,6 +31,11 @@ export class ConfirmationComponent {
     console.log("Fill in the confirmation form");
   }
   onSubmitConfirmationForm(): void {
+    if (this.confirmationForm.untouched) { // Check if the form is untouched
+      this.errorMessage = 'Please fill in all required fields.'; // Set error message
+      console.log('Please fill in all required fields.');
+      return; // Exit the function if the form is untouched
+    }
     if (this.confirmationForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       return;

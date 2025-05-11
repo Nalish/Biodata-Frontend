@@ -29,7 +29,12 @@ export class MarriageComponent {
     // this.onSubmitMarriageForm();
     console.log("Fill in the marriage form"); // Log message to indicate the form is being filled
   }
-  onSubmitMarriageForm(): void { // Function to handle the submission of the marriage form
+  onSubmitMarriageForm(): void {
+    if (this.marriageForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.marriageForm.invalid) { // Check if the form is invalid
       this.errorMessage = 'Please fill in all required fields.'; // Set error message
       return; // Exit the function if the form is invalid

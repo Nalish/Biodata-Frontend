@@ -63,6 +63,11 @@ export class PersonalInfoUpdateComponent implements OnInit {
 
 
   onSubmitChristianForm(): void {
+    if (this.christianForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.christianForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       console.log('Please fill in all required fields.');

@@ -35,6 +35,11 @@ export class BaptismUpdateComponent implements OnInit {
   }
 
   onSubmitBaptismForm(): void {
+    if (this.baptismForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.baptismForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       return;

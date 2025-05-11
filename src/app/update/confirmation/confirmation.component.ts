@@ -34,6 +34,11 @@ export class ConfirmationUpdateComponent implements OnInit {
   }
 
   onSubmitConfirmationForm(): void {
+    if (this.confirmationForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.confirmationForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       return;

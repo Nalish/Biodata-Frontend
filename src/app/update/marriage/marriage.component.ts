@@ -34,6 +34,11 @@ export class MarriageUpdateComponent implements OnInit {
   }
 
   onSubmitMarriageForm(): void {
+    if (this.marriageForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.marriageForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       return;

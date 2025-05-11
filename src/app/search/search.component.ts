@@ -52,6 +52,28 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.displayChristians(); // Reset to all Christians if search query is cleared 
+  }
+
+
+  redirectToUpdateChristian() {
+    const selectedChristian = localStorage.getItem('selectedChristian');
+    if (selectedChristian) {
+      const christianData = JSON.parse(selectedChristian);
+      const id = christianData.id;
+      const email = christianData.email;
+      // Redirect to the update Christian page with the ID and email
+      setTimeout(() => {
+        this.router.navigate(['/edit-personal-info'], { queryParams: { id } });
+      }, 1000);
+    } else {
+      console.error('No Christian selected for redirection.');
+    }
+  }
+
+
 
   selectChristian(christian: any): void {
     this.selectedChristian = christian;
@@ -188,27 +210,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.displayChristians(); // Reset to all Christians if search query is cleared 
-  }
-
-
-  redirectToUpdateChristian() {
-    const selectedChristian = localStorage.getItem('selectedChristian');
-    if (selectedChristian) {
-      const christianData = JSON.parse(selectedChristian);
-      const id = christianData.id;
-      const email = christianData.email;
-      // Redirect to the update Christian page with the ID and email
-      setTimeout(() => {
-        this.router.navigate(['/edit-personal-info'], { queryParams: { id } });
-      }, 1000);
-    } else {
-      console.error('No Christian selected for redirection.');
-    }
-  }
 
 
   searchChristianByName(name: string): void {

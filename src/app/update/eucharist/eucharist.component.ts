@@ -32,6 +32,11 @@ export class EucharistUpdateComponent implements OnInit {
   }
 
   onSubmitEucharistForm(): void {
+    if (this.eucharistForm.untouched) {
+      this.errorMessage = 'Please fill in all required fields.';
+      console.log('Please fill in all required fields.');
+      return;
+    }
     if (this.eucharistForm.invalid) {
       this.errorMessage = 'Please fill in all required fields.';
       return;
