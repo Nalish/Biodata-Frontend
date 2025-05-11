@@ -88,7 +88,7 @@ export class EucharistUpdateComponent implements OnInit {
   navigateToConfirmation() {
     setTimeout(() => {
       this.router.navigate(['/edit-confirmation']); // Navigate to the confirmation page
-    }, 5000); // Delay of 5 seconds before navigation
+    }, 1500); // Delay of 5 seconds before navigation
   }
 
   navigateToBaptism() {

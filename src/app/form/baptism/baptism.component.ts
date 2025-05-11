@@ -56,7 +56,7 @@ constructor(
   navigateToEucharist() {
     setTimeout(() => {
       this.router.navigate(['/eucharist']); // Navigate to the eucharist page
-    }, 1000); // Delay of 2 seconds before navigation
+    }, 1500); // Delay of 2 seconds before navigation
   }
 
   navigateToPersonalInfo() {

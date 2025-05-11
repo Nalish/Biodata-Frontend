@@ -54,7 +54,7 @@ export class EucharistComponent {
   navigateToConfirmation() {
     setTimeout(() => {
       this.router.navigate(['/confirmation']); // Navigate to the confirmation page
-    }, 5000); // Delay of 2 seconds before navigation
+    }, 1500); // Delay of 2 seconds before navigation
   }
 
   navigateToBaptism() {

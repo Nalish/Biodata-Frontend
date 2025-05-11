@@ -90,7 +90,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   navigateToMarriage() {
     setTimeout(() => {
       this.router.navigate(['/edit-marriage']); // Navigate to the marriage page
-    }, 5000); // Delay of 5 seconds before navigation
+    }, 1500); // Delay of 5 seconds before navigation
   }
 
   navigateToEucharist() {

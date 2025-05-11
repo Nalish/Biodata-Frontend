@@ -90,7 +90,7 @@ export class MarriageUpdateComponent implements OnInit {
   navigateToDashboard() {
     setTimeout(() => {
       this.router.navigate(['/dashboard']); // Navigate to the dashboard page
-    }, 5000); // Delay of 1 second before navigation
+    }, 1500); // Delay of 1 second before navigation
   }
 
   navigateTOConfirmation() {

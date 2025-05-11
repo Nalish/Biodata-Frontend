@@ -53,7 +53,7 @@ export class ConfirmationComponent {
   navigateToMarriage() {
     setTimeout(() => {
       this.router.navigate(['/marriage']); // Navigate to the marriage page
-    }, 5000); // Delay of 2 seconds before navigation
+    }, 1500); // Delay of 2 seconds before navigation
   }
 
   navigateToEucharist() {

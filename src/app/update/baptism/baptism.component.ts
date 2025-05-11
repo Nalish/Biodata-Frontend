@@ -92,7 +92,7 @@ export class BaptismUpdateComponent implements OnInit {
   navigateToEucharist() {
     setTimeout(() => {
       this.router.navigate(['/edit-eucharist']); // Navigate to the eucharist page
-    }, 5000); // Delay of 5 seconds before navigation
+    }, 1500); // Delay of 5 seconds before navigation
   }
 
   navigateToPersonalInfo() {

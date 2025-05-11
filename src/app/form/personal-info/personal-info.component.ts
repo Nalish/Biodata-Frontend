@@ -83,7 +83,7 @@ export class PersonalInfoComponent {
     setTimeout(() => {
       this.router.navigate(['/baptism']); // Navigate to the baptism page
     }
-      , 5000);
+      , 1500);
   } // End of navigateToBaptism method
 
   navigateToDashboard() {

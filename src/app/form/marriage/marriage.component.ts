@@ -52,7 +52,7 @@ export class MarriageComponent {
   navigateToDashboard() { // Function to navigate to the next page
     setTimeout(() => {
       this.router.navigate(['/dashboard']); // Navigate to the family page
-    }, 5000); // Delay of 2 seconds before navigation
+    }, 1500); // Delay of 2 seconds before navigation
   }
 
   navigateTOConfirmation() { // Function to navigate to the confirmation page
