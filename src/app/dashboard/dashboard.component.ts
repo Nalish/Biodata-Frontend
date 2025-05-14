@@ -45,11 +45,7 @@ export class DashboardComponent {
 
   logoutChristian() {
     const localStorageData = localStorage.getItem('userLoggedIn');
-    // if (localStorageData) {
-    //   const parsedData = JSON.parse(localStorageData);
-    //   const email = parsedData?.user.email;
-    //   console.log("The logged in email is:", email);
-    // }
+  
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       const email = parsedData?.user.email;

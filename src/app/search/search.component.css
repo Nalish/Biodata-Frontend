@@ -6,6 +6,23 @@ body {
     padding: 0;
 }
 
+.div-home{
+    
+    a {
+        text-decoration: none;
+        background: #6d5507;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: flex-start;
+        width: fit-content;
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
 .header {
     background-color: #4a002a;
     padding: 20px;
@@ -115,6 +132,9 @@ body {
     color: red;
     margin-top: 10px;
 }
+
+
+
 
 .update-button {
     background-color: #c2ae6d;

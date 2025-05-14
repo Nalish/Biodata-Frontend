@@ -2,9 +2,10 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    background-image:url(../../../public/dashboard2.jpg);
-    background-size:cover;
-    background-repeat: no-repeat;
+    background-image:url(../../../public/golden-cross2.jpg);
+    background-size:auto 100%;
+    /* background-attachment:local; */
+    background-repeat:no-repeat;
     background-position: center;
     
 }
@@ -22,7 +23,7 @@ body {
 }
 
 .sidebar h2 {
-    color: white;
+    color: black;
     margin-bottom: 30px;
 }
 
