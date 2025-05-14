@@ -16,7 +16,8 @@
         <div class="christian-details"
             [ngClass]="{'highlighted': selectedChristian?.id === selectedChristian.id}">
             <div class="personal-details">
-                <h3>Personal Details</h3>
+                <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span></h3>
+                <p><strong>Name:</strong> {{selectedChristian.name}}</p>
                 <p><strong>Email:</strong> {{selectedChristian.email}}</p>
                 <p><strong>Role:</strong> {{selectedChristian.role}}</p>
                 <p><strong>Father's Name:</strong> {{selectedChristian.father}}</p>
@@ -34,7 +35,7 @@
             </div>
             
             <div *ngIf="selectedBaptism" class="baptism-details">
-                <h3>Baptism Details</h3>
+                <h3>Baptism Details <span><a type="button" href="/edit-baptism">Edit Baptism</a></span></h3>
                 <p><strong>Place:</strong> {{selectedBaptism.baptism_place}}</p>
                 <p><strong>Date:</strong> {{selectedBaptism.baptism_date}}</p>
                 <p><strong>Baptised By:</strong> {{selectedBaptism.baptised_by}}</p>
@@ -42,20 +43,20 @@
             </div>
             
             <div *ngIf="selectedEucharist" class="eucharist-details">
-                <h3>Eucharist Details</h3>
+                <h3>Eucharist Details <span><a type="button" href="/edit-eucharist">Edit Eucharist</a></span></h3>
                 <p><strong>Place:</strong> {{selectedEucharist.eucharist_place}}</p>
                 <p><strong>Date:</strong> {{selectedEucharist.eucharist_date}}</p>
             </div>
             
             <div *ngIf="selectedConfirmation" class="confirmation-details">
-                <h3>Confirmation Details</h3>
+                <h3>Confirmation Details <span><a type="button" href="/edit-confirmation">Edit Confirmation</a></span></h3>
                 <p><strong>Place:</strong> {{selectedConfirmation.confirmation_place}}</p>
                 <p><strong>Date:</strong> {{selectedConfirmation.confirmation_date}}</p>
                 <p><strong>Confirmation Number:</strong> {{selectedConfirmation.confirmation_no}}</p>
             </div>
             
             <div *ngIf="selectedMarriage" class="marriage-details">
-                <h3>Marriage Details</h3>
+                <h3>Marriage Details <span><a type="button" href="/edit-marriage">Edit Marriage</a></span></h3>
                 <p><strong>Spouse:</strong> {{selectedMarriage.spouse_name}}</p>
                 <p><strong>Place:</strong> {{selectedMarriage.marriage_place}}</p>
                 <p><strong>Date:</strong> {{selectedMarriage.marriage_date}}</p>
@@ -66,6 +67,9 @@
         <div class="christian-actions">
             <button class="update-button" (click)="redirectToUpdateChristian()">
                 <strong>Edit {{selectedChristian.name}}'s Details</strong>
+            </button>
+            <button class="delete-button" (click)="deleteChristian(selectedChristian)">
+                <strong>Delete {{selectedChristian.name}}</strong>
             </button>
         </div>
     </div>

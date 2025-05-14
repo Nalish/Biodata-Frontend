@@ -128,6 +128,25 @@ body {
     padding-left: 0;
 }
 
+span a {
+    text-decoration: none;
+    color: #4a002a;
+    font-weight:lighter;
+    font-size: 14px;
+    background-color: #c2ae6d;
+    padding: 5px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+span a:hover {
+    background-color: #8d7f50;
+    transform: scale(1.05);
+}
+
 .error {
     color: red;
     margin-top: 10px;
@@ -143,6 +162,7 @@ body {
     padding: 10px;
     color: white;
     cursor: pointer;
+    margin:10px;
     border-radius: 5px;
     margin-top: 0px;
     margin-bottom: 20px;
@@ -154,6 +174,25 @@ body {
     transform: scale(1.05);
     background: linear-gradient(90deg, #55233f, #b4aa89);
     transition: all 0.3s ease-in-out;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    border: 1px solid #b71c1c;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px auto;
+    width: fit-content;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .styled-christian-card {

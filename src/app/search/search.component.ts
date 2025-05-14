@@ -74,6 +74,28 @@ export class SearchComponent implements OnInit {
   }
 
 
+  deleteChristian(christian: any): void {
+    // get selectedChristian from localStorage
+    const getSelectedChristian = localStorage.getItem('selectedChristian');
+    if (getSelectedChristian) {
+      const selectedChristian = JSON.parse(getSelectedChristian);
+      if (confirm(`Are you sure you want to delete ${selectedChristian?.name}?`)) {
+        this.apiService.deleteChristian(selectedChristian.id).subscribe(() => {
+          // Remove the deleted Christian from the list
+          this.christians = this.christians.filter(c => c.id !== selectedChristian.id);
+          console.log(`Deleted Christian: ${selectedChristian.name}`);
+          // Clear the selected Christian from local storage
+          localStorage.removeItem('selectedChristian');
+          this.selectedChristian = null;
+          this.errorMessage = '';
+        }, error => {
+          console.error('Error deleting Christian:', error);
+          this.errorMessage = 'Error deleting Christian.';
+        });
+      }
+    }
+  }
+
 
   selectChristian(christian: any): void {
     this.selectedChristian = christian;
