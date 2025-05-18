@@ -27,6 +27,7 @@ export class SearchComponent implements OnInit {
   selectedEucharist: any = null; // Added to store eucharist data
   selectedConfirmation: any = null; // Added to store confirmation data
   selectedMarriage: any = null; // Added to store marriage data
+  parishName: any = 'how are you'; // Added to store parish name
 
   constructor(private apiService: ApiService,
     private router: Router
@@ -103,11 +104,27 @@ export class SearchComponent implements OnInit {
     console.log(christian);
     localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
 
+
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (christian) {
       localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
+
+      const parishId = christian.parish_id;
+      if (parishId) {
+        this.apiService.getParishById(parishId.toString()).subscribe(
+          (parishData: any) => {
+            this.parishName = parishData?.parish_name || '';
+          },
+          error => {
+            console.error('Error fetching parish name:', error);
+            this.parishName = '';
+          }
+        );
+      } else {
+        this.parishName = '';
+      }
 
       this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
         const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === christian.id);
@@ -234,10 +251,11 @@ export class SearchComponent implements OnInit {
 
 
 
+
   searchChristianByName(name: string): void {
     this.apiService.getChristians().subscribe((christians: any[]) => {
       // Check the structure of the data received
-      console.log(christians); // Check the structure of the data received
+      // console.log(christians); // Check the structure of the data received
       // Find the matching Christian by name
       const found = christians.find(christian =>
         christian.name.toLowerCase().includes(this.searchQuery.toLowerCase().trim())
@@ -251,6 +269,22 @@ export class SearchComponent implements OnInit {
 
         localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name })); // Store the selected Christian in local storage
         // localStorage.setItem('userId', found.id); // Store the user ID in local storage
+
+        // Fetch parish name by ID
+        const parishId = found.parish_id;
+        if (parishId) {
+          this.apiService.getParishById(parishId.toString()).subscribe(
+            (parishData: any) => {
+              this.parishName = parishData?.parish_name || '';
+            },
+            error => {
+              console.error('Error fetching parish name:', error);
+              this.parishName = '';
+            }
+          );
+        } else {
+          this.parishName = '';
+        }
 
         this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
           const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === found.id);

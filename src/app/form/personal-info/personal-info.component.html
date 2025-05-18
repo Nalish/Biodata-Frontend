@@ -51,6 +51,28 @@
                     </p>
                 </div>
 
+                <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
+                <select id="deanery" formControlName="deanery" required>
+                    <option value="" disabled selected>Select your deanery</option>
+                    <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
+                </select>
+                <div *ngIf="!christianForm.controls.deanery?.valid && christianForm.controls.deanery.touched">
+                    <p *ngIf="christianForm.controls.deanery.errors?.['required']">
+                        Deanery is required!
+                    </p>
+                </div>
+
+                <label for="parish">Parish <span class="required-asterisk">*</span></label>
+                <select id="parish" formControlName="parish" required>
+                    <option value="" disabled selected>Select your parish</option>
+                    <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
+                </select>
+                <div *ngIf="!christianForm.controls.parish?.valid && christianForm.controls.parish.touched">
+                    <p *ngIf="christianForm.controls.parish.errors?.['required']">
+                        Parish is required!
+                    </p>
+                </div>
+
                 <label for="father">Father's Name:</label>
                 <input type="text" id="father" formControlName="father">
 

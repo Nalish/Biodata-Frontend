@@ -7,8 +7,8 @@ import { LoginResponse } from '../login/login.component';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://christian-biodata-backend.onrender.com/api';  // Backend URL
-  // private baseUrl = 'http://localhost:3000/api';  // Backend URL
+  // private baseUrl = 'https://christian-biodata-backend.onrender.com/api';  // Backend URL
+  private baseUrl = 'http://localhost:3000/api';  // Backend URL
 
   constructor(private http: HttpClient) {}
 
@@ -54,6 +54,28 @@ updateChristian(id: string, data: any): Observable < any > {
 }
 deleteChristian(id: string): Observable < any > {
   return this.http.delete(`${this.baseUrl}/users/${id}`, { withCredentials: true });
+}
+
+getParishes(): Observable < any > {
+  return this.http.get(`${this.baseUrl}/parish`, { withCredentials: true })
+}
+getParishById(id: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/parish/${id}`, { withCredentials: true });
+}
+getParishByName(name: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/parish/name/${name}`, { withCredentials: true });
+}
+
+getParishesByDeanery(deanery: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/parish/deanery/${deanery}`, { withCredentials: true });
+}
+
+updateParish(id: string, data: any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/parish/${id}`, data, { withCredentials: true });
+}
+
+deleteParish(id: string): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/parish/${id}`, { withCredentials: true });
 }
 
 getBaptisms(): Observable < any > {
