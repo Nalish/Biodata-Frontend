@@ -2,12 +2,6 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    background-image:url(../../../public/golden-cross2.jpg);
-    background-size:auto 100%;
-    /* background-attachment:local; */
-    background-repeat:no-repeat;
-    background-position: center;
-    
 }
 
 /* Sidebar styling */
@@ -23,7 +17,7 @@ body {
 }
 
 .sidebar h2 {
-    color: black;
+    color: #4A002A;
     margin-bottom: 30px;
 }
 
@@ -47,11 +41,35 @@ body {
     background-color: #4a002a3f;
 }
 
+/* Role banner styling */
+.role-banner {
+    background-color: #e7c75f;
+    color: #4A002A;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 1% auto 20px auto;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(74, 0, 42, 0.08);
+}
+
 /* Main dashboard section */
 .dashboard {
     flex-grow: 1;
     padding: 20px;
     text-align: center;
+    background-image:url(../../../public/golden-cross2.jpg);
+    background-size:auto 100%;
+    /* background-attachment:local; */
+    background-repeat:no-repeat;
+    background-position: center;
+}
+
+.dashboard h1 {
+    color: #4A002A;
+    font-size: 46px;
+    margin-bottom: auto;
 }
 
 /* Total Christians display */
@@ -63,6 +81,6 @@ body {
     display: inline-block;
     font-size: 24px;
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 60px;
     color: white;
 }

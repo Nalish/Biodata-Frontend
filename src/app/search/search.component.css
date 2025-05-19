@@ -23,6 +23,21 @@ body {
     }
 }
 
+.role-banner {
+    background-color: #ffe082;
+    color: #4a002a;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 20px auto 10px auto;
+    width: fit-content;
+    max-width: 90%;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(74, 0, 42, 0.08);
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
 .header {
     background-color: #4a002a;
     padding: 20px;

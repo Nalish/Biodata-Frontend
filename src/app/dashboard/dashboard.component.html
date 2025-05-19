@@ -1,10 +1,11 @@
 <!-- Dashboard Component HTML -->
+
 <body>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Dashboard</h2>
-        <button  (click)="navigateToSearch()">Search Christian</button>
+        <button (click)="navigateToSearch()">Search Christian</button>
         <button (click)="navigateToForm()">Add Christian</button>
         <button (click)="logoutChristian()">Logout</button>
     </div>
@@ -12,6 +13,10 @@
     <!-- Dashboard Content -->
     <div class="dashboard">
         <h1>Welcome to Christian Management</h1>
+        <div *ngIf="showBanner" class="role-banner">
+            {{ bannerMessage }}
+        </div>
+
         <div class="total-christians" (change)="loadUserCount()">
             Total Christians: <span id="christianCount">{{ christianCount }}</span>
         </div>

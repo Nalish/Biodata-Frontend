@@ -22,10 +22,10 @@ export class PersonalInfoUpdateComponent implements OnInit {
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
 
   christianForm = this.fb.group({ // Create a form group for the personal information form
-    name: ['', Validators.required],
-    email: ['', Validators.required],
+    name: [''],
+    email: [''],
     password: [''],
-    role: ['', Validators.required],
+    role: [''],
     deanery: [''],
     parish: [''],
     parish_id: [''], // This will be set based on the selected parish
@@ -150,6 +150,8 @@ export class PersonalInfoUpdateComponent implements OnInit {
         name: parsedData?.name,
         email: parsedData?.email,
         role: parsedData?.role,
+        deanery: parsedData?.deanery,
+        parish: this.parishes.find(p => p.parish_id === parsedData?.parishId)?.parish_name || '',
       });
     }
   }

@@ -29,6 +29,9 @@ export class SearchComponent implements OnInit {
   selectedMarriage: any = null; // Added to store marriage data
   parishName: any = 'how are you'; // Added to store parish name
 
+  showBanner: boolean = false; // Added to control banner visibility
+  bannerMessage: string = ''; // Added to store banner message
+
   constructor(private apiService: ApiService,
     private router: Router
   ) { }
@@ -46,16 +49,32 @@ export class SearchComponent implements OnInit {
       this.apiService.getChristians().subscribe((data: any[]) => {
         if (role === 'admin' || role === 'archbishop') {
           this.christians = data;
+          // Show banner for admin or archbishop
+          this.showBanner = true;
+          this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You have full access to view and manage all Christians in the system.`;
         } else if (role === 'dean') {
+          this.showBanner = true;
+          this.bannerMessage = `You are logged in as DEAN. You can view and manage Christians from all parishes in your deanery.`;
           // Dean can view Christians from parishes in their deanery
           this.christians = data.filter(c => c.deanery === userDeanery);
         } else if (role === 'priest' || role === 'clerk') {
+          this.showBanner = true;
+          this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You can view and manage Christians from your own parish only.`;
           // Priest/Clerk can view Christians from their own parish
           this.christians = data.filter(c => c.parish_id === userParishId);
         } else if (role === 'member') {
+          this.showBanner = true;
+          this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.`;
           // Member cannot view any Christians
           this.christians = [];
         } else {
+          // this.showBanner = false;
+          // this.bannerMessage = 'You are not logged in. Go to login page.';
+          // if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          //   this.router.navigate(['/login']);
+          // }
+          // // Handle other roles if needed
+
           this.christians = [];
         }
         this.christians.sort((a, b) => a.name.localeCompare(b.name));
@@ -459,16 +478,20 @@ export class SearchComponent implements OnInit {
       }
     }
       , error => {
+        // Handle error when fetching Christians
         console.error('Something went wrong while fetching Christians. Try again.', error);
         this.errorMessage = error.error.message || 'Something went wrong while fetching Christians. Try again.';
+
+        this.showBanner = true;
+        this.bannerMessage = 'You are not logged in. Go to login page.';
+        setTimeout(() => {
+          if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+        }, 3000);
       }
     );
-
-
-
-
   }
-
 }
 
 

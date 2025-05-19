@@ -14,9 +14,42 @@ export class DashboardComponent {
   constructor(private router: Router, private apiService: ApiService) { }
   christianCount: number = 0; // Added to store the count value
 
+  showBanner: boolean = false; // Added to control banner visibility
+  bannerMessage: string = ''; // Added to store banner message
+
+
   ngOnInit(): void {
     this.loadUserCount();
+
+    const userData = localStorage.getItem('userLoggedIn');
+    if (userData) {
+      const user = JSON.parse(userData);
+      const role = user.user.role;
+
+      if (role === 'admin' || role === 'archbishop') {
+        this.showBanner = true;
+        this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You have full access to view and manage all Christians in the system.`;
+      } else if (role === 'dean') {
+        this.showBanner = true;
+        this.bannerMessage = `You are logged in as DEAN. You can view and manage Christians from all parishes in your deanery.`;
+      } else if (role === 'priest' || role === 'clerk') {
+        this.showBanner = true;
+        this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You can view and manage Christians from your own parish only.`;
+      } else if (role === 'member') {
+        this.showBanner = true;
+        this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.`;
+      } else {
+        this.showBanner = true;
+        this.bannerMessage = 'You are not logged in. Go to login page.';
+        setTimeout(() => {
+          if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+        }, 3000);
+      }
+    }
   }
+
 
   loadUserCount(): void {
     this.apiService.getChristianCount().subscribe(
@@ -45,7 +78,7 @@ export class DashboardComponent {
 
   logoutChristian() {
     const localStorageData = localStorage.getItem('userLoggedIn');
-  
+
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       const email = parsedData?.user.email;

@@ -4,6 +4,10 @@
         <a type="button" href="/dashboard">Home</a>
     </div>
 
+    <div *ngIf="showBanner" class="role-banner">
+        {{ bannerMessage }}
+    </div>
+
     <div class="search-container">
         <input type="search" (search)="searchChristianByName(searchQuery)" class="search-box"
             placeholder="Search by Name" [(ngModel)]="searchQuery" />
