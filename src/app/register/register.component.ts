@@ -19,18 +19,16 @@ export class RegisterComponent implements OnInit {
 
   constructor(private register: ApiService, private router: Router) { }
 
-
   private fb = inject(FormBuilder)
   form = this.fb.group({
     name: ['', Validators.required],
-    email: ['', Validators.required, Validators.email],
-    password: ['', Validators.required, Validators.minLength(4)],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(4)]],
     role: ['', Validators.required],
     deanery: ['', Validators.required],
-    parish_id: ['', Validators.required],
+    parish_name: ['', Validators.required], // User selects parish_name
+    parish_id: [0] // Will be set automatically
   })
-
-
 
   deaneries: string[] = [
     'Nyeri Municipality Deanery',
@@ -42,6 +40,7 @@ export class RegisterComponent implements OnInit {
     'Tetu Deanery',
     'Gatarakwa Deanery'
   ];
+
 
   parishes: { parish_id: number, parish_name: string, deanery: string }[] = [
     { parish_id: 1, parish_name: 'Cathedral Parish (Our Lady of Consolata Cathedral)', deanery: 'Nyeri Municipality Deanery' },
@@ -98,27 +97,36 @@ export class RegisterComponent implements OnInit {
     { parish_id: 52, parish_name: 'Kamariki Parish', deanery: 'Gatarakwa Deanery' }
   ];
 
-    filteredParishes: number[] = [];
-
+  filteredParishes: { parish_id: number, parish_name: string }[] = [];
 
   ngOnInit(): void {
-    if (this.form.invalid && this.form.touched) {
-      this.registerMessage = 'Please fill in all required fields.';
-      return;
-    }
-    // this.onSubmitForm();
+    // Initialize any data if needed
   }
 
   ngAfterViewInit(): void {
+    // Listen for deanery changes to filter parishes
     this.form.get('deanery')?.valueChanges.subscribe((selectedDeanery: string | null) => {
       this.filteredParishes = this.parishes
         .filter(p => p.deanery === selectedDeanery)
-        .map(p => p.parish_id);
-      // Optionally reset parish selection if deanery changes
-      this.form.get('parish_id')?.setValue('');
+        .map(p => ({ parish_id: p.parish_id, parish_name: p.parish_name }));
+
+      // Reset parish selection when deanery changes
+      this.form.get('parish_name')?.setValue('');
+      this.form.get('parish_id')?.setValue(0);
+    });
+
+    // Listen for parish_name changes to update parish_id
+    this.form.get('parish_name')?.valueChanges.subscribe((selectedParishName: string | null) => {
+      if (selectedParishName) {
+        // Find the parish ID for the selected parish name
+        const selectedParish = this.parishes.find(p => p.parish_name === selectedParishName);
+        if (selectedParish) {
+          // Set the parish_id in the form
+          this.form.get('parish_id')?.setValue(selectedParish.parish_id);
+        }
+      }
     });
   }
-
 
   onSubmitForm(): void {
 

@@ -70,13 +70,13 @@
                     </p>
                 </div>
 
-                <label for="parish_id">Parish</label>
-                <select id="parish_id" formControlName="parish_id" required>
+                <label for="parish_name">Parish</label>
+                <select id="parish_name" formControlName="parish_name" required>
                     <option value="" disabled selected>Select your parish</option>
-                    <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
+                    <option *ngFor="let parish of filteredParishes" [value]="parish.parish_name">{{ parish.parish_name }}</option>
                 </select>
-                <div *ngIf="!form.controls.parish_id?.valid && form.controls.parish_id.touched">
-                    <p *ngIf="form.controls.parish_id.errors?.['required']">
+                <div *ngIf="!form.controls.parish_name?.valid && form.controls.parish_name.touched">
+                    <p *ngIf="form.controls.parish_name.errors?.['required']">
                         Parish is required!
                     </p>
                 </div>
