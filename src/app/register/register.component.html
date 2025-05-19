@@ -45,15 +45,41 @@
             
             <label for="role">Select Role</label>
             <select id="role" formControlName="role" required>
-                <option value="" disabled selected>Role</option>
-                <option value="Admin">Admin</option>
-                <option value="Clergy">Clergy</option>
+                <option value="" disabled selected>Select Role</option>
+                    <option value="admin">admin</option>
+                    <option value="archbishop">archbishop</option>
+                    <option value="dean">dean</option>
+                    <option value="clerk">clerk</option>
+                    <option value="priest">priest</option>
+                    <option value="member">member</option>
             </select>
             <div *ngIf="!form.controls.role.valid && form.controls.role.touched">
                 <p *ngIf="form.controls.role.errors?.['required']">
                     Role is required!
                 </p>
             </div>
+
+            <label for="deanery">Deanery</label>
+                <select id="deanery" formControlName="deanery" required>
+                    <option value="" disabled selected>Select your deanery</option>
+                    <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
+                </select>
+                <div *ngIf="!form.controls.deanery?.valid && form.controls.deanery.touched">
+                    <p *ngIf="form.controls.deanery.errors?.['required']">
+                        Deanery is required!
+                    </p>
+                </div>
+
+                <label for="parish_id">Parish</label>
+                <select id="parish_id" formControlName="parish_id" required>
+                    <option value="" disabled selected>Select your parish</option>
+                    <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
+                </select>
+                <div *ngIf="!form.controls.parish_id?.valid && form.controls.parish_id.touched">
+                    <p *ngIf="form.controls.parish_id.errors?.['required']">
+                        Parish is required!
+                    </p>
+                </div>
 
             <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
             <p style="color: red;" *ngIf="errorMessage">{{ errorMessage }}</p>

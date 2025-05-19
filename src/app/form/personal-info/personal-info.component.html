@@ -41,9 +41,12 @@
                 <label for="role">Role <span class="required-asterisk">*</span></label>
                 <select id="role" formControlName="role" required>
                     <option value="" disabled selected>Select your role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Clergy">Clergy</option>
-                    <option value="Member">Member</option>
+                    <option value="admin">admin</option>
+                    <option value="archbishop">archbis hop</option>
+                    <option value="dean">dean</option>
+                    <option value="clerk">clerk</option>
+                    <option value="priest">priest</option>
+                    <option value="member">member</option>
                 </select>
                 <div *ngIf="!christianForm.controls.role?.valid && christianForm.controls.role.touched">
                     <p *ngIf="christianForm.controls.role.errors?.['required']">
@@ -88,13 +91,13 @@
                 <label for="birth_place">Place of Birth:</label>
                 <input type="text" id="birth_place" formControlName="birth_place">
 
-                <label for="birth_date">Date of Birth: <span class="required-asterisk">*</span></label>
+                <label for="birth_date">Date of Birth:</label>
                 <input type="date" id="birth_date" formControlName="birth_date">
-                <div *ngIf="!christianForm.controls.birth_date?.valid && christianForm.controls.birth_date.touched">
+                <!-- <div *ngIf="!christianForm.controls.birth_date?.valid && christianForm.controls.birth_date.touched">
                     <p *ngIf="christianForm.controls.birth_date.errors?.['required']">
                         Date of birth is required!
                     </p>
-                </div>
+                </div> -->
 
                 <label for="sub_county">Subcounty:</label>
                 <input type="text" id="sub_county" formControlName="sub_county">

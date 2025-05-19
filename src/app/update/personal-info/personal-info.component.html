@@ -8,7 +8,7 @@
             <div class="section">
                 <h3>Personal Information</h3>
                 <label for="name">Full Name: <span class="required-asterisk">*</span></label>
-                <input type="text" id="name" formControlName="name" required>
+                <input type="text" id="name" formControlName="name" required readonly>
                 <div *ngIf="!christianForm.controls.name?.valid && christianForm.controls.name.touched">
                     <p *ngIf="christianForm.controls.name.errors?.['required']">
                         Full name is required!
@@ -16,7 +16,7 @@
                 </div>
 
                 <label for="email">Email <span class="required-asterisk">*</span></label>
-                <input type="email" id="email" name="email" formControlName="email" placeholder="example@gmail.com">
+                <input type="email" id="email" name="email" formControlName="email" placeholder="example@gmail.com" readonly>
                 <div *ngIf="!christianForm.controls.email?.valid && christianForm.controls.email.touched">
                     <p *ngIf="christianForm.controls.email.errors?.['required']">
                         Email is required!
@@ -27,7 +27,8 @@
                 </div>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" formControlName="password" placeholder="include(@#$%^&*()_+)">
+                <input type="password" id="password" name="password" formControlName="password"
+                    placeholder="include(@#$%^&*()_+)">
                 <div *ngIf="!christianForm.controls.password?.valid && christianForm.controls.password.touched">
                     <p *ngIf="christianForm.controls.password.errors?.['required']">
                         Password is required!
@@ -39,15 +40,32 @@
 
 
                 <label for="role">Role <span class="required-asterisk">*</span></label>
-                <select id="role" formControlName="role" required>
-                    <option value="" disabled selected>Select your role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Clergy">Clergy</option>
-                    <option value="Member">Member</option>
+                <input type="text" id="role" formControlName="role" readonly />
+                <div *ngIf="!christianForm.controls.role?.valid && christianForm.controls.role.touched"></div>
+                <p *ngIf="christianForm.controls.role.errors?.['required']">
+                    Role is required!
+                </p>
+
+
+                <label for="deanery">Deanery</label>
+                <select id="deanery" formControlName="deanery" required>
+                    <option value="" disabled>Select your deanery</option>
+                    <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
                 </select>
-                <div *ngIf="!christianForm.controls.role?.valid && christianForm.controls.role.touched">
-                    <p *ngIf="christianForm.controls.role.errors?.['required']">
-                        Role is required!
+                <div *ngIf="!christianForm.controls.deanery?.valid && christianForm.controls.deanery.touched">
+                    <p *ngIf="christianForm.controls.deanery.errors?.['required']">
+                        Deanery is required!
+                    </p>
+                </div>
+
+                <label for="parish">Parish</label>
+                <select id="parish" formControlName="parish" required>
+                    <option value="" disabled>Select your parish</option>
+                    <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
+                </select>
+                <div *ngIf="!christianForm.controls.parish?.valid && christianForm.controls.parish.touched">
+                    <p *ngIf="christianForm.controls.parish.errors?.['required']">
+                        Parish is required!
                     </p>
                 </div>
 
@@ -82,12 +100,13 @@
 
                 <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
                 <p style="color: black;" *ngIf="errorMessage">{{ errorMessage }}</p>
-            </div>
 
-            <div class="div-btns">
-                <button type="button" (click)="navigateToDashboard()">Back</button>
-                <button type="submit" [disabled]="christianForm.invalid">Save </button>
-                <button type="button" (click)="navigateToBaptism()">Next</button>
+
+                <div class="div-btns">
+                    <button type="button" (click)="navigateToDashboard()">Back</button>
+                    <button type="submit" [disabled]="christianForm.invalid">Save </button>
+                    <button type="button" (click)="navigateToBaptism()">Next</button>
+                </div>
             </div>
 
         </form>

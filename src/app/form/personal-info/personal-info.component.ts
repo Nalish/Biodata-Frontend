@@ -34,7 +34,7 @@ export class PersonalInfoComponent {
     tribe: [''],
     clan: [''],
     birth_place: [''],
-    birth_date: ['', Validators.required],
+    birth_date: [''],
     sub_county: [''],
     residence: [''],
   })
@@ -110,7 +110,6 @@ export class PersonalInfoComponent {
     { parish_id: 52, parish_name: 'Kamariki Parish', deanery: 'Gatarakwa Deanery' }
   ];
 
-  // Modified: Function now returns the parish_id as a number or null
   getParishIdByName(parishName: string): number | null {
     if (!parishName) {
       return null;

@@ -36,8 +36,33 @@ export class SearchComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.displayChristians();
-    // Initialization logic here
+    const userData = localStorage.getItem('userLoggedIn');
+    if (userData) {
+      const user = JSON.parse(userData);
+      const role = user.user.role;
+      const userParishId = user.user.parishId;
+      const userDeanery = user.user.deanery;
+
+      this.apiService.getChristians().subscribe((data: any[]) => {
+        if (role === 'admin' || role === 'archbishop') {
+          this.christians = data;
+        } else if (role === 'dean') {
+          // Dean can view Christians from parishes in their deanery
+          this.christians = data.filter(c => c.deanery === userDeanery);
+        } else if (role === 'priest' || role === 'clerk') {
+          // Priest/Clerk can view Christians from their own parish
+          this.christians = data.filter(c => c.parish_id === userParishId);
+        } else if (role === 'member') {
+          // Member cannot view any Christians
+          this.christians = [];
+        } else {
+          this.christians = [];
+        }
+        this.christians.sort((a, b) => a.name.localeCompare(b.name));
+      });
+    } else {
+      this.christians = [];
+    }
   }
 
   displayChristians(): void {
@@ -102,14 +127,14 @@ export class SearchComponent implements OnInit {
     this.selectedChristian = christian;
     console.clear();
     console.log(christian);
-    localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
+    // localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
 
 
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (christian) {
-      localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
+      localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name, parishId: christian.parish_id, deanery: christian.deanery })); // Store the selected Christian in local storage
 
       const parishId = christian.parish_id;
       if (parishId) {
@@ -267,7 +292,7 @@ export class SearchComponent implements OnInit {
 
       if (found) {
 
-        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name })); // Store the selected Christian in local storage
+        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name, parishId: found.parish_id, deanery: found.deanery })); // Store the selected Christian in local storage
         // localStorage.setItem('userId', found.id); // Store the user ID in local storage
 
         // Fetch parish name by ID
