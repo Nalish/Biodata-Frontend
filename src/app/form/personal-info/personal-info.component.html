@@ -132,6 +132,10 @@
                         <label for="birth_date">Date of Birth</label>
                         <input type="date" id="birth_date" formControlName="birth_date">
                     </div>
+                    <div *ngIf="christianForm.get('birth_date')?.invalid && christianForm.get('birth_date')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('birth_date')?.errors?.['required']">Date of Birth is required!</p>
+                    </div>
                 </div>
 
                 <div class="form-row">

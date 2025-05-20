@@ -112,7 +112,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
       tribe: [''],
       clan: [''],
       birth_place: [''],
-      birth_date: [''],
+      birth_date: ['', Validators.required],
       sub_county: [''],
       residence: [''],
     });
