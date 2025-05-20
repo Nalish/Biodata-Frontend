@@ -1,49 +1,29 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-personal-info',
   imports: [ReactiveFormsModule, CommonModule],
-  standalone: true, // Indicates that this component is a standalone component
+  standalone: true,
   templateUrl: './personal-info.component.html',
   styleUrl: './personal-info.component.css'
 })
-export class PersonalInfoComponent {
-
-  constructor(
-    private personalInfo: ApiService, // Inject the ApiService for API calls
-    private router: Router, // Inject the Router for navigation
-    private getUser: ApiService // Inject the ApiService for user-related API calls
-  ) { } // Constructor for the component
-
-  private fb = inject(FormBuilder) // Inject FormBuilder for form creation
-
-  christianForm = this.fb.group({ // Create a form group for the personal information form
-    name: ['', Validators.required],
-    email: ['', Validators.required],
-    password: [''],
-    role: ['', Validators.required],
-    deanery: ['', Validators.required],
-    parish: ['', Validators.required],
-    parish_id: [''], // This will be set based on the selected parish
-    father: [''],
-    mother: [''],
-    tribe: [''],
-    clan: [''],
-    birth_place: [''],
-    birth_date: [''],
-    sub_county: [''],
-    residence: [''],
-  })
-
+export class PersonalInfoComponent implements OnInit, AfterViewInit {
+  // Form group
+  christianForm: FormGroup;
+  
+  // Feedback messages
   errorMessage = '';
   successMessage = '';
-  userId: any // Variable to store the user ID
+  isSubmitting = false;
+  
+  // User data
+  userId: number | null = null;
 
-
+  // Church hierarchy data
   deaneries: string[] = [
     'Nyeri Municipality Deanery',
     'Mukurwe-ini Deanery',
@@ -110,111 +90,211 @@ export class PersonalInfoComponent {
     { parish_id: 52, parish_name: 'Kamariki Parish', deanery: 'Gatarakwa Deanery' }
   ];
 
-  getParishIdByName(parishName: string): number | null {
-    if (!parishName) {
-      return null;
-    }
-
-    const trimmedName = parishName.trim();
-    const parish = this.parishes.find(
-      p => p.parish_name === trimmedName
-    );
-
-    // console.log('Looking for parish:', trimmedName);
-    // console.log('Found parish:', parish);
-
-    return parish?.parish_id || null;
-  }
-
-  // Keep this method for reactive form updates
-  setParishIdByName(parishName: string): void {
-    const parishId = this.getParishIdByName(parishName);
-    this.christianForm.patchValue({ parish_id: parishId !== null ? String(parishId) : null });
-  }
-
   filteredParishes: string[] = [];
 
-  ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
-    // this.onSubmitChristianForm();
+  private fb = inject(FormBuilder);
+
+  constructor(
+    private apiService: ApiService,
+    private router: Router
+  ) {
+    // Initialize form with validation
+    this.christianForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.minLength(8)]],
+      role: ['', Validators.required],
+      deanery: ['', Validators.required],
+      parish_name: ['', Validators.required],
+      parish_id: [0],
+      father: [''],
+      mother: [''],
+      tribe: [''],
+      clan: [''],
+      birth_place: [''],
+      birth_date: [''],
+      sub_county: [''],
+      residence: [''],
+    });
   }
 
-  ngAfterViewInit(): void {
-    this.christianForm.get('deanery')?.valueChanges.subscribe((selectedDeanery: string | null) => {
-      this.filteredParishes = this.parishes
-        .filter(p => p.deanery === selectedDeanery)
-        .map(p => p.parish_name);
-      // Optionally reset parish selection if deanery changes
-      this.christianForm.get('parish')?.setValue('');
-    });
-    
-    // Add parish selection tracking to automatically set parish_id
-    this.christianForm.get('parish')?.valueChanges.subscribe((selectedParish: string | null) => {
-      if (selectedParish) {
-        this.setParishIdByName(selectedParish);
-      }
-    });
-  }
-
-  onSubmitChristianForm(): void {
-    if (this.christianForm.invalid) {
-      this.errorMessage = 'Please fill in all required fields.';
-      console.log('Please fill in all required fields.');
-      
-      // Mark all fields as touched to trigger validation messages
-      Object.keys(this.christianForm.controls).forEach(key => {
-        const control = this.christianForm.get(key);
-        control?.markAsTouched();
-      });
-      
+  ngOnInit(): void {
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
       return;
     }
 
-    // Get parish name from form and ensure parish_id is correctly set
-    const formValue = this.christianForm.value;
-    const parishName = formValue.parish ?? '';
-    
-    // Get the parish ID directly and make sure it's included in the form data
-    const parishId = this.getParishIdByName(parishName);
-    this.christianForm.patchValue({ parish_id: parishId !== null ? String(parishId) : null });
-    
-    // Get the updated form value after setting the parish_id
-    const updatedFormValue = this.christianForm.value;
-    // console.log('Form value before submission:', updatedFormValue);
-
-    this.personalInfo.addChristian(updatedFormValue).subscribe(
-      (response) => {
-        this.getUser.getChristians().subscribe(
-          (data) => {
-            this.userId = data?.reduce((max: any, user: any) => user.id > max ? user.id : max, 0);
-            const user = data?.find((user: any) => user.id === this.userId);
-            if (user) {
-              localStorage.setItem('addedChristian', JSON.stringify({ id: user.id, email: user.email, role: user.role }))
-            }
-            // console.log('Fetched userId:', this.userId);
-            this.successMessage = 'Personal Information Added successfully! Redirecting to next page...';
-            this.navigateToBaptism();
-          }
-        );
-        console.log('Christian Added successfully:', response);
-        // console.log(this.christianForm);
-      },
-      (error: any) => {
-        console.error('Error Adding this Christian:', error);
-        this.errorMessage = error.error.message;
-      }
-    )
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.christianForm.patchValue(formData);
+    }
   }
 
-  navigateToBaptism() {
-    setTimeout(() => {
-      this.router.navigate(['/baptism']); // Navigate to the baptism page
-    }
-      , 1500);
-  } // End of navigateToBaptism method
+  ngAfterViewInit(): void {
+    // Setup form control dependencies
+    this.setupFormDependencies();
+  }
 
-  navigateToDashboard() {
+
+  /**
+   * Setup form control dependencies like filtering parishes by deanery
+   */
+  private setupFormDependencies(): void {
+    // When deanery changes, filter parishes
+    this.christianForm.get('deanery')?.valueChanges.subscribe((selectedDeanery: string | null) => {
+      if (!selectedDeanery) {
+        this.filteredParishes = [];
+        return;
+      }
+      
+      this.filteredParishes = this.parishes
+        .filter(p => p.deanery === selectedDeanery)
+        .map(p => p.parish_name);
+      
+      // Reset parish selection
+      this.christianForm.get('parish_name')?.setValue('');
+      this.christianForm.get('parish_id')?.setValue(0);
+    });
+    
+    // When parish changes, set parish_id
+    this.christianForm.get('parish_name')?.valueChanges.subscribe((selectedParishName: string | null) => {
+      if (!selectedParishName) {
+        this.christianForm.get('parish_id')?.setValue(0);
+        return;
+      }
+      
+      const parishId = this.getParishIdByName(selectedParishName);
+      this.christianForm.get('parish_id')?.setValue(parishId);
+    });
+  }
+
+  /**
+   * Find parish ID by name
+   */
+  getParishIdByName(parishName: string): number | null {
+    if (!parishName) return null;
+
+    const parish = this.parishes.find(p => p.parish_name === parishName.trim());
+    return parish?.parish_id || null;
+  }
+
+  /**
+   * Submit the form
+   */
+  onSubmitChristianForm(): void {
+    if (this.christianForm.invalid) {
+      this.markFormGroupTouched(this.christianForm);
+      this.errorMessage = 'Please fill in all required fields correctly.';
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = '';
+    this.successMessage = 'Submitting your information...';
+
+    // Ensure parish_id is set correctly
+    const formValue = this.christianForm.value;
+    const parishName = formValue.parish_name ?? '';
+    const parishId = this.getParishIdByName(parishName);
+    
+    if (parishId) {
+      this.christianForm.patchValue({ parish_id: parishId });
+    }
+
+    // Save form data to session storage in case of navigation issues
+    sessionStorage.setItem('christianFormData', JSON.stringify(this.christianForm.value));
+
+    // Submit to API
+    this.apiService.addChristian(this.christianForm.value).subscribe({
+      next: (response) => {
+        this.handleSuccessfulSubmission();
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.successMessage = '';
+        this.errorMessage = error.error?.message || 'An error occurred. Please try again.';
+        console.error('Error adding Christian:', error);
+      }
+    });
+  }
+
+  /**
+   * Handle successful form submission
+   */
+  private handleSuccessfulSubmission(): void {
+    this.apiService.getChristians().subscribe({
+      next: (data) => {
+        if (!data || !Array.isArray(data)) {
+          console.error('Invalid data format received from getChristians API');
+          return;
+        }
+        
+        // Find the highest user ID (presumably the one just added)
+        this.userId = data.reduce((max: number, user: any) => 
+          user.id > max ? user.id : max, 0);
+        
+        const user = data.find((user: any) => user.id === this.userId);
+        
+        if (user) {
+          localStorage.setItem('addedChristian', JSON.stringify({ 
+            id: user.id, 
+            email: user.email, 
+            role: user.role 
+          }));
+          
+          this.successMessage = 'Personal information saved successfully! Redirecting to baptism form...';
+          
+          // Clear session storage since we've successfully saved
+          sessionStorage.removeItem('christianFormData');
+          
+          // Navigate to next step
+          this.navigateToBaptism();
+        }
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        console.error('Error fetching Christians:', error);
+        this.errorMessage = 'Information saved, but there was an issue retrieving your profile.';
+        
+        // Still navigate to next step despite the error
+        setTimeout(() => this.navigateToBaptism(), 2000);
+      }
+    });
+  }
+
+  /**
+   * Utility to mark all controls in a form group as touched
+   */
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  /**
+   * Navigation methods
+   */
+  navigateToBaptism(): void {
     setTimeout(() => {
-      this.router.navigate(['/dashboard']); // Navigate to the dashboard page
-    }, 1000); // Delay of 2 seconds before navigation
-  } // End of navigateToDashboard method
+      this.router.navigate(['/baptism']);
+    }, 1500);
+  }
+
+  navigateToDashboard(): void {
+    // Save form data before navigating away
+    if (this.christianForm.dirty) {
+      sessionStorage.setItem('christianFormData', JSON.stringify(this.christianForm.value));
+    }
+    
+    this.router.navigate(['/dashboard']);
+  }
 }

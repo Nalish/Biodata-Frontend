@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
@@ -80,7 +81,12 @@ export class SearchComponent implements OnInit {
         this.christians.sort((a, b) => a.name.localeCompare(b.name));
       });
     } else {
-      this.christians = [];
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
     }
   }
 

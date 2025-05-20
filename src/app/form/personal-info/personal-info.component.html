@@ -1,120 +1,174 @@
-<body>
-    <div class="container">
+<div class="container">
+    <div class="header">
         <div class="div-home">
-            <a type="button" href="/dashboard">Home</a>
+            <a type="button" href="/dashboard">
+                <i class="fa fa-home"></i> Home
+            </a>
         </div>
         <h2>Personal Information Form</h2>
-        <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
-            <div class="section">
-                <h3>Personal Information</h3>
-                <label for="name">Full Name: <span class="required-asterisk">*</span></label>
-                <input type="text" id="name" formControlName="name" required>
-                <div *ngIf="!christianForm.controls.name?.valid && christianForm.controls.name.touched">
-                    <p *ngIf="christianForm.controls.name.errors?.['required']">
-                        Full name is required!
-                    </p>
-                </div>
-
-                <label for="email">Email <span class="required-asterisk">*</span></label>
-                <input type="email" id="email" name="email" formControlName="email" placeholder="example@gmail.com">
-                <div *ngIf="!christianForm.controls.email?.valid && christianForm.controls.email.touched">
-                    <p *ngIf="christianForm.controls.email.errors?.['required']">
-                        Email is required!
-                    </p>
-                    <p *ngIf="christianForm.controls.email.errors?.['email']">
-                        Email is invalid!
-                    </p>
-                </div>
-
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" formControlName="password" placeholder="include(@#$%^&*()_+)">
-                <div *ngIf="!christianForm.controls.password?.valid && christianForm.controls.password.touched">
-                    <p *ngIf="christianForm.controls.password.errors?.['required']">
-                        Password is required!
-                    </p>
-                    <!-- <p *ngIf="christianForm.controls.password.errors?.['minlength']">
-                        Password must be at least 6 characters long!
-                    </p> -->
-                </div>
-
-
-                <label for="role">Role <span class="required-asterisk">*</span></label>
-                <select id="role" formControlName="role" required>
-                    <option value="" disabled selected>Select your role</option>
-                    <option value="admin">admin</option>
-                    <option value="archbishop">archbis hop</option>
-                    <option value="dean">dean</option>
-                    <option value="clerk">clerk</option>
-                    <option value="priest">priest</option>
-                    <option value="member">member</option>
-                </select>
-                <div *ngIf="!christianForm.controls.role?.valid && christianForm.controls.role.touched">
-                    <p *ngIf="christianForm.controls.role.errors?.['required']">
-                        Role is required!
-                    </p>
-                </div>
-
-                <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
-                <select id="deanery" formControlName="deanery" required>
-                    <option value="" disabled selected>Select your deanery</option>
-                    <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
-                </select>
-                <div *ngIf="!christianForm.controls.deanery?.valid && christianForm.controls.deanery.touched">
-                    <p *ngIf="christianForm.controls.deanery.errors?.['required']">
-                        Deanery is required!
-                    </p>
-                </div>
-
-                <label for="parish">Parish <span class="required-asterisk">*</span></label>
-                <select id="parish" formControlName="parish" required>
-                    <option value="" disabled selected>Select your parish</option>
-                    <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
-                </select>
-                <div *ngIf="!christianForm.controls.parish?.valid && christianForm.controls.parish.touched">
-                    <p *ngIf="christianForm.controls.parish.errors?.['required']">
-                        Parish is required!
-                    </p>
-                </div>
-
-                <label for="father">Father's Name:</label>
-                <input type="text" id="father" formControlName="father">
-
-                <label for="mother">Mother's Name:</label>
-                <input type="text" id="mother" formControlName="mother">
-
-                <label for="tribe">Tribe:</label>
-                <input type="text" id="tribe" formControlName="tribe">
-
-                <label for="clan">Clan:</label>
-                <input type="text" id="clan" formControlName="clan">
-
-                <label for="birth_place">Place of Birth:</label>
-                <input type="text" id="birth_place" formControlName="birth_place">
-
-                <label for="birth_date">Date of Birth:</label>
-                <input type="date" id="birth_date" formControlName="birth_date">
-                <!-- <div *ngIf="!christianForm.controls.birth_date?.valid && christianForm.controls.birth_date.touched">
-                    <p *ngIf="christianForm.controls.birth_date.errors?.['required']">
-                        Date of birth is required!
-                    </p>
-                </div> -->
-
-                <label for="sub_county">Subcounty:</label>
-                <input type="text" id="sub_county" formControlName="sub_county">
-
-                <label for="residence">Residence:</label>
-                <input type="text" id="residence" formControlName="residence">
-
-                <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
-                <!-- <p style="color: black;" *ngIf="errorMessage">{{ errorMessage }}</p> -->
-            </div>
-
-            <div class="div-btns">
-                <button type="button" (click)="navigateToDashboard()">Back</button>
-                <button type="submit" [disabled]="christianForm.invalid">Save </button>
-                <button type="button" (click)="navigateToBaptism()">Next</button>
-            </div>
-
-        </form>
     </div>
-</body>
+
+    <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
+        <div class="section">
+            <h3>Personal Information</h3>
+
+            <!-- Required Fields Section -->
+            <div class="required-fields">
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required-asterisk">*</span></label>
+                    <input type="text" id="name" formControlName="name" placeholder="Enter your full name">
+                    <div *ngIf="christianForm.get('name')?.invalid && christianForm.get('name')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('name')?.errors?.['required']">Full name is required!</p>
+                        <p *ngIf="christianForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email <span class="required-asterisk">*</span></label>
+                    <input type="email" id="email" formControlName="email" placeholder="example@gmail.com">
+                    <div *ngIf="christianForm.get('email')?.invalid && christianForm.get('email')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('email')?.errors?.['required']">Email is required!</p>
+                        <p *ngIf="christianForm.get('email')?.errors?.['email']">Email is invalid!</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required-asterisk">*</span></label>
+                    <input type="password" id="password" formControlName="password"
+                        placeholder="Include special characters for security">
+                    <div *ngIf="christianForm.get('password')?.invalid && christianForm.get('password')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('password')?.errors?.['minlength']">Password must be at least 8
+                            characters long!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Church Information Section -->
+            <div class="church-info">
+                <div class="form-group">
+                    <label for="role">Role <span class="required-asterisk">*</span></label>
+                    <select id="role" formControlName="role">
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="admin">Admin</option>
+                        <option value="archbishop">Archbishop</option>
+                        <option value="dean">Dean</option>
+                        <option value="clerk">Clerk</option>
+                        <option value="priest">Priest</option>
+                        <option value="member">Member</option>
+                    </select>
+                    <div *ngIf="christianForm.get('role')?.invalid && christianForm.get('role')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('role')?.errors?.['required']">Role is required!</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
+                    <select id="deanery" formControlName="deanery">
+                        <option value="" disabled selected>Select your deanery</option>
+                        <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
+                    </select>
+                    <div *ngIf="christianForm.get('deanery')?.invalid && christianForm.get('deanery')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('deanery')?.errors?.['required']">Deanery is required!</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="parish_name">Parish <span class="required-asterisk">*</span></label>
+                    <select id="parish_name" formControlName="parish_name"
+                        [disabled]="!christianForm.get('deanery')?.value">
+                        <option value="" disabled selected>{{ filteredParishes.length ? 'Select your parish' : 'Select a
+                            deanery first' }}</option>
+                        <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
+                    </select>
+                    <div *ngIf="christianForm.get('parish_name')?.invalid && christianForm.get('parish_name')?.touched"
+                        class="error-message">
+                        <p *ngIf="christianForm.get('parish_name')?.errors?.['required']">Parish is required!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Personal Details Section -->
+            <div class="optional-fields">
+                <h4>Additional Information</h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="father">Father's Name</label>
+                        <input type="text" id="father" formControlName="father" placeholder="Father's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mother">Mother's Name</label>
+                        <input type="text" id="mother" formControlName="mother" placeholder="Mother's name">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tribe">Tribe</label>
+                        <input type="text" id="tribe" formControlName="tribe" placeholder="Your tribe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clan">Clan</label>
+                        <input type="text" id="clan" formControlName="clan" placeholder="Your clan">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birth_place">Place of Birth</label>
+                        <input type="text" id="birth_place" formControlName="birth_place"
+                            placeholder="Where you were born">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth_date">Date of Birth</label>
+                        <input type="date" id="birth_date" formControlName="birth_date">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sub_county">Subcounty</label>
+                        <input type="text" id="sub_county" formControlName="sub_county" placeholder="Your subcounty">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="residence">Residence</label>
+                        <input type="text" id="residence" formControlName="residence" placeholder="Current residence">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Messages -->
+            <div class="feedback-messages">
+                <div *ngIf="successMessage" class="success-message">
+                    <i class="fa fa-check-circle"></i> {{ successMessage }}
+                </div>
+                <div *ngIf="errorMessage" class="error-alert">
+                    <i class="fa fa-exclamation-triangle"></i> {{ errorMessage }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Navigation Buttons -->
+        <div class="div-btns">
+            <button type="button" (click)="navigateToDashboard()" class="btn-back">
+                <i class="fa fa-arrow-left"></i> Back
+            </button>
+            <button type="submit" [disabled]="christianForm.invalid || isSubmitting" class="btn-save">
+                <i class="fa fa-save"></i> {{ isSubmitting ? 'Saving...' : 'Save' }}
+            </button>
+            <button type="button" (click)="navigateToBaptism()" class="btn-next">
+                Next <i class="fa fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
