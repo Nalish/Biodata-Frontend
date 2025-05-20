@@ -32,6 +32,17 @@ export class ConfirmationUpdateComponent implements OnInit {
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     console.log("Fill in the confirmation form");
 
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
+
     // Check if form data exists in session storage
     const storedFormData = sessionStorage.getItem('christianFormData');
     if (storedFormData) {

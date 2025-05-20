@@ -140,6 +140,18 @@ export class PersonalInfoUpdateComponent implements OnInit {
 
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
+
+    // Check if user is logged in
+    const user = localStorage.getItem('userLoggedIn');
+    if (!user) {
+      setTimeout(() => {
+        if (confirm('You are not logged in. Do you want to go to the login page?')) {
+          this.router.navigate(['/login']);
+        }
+      }, 3000);
+      return;
+    }
+
     this.localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (this.localStorageData) {
       const parsedData = JSON.parse(this.localStorageData);
