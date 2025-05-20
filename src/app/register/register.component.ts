@@ -159,20 +159,4 @@ export class RegisterComponent implements OnInit {
     }, 1500);
   }
 
-  // onSubmitForm(): void {
-  //   setTimeout(() => {
-  //     this.register.registerChristian(this.form.value).subscribe(
-  //       (response) => {
-  //         console.log('Registration successful:', response);
-  //         this.successMessage = 'Registration successful! Redirecting to login in 5 seconds...';
-  //         this.navigateToLogin();
-  //       },
-  //       (error: any) => {
-  //         console.error('Registration failed:', error);
-  //         this.errorMessage = error.error.message || 'Registration failed. Please try again.';
-  //       }
-  //     );
-  //   }, 1500);
-
-  // }
 }

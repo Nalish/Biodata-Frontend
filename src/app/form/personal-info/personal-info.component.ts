@@ -14,12 +14,12 @@ import { CommonModule } from '@angular/common';
 export class PersonalInfoComponent implements OnInit, AfterViewInit {
   // Form group
   christianForm: FormGroup;
-  
+
   // Feedback messages
   errorMessage = '';
   successMessage = '';
   isSubmitting = false;
-  
+
   // User data
   userId: number | null = null;
 
@@ -154,23 +154,23 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
         this.filteredParishes = [];
         return;
       }
-      
+
       this.filteredParishes = this.parishes
         .filter(p => p.deanery === selectedDeanery)
         .map(p => p.parish_name);
-      
+
       // Reset parish selection
       this.christianForm.get('parish_name')?.setValue('');
       this.christianForm.get('parish_id')?.setValue(0);
     });
-    
+
     // When parish changes, set parish_id
     this.christianForm.get('parish_name')?.valueChanges.subscribe((selectedParishName: string | null) => {
       if (!selectedParishName) {
         this.christianForm.get('parish_id')?.setValue(0);
         return;
       }
-      
+
       const parishId = this.getParishIdByName(selectedParishName);
       this.christianForm.get('parish_id')?.setValue(parishId);
     });
@@ -204,10 +204,16 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     const formValue = this.christianForm.value;
     const parishName = formValue.parish_name ?? '';
     const parishId = this.getParishIdByName(parishName);
-    
+
     if (parishId) {
       this.christianForm.patchValue({ parish_id: parishId });
     }
+
+    // Mark all fields as touched to trigger validation messages
+    Object.keys(this.christianForm.controls).forEach(key => {
+      const control = this.christianForm.get(key);
+      control?.markAsTouched();
+    });
 
     // Save form data to session storage in case of navigation issues
     sessionStorage.setItem('christianFormData', JSON.stringify(this.christianForm.value));
@@ -236,25 +242,25 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
           console.error('Invalid data format received from getChristians API');
           return;
         }
-        
+
         // Find the highest user ID (presumably the one just added)
-        this.userId = data.reduce((max: number, user: any) => 
+        this.userId = data.reduce((max: number, user: any) =>
           user.id > max ? user.id : max, 0);
-        
+
         const user = data.find((user: any) => user.id === this.userId);
-        
+
         if (user) {
-          localStorage.setItem('addedChristian', JSON.stringify({ 
-            id: user.id, 
-            email: user.email, 
-            role: user.role 
+          localStorage.setItem('addedChristian', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            role: user.role
           }));
-          
+
           this.successMessage = 'Personal information saved successfully! Redirecting to baptism form...';
-          
+
           // Clear session storage since we've successfully saved
           sessionStorage.removeItem('christianFormData');
-          
+
           // Navigate to next step
           this.navigateToBaptism();
         }
@@ -263,7 +269,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
         this.isSubmitting = false;
         console.error('Error fetching Christians:', error);
         this.errorMessage = 'Information saved, but there was an issue retrieving your profile.';
-        
+
         // Still navigate to next step despite the error
         setTimeout(() => this.navigateToBaptism(), 2000);
       }
@@ -294,7 +300,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     if (this.christianForm.dirty) {
       sessionStorage.setItem('christianFormData', JSON.stringify(this.christianForm.value));
     }
-    
+
     this.router.navigate(['/dashboard']);
   }
 }
