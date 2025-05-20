@@ -43,7 +43,8 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-
+    this.loginMessage = 'Logging in...';
+    this.errorMessage = '';
     this.login.loginChristian(this.form.value).subscribe(
       (response) => {
         localStorage.setItem('userLoggedIn', JSON.stringify(response))

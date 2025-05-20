@@ -100,7 +100,10 @@ export class DashboardComponent {
       }
     } else {
       console.error('No email found in local storage.');
-      alert('Logout failed: No user information found.');
+      confirm('Logout failed: No user information found. Do you want to go to the login page?');
+      this.router.navigate(['/login']);
+      // Optionally, you can also clear the local storage here
+      localStorage.removeItem('userLoggedIn');
     }
   }
 

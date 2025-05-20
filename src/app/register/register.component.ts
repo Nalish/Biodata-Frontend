@@ -129,7 +129,8 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmitForm(): void {
-
+    this.registerMessage = 'Registering...';
+    this.errorMessage = '';
     this.register.registerChristian(this.form.value).subscribe(
       (response) => {
         console.log('Registration successful:', response);

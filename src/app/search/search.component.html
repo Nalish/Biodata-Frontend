@@ -23,7 +23,7 @@
                 <h3>Personal Details <span><a type="button" href="/edit-personal-info">Edit Personal Details</a></span></h3>
                 <p><strong>Name:</strong> {{selectedChristian.name}}</p>
                 <p><strong>Email:</strong> {{selectedChristian.email}}</p>
-                <p><strong>Role:</strong> {{selectedChristian.role}}</p>
+                <p><strong>Role:</strong> {{ selectedChristian.role ? (selectedChristian.role.charAt(0).toUpperCase() + selectedChristian.role.slice(1).toLowerCase()) : '' }}</p>
                 <p><strong>Deanery:</strong> {{selectedChristian.deanery}}</p>
                 <p><strong>Parish:</strong> {{parishName}}</p>
                 <p><strong>Father's Name:</strong> {{selectedChristian.father}}</p>
