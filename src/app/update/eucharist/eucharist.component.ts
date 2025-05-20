@@ -29,6 +29,13 @@ export class EucharistUpdateComponent implements OnInit {
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     console.log("Fill in the eucharist form");
+
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.eucharistForm.patchValue(formData);
+    }
   }
 
   onSubmitEucharistForm(): void {

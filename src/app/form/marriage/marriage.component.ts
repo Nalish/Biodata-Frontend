@@ -28,6 +28,13 @@ export class MarriageComponent {
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitMarriageForm();
     console.log("Fill in the marriage form"); // Log message to indicate the form is being filled
+
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.marriageForm.patchValue(formData);
+    }
   }
   onSubmitMarriageForm(): void {
     if (this.marriageForm.untouched) {

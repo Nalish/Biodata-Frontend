@@ -31,6 +31,13 @@ export class ConfirmationUpdateComponent implements OnInit {
 
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     console.log("Fill in the confirmation form");
+
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.confirmationForm.patchValue(formData);
+    }
   }
 
   onSubmitConfirmationForm(): void {

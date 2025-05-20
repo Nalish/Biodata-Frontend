@@ -81,13 +81,13 @@
                     </p>
                 </div>
 
-            <p style="color: black;" *ngIf="successMessage">{{ successMessage }}</p>
-            <p style="color: red;" *ngIf="errorMessage">{{ errorMessage }}</p>
-            <p style="color: black" *ngIf="registerMessage">{{ registerMessage }}</p>
+            <p *ngIf="successMessage">{{ successMessage }}</p>
+            <p *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p *ngIf="registerMessage">{{ registerMessage }}</p>
             
             <button type="submit" [disabled]="form.invalid">Register</button>
             <!-- <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p> -->
-            <p style="color: black;">Already have an account? <span><a routerLink="/login">Login</a></span></p>
+            <p class="login-link">Already have an account? <span><a routerLink="/login">Login</a></span></p>
         </form>
     </div>
 

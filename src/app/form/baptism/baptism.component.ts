@@ -31,6 +31,12 @@ constructor(
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitBaptismForm();
     console.log("Fill in the baptism form");
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.baptismForm.patchValue(formData);
+    }
   }
 
   onSubmitBaptismForm(): void {

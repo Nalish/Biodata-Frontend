@@ -29,6 +29,13 @@ export class ConfirmationComponent {
   ngOnInit(): void { // Lifecycle hook that is called after the component has been initialized
     // this.onSubmitConfirmationForm();
     console.log("Fill in the confirmation form");
+
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.confirmationForm.patchValue(formData);
+    }
   }
   onSubmitConfirmationForm(): void {
     if (this.confirmationForm.untouched) { // Check if the form is untouched

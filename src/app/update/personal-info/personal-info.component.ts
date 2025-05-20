@@ -145,6 +145,7 @@ export class PersonalInfoUpdateComponent implements OnInit {
       const parsedData = JSON.parse(this.localStorageData);
       this.userId = parsedData?.id;
 
+
       // Populate the form fields with the data from localStorage
       this.christianForm.patchValue({
         name: parsedData?.name,
@@ -153,6 +154,13 @@ export class PersonalInfoUpdateComponent implements OnInit {
         deanery: parsedData?.deanery,
         parish: this.parishes.find(p => p.parish_id === parsedData?.parishId)?.parish_name || '',
       });
+    }
+
+    // Check if form data exists in session storage
+    const storedFormData = sessionStorage.getItem('christianFormData');
+    if (storedFormData) {
+      const formData = JSON.parse(storedFormData);
+      this.christianForm.patchValue(formData);
     }
   }
 
