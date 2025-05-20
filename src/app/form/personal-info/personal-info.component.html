@@ -129,10 +129,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="birth_date">Date of Birth</label>
+                        <label for="birth_date">Date of Birth <span class="required-asterisk">*</span></label>
                         <input type="date" id="birth_date" formControlName="birth_date">
                     </div>
-                    <div *ngIf="christianForm.get('birth_date')?.invalid && christianForm.get('birth_date')?.touched"
+                    <div *ngIf="christianForm.get('birth_date')?.invalid"
                         class="error-message">
                         <p *ngIf="christianForm.get('birth_date')?.errors?.['required']">Date of Birth is required!</p>
                     </div>
