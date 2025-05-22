@@ -7,17 +7,65 @@
         <form [formGroup]="marriageForm" (ngSubmit)="onSubmitMarriageForm()" class="formContainer">
             <div class="section">
                 <h3>Marriage Information</h3>
-                <label for="spouse_name">Spouse:</label>
-                <input type="text" id="spouse_name" formControlName="spouse_name">
 
-                <label for="marriage_place">Place of Marriage:</label>
-                <input type="text" id="marriage_place" formControlName="marriage_place">
+                <label for="marriage_certificate_no">Marriage Certificate No:</label>
+                <input type="text" id="marriage_certificate_no" formControlName="marriage_certificate_no">
 
-                <label for="marriage_date">Date:</label>
+                <label for="entry_no">Entry No:</label>
+                <input type="text" id="entry_no" formControlName="entry_no">
+
+                <label for="county">County:</label>
+                <input type="text" id="county" formControlName="county">
+
+                <label for="sub_county">Sub County:</label>
+                <input type="text" id="sub_county" formControlName="sub_county">
+
+                <label for="place_of_marriage">Place of Marriage:</label>
+                <input type="text" id="place_of_marriage" formControlName="place_of_marriage">
+
+                <h4>Bridegroom</h4>
+                <label for="name1">Name:</label>
+                <input type="text" id="name1" formControlName="name1">
+
+                <label for="age1">Age:</label>
+                <input type="text" id="age1" formControlName="age1">
+
+                <label for="marital_status1">Marital Status:</label>
+                <input type="text" id="marital_status1" formControlName="marital_status1">
+
+                <label for="occupation1">Occupation:</label>
+                <input type="text" id="occupation1" formControlName="occupation1">
+
+                <label for="residence1">Residence:</label>
+                <input type="text" id="residence1" formControlName="residence1">
+
+                <h4>Bride</h4>
+                <label for="name2">Name:</label>
+                <input type="text" id="name2" formControlName="name2">
+
+                <label for="age2">Age:</label>
+                <input type="text" id="age2" formControlName="age2">
+
+                <label for="marital_status2">Marital Status:</label>
+                <input type="text" id="marital_status2" formControlName="marital_status2">
+
+                <label for="occupation2">Occupation:</label>
+                <input type="text" id="occupation2" formControlName="occupation2">
+
+                <label for="residence2">Residence:</label>
+                <input type="text" id="residence2" formControlName="residence2">
+
+                <label for="marriage_date">Date of Marriage:</label>
                 <input type="date" id="marriage_date" formControlName="marriage_date">
 
-                <label for="marriage_no">Marriage No:</label>
-                <input type="text" id="marriage_no" formControlName="marriage_no">
+                <label for="witnessed_by">Witnessed By:</label>
+                <input type="text" id="witnessed_by" formControlName="witnessed_by">
+
+                <label for="registrar">Registrar:</label>
+                <input type="text" id="registrar" formControlName="registrar">
+
+                <label for="ref_number">Reference Number:</label>
+                <input type="text" id="ref_number" formControlName="ref_number">
 
                 <p *ngIf="successMessage">{{ successMessage }}</p>
                 <p *ngIf="errorMessage">{{ errorMessage }}</p>

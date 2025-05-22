@@ -14,6 +14,7 @@ import { ConfirmationUpdateComponent } from "./update/confirmation/confirmation.
 import { EucharistUpdateComponent } from "./update/eucharist/eucharist.component";
 import { MarriageUpdateComponent } from "./update/marriage/marriage.component";
 import { PersonalInfoUpdateComponent } from "./update/personal-info/personal-info.component";
+import { MarriageCardComponent } from "./marriage-card/marriage-card.component";
 
 
 export const routes: Routes = [
@@ -27,11 +28,11 @@ export const routes: Routes = [
     { path: 'eucharist', component: EucharistComponent },
     { path: 'confirmation', component: ConfirmationComponent },
     { path: 'marriage', component: MarriageComponent },
-    {path: 'edit-personal-info', component: PersonalInfoUpdateComponent},
-    {path: 'edit-baptism', component: BaptismUpdateComponent},
-    {path: 'edit-eucharist', component: EucharistUpdateComponent},
-    {path: 'edit-confirmation', component: ConfirmationUpdateComponent},
-    {path: 'edit-marriage', component: MarriageUpdateComponent},
-
+    { path: 'edit-personal-info', component: PersonalInfoUpdateComponent },
+    { path: 'edit-baptism', component: BaptismUpdateComponent },
+    { path: 'edit-eucharist', component: EucharistUpdateComponent },
+    { path: 'edit-confirmation', component: ConfirmationUpdateComponent },
+    { path: 'edit-marriage', component: MarriageUpdateComponent },
+    { path: 'marriage-card', component: MarriageCardComponent },
 
 ]

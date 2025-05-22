@@ -1,0 +1,118 @@
+<!-- marriage-card.component.html -->
+<div class="print-guide">
+    <div class="instructions">
+        PRINTABLE WALLET-SIZED MARRIAGE CERTIFICATE CARD
+    </div>
+    <div class="notes">
+        Print this page at 100% scale (no scaling) for accurate wallet size. Cut
+        along the solid border after printing. For best results, use cardstock paper
+        and laminate.
+    </div>
+    <button class="print-button" (click)="printCard()">Print Card</button>
+</div>
+
+<div class="card-container">
+    <div class="certificate-number">№: {{ marriage_certificate_no }}</div>
+    <div class="certificate-header">
+        <h1>Certificate of Marriage</h1>
+        <div class="subtitle">Republic of Kenya</div>
+    </div>
+
+    <div class="certificate-body">
+        <div class="marriage-info">
+            <div class="field-group">
+                <div class="field-label">Marriage Date:</div>
+                <div class="field-value">{{ marriage_date }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Entry No:</div>
+                <div class="field-value">{{ entry_no }}</div>
+            </div>
+
+            <div class="field-group span-2">
+                <div class="field-label">County:</div>
+                <div class="field-value">{{ county }}</div>
+            </div>
+
+            <div class="field-group span-2">
+                <div class="field-label">Sub-County:</div>
+                <div class="field-value">{{ sub_county }}</div>
+            </div>
+
+            <div class="field-group span-2-col">
+                <div class="field-label">Registrar/Certificate Issuer:</div>
+                <div class="field-value">{{ registrar }}</div>
+            </div>
+
+            <!-- <div class="field-group span-2">
+            <div class="field-label">Place of Marriage:</div>
+            <div class="field-value">{{ place_of_marriage }}</div>
+        </div> -->
+
+            <div class="field-group span-2-col">
+                <div class="field-label">Witnessed By:</div>
+                <div class="field-value">{{ witnessed_by }}</div>
+            </div>
+        </div>
+
+        <div class="field-group span-2 margin-top-3">
+            <div class="parties-title">
+                PARTIES TO MARRIAGE
+            </div>
+        </div>
+
+        <div class="parties-info">
+            <div class="field-group">
+                <div class="field-label">Bridegroom:</div>
+                <div class="field-value">{{ name1 }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Bride:</div>
+                <div class="field-value">{{ name2 }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Age:</div>
+                <div class="field-value">{{ age1 }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Age:</div>
+                <div class="field-value">{{ age2 }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Occupation:</div>
+                <div class="field-value">{{ occupation1 }}</div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">Occupation:</div>
+                <div class="field-value">{{ occupation2 }}</div>
+            </div>
+            <div class="footer">
+                This is a condensed representation of Marriage Certificate №:
+                {{ marriage_certificate_no }} <br />{{ ref_number }}
+            </div>
+
+            <div class="seal">OFFICIAL<br />SEAL</div>
+        </div>
+        <!-- <div class="field-group">
+            <div class="field-label">Marital Status:</div>
+            <div class="field-value">{{ marital_status1 }}</div>
+        </div>
+        <div class="field-group">
+            <div class="field-label">Marital Status:</div>
+            <div class="field-value">{{ marital_status2 }}</div>
+        </div>
+
+        <div class="field-group">
+            <div class="field-label">Residence:</div>
+            <div class="field-value">{{ residence1 }}</div>
+        </div>
+        <div class="field-group">
+            <div class="field-label">Residence:</div>
+            <div class="field-value">{{ residence2 }}</div>
+        </div> -->
+
+
+    </div>
+
+
+</div>

@@ -27,7 +27,7 @@ export class SearchComponent implements OnInit {
   selectedEucharist: any = null; // Added to store eucharist data
   selectedConfirmation: any = null; // Added to store confirmation data
   selectedMarriage: any = null; // Added to store marriage data
-  parishName: any = 'how are you'; // Added to store parish name
+  parishName: any = ''; // Added to store parish name
 
   showBanner: boolean = false; // Added to control banner visibility
   bannerMessage: string = ''; // Added to store banner message

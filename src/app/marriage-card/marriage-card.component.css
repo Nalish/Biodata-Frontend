@@ -1,0 +1,211 @@
+.card-container {
+    width: 85.6mm;
+    height: 58mm;
+    /* width: 92.6mm; */
+    /* height: 67mm; */
+    background: #F1E9E9; /* Updated background */
+    border: 1px solid #4A002A; /* Updated border */
+    margin: 1.5mm auto;
+    padding: 8px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #4A002A; /* Updated text color */
+}
+
+.certificate-header {
+    text-align: center;
+    border-bottom: 1px solid #6d5507; /* Updated border */
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    color: #4A002A; /* Updated text color */
+}
+
+.certificate-number {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #6d5507; /* Updated text color */
+}
+
+.certificate-body .marriage-info {
+    margin: 5px 0;
+    font-size: 7px;
+    line-height: 1.2;
+    color: #4A002A; /* Updated text color */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+
+.certificate-body .marriage-info > * {
+    flex: 1 1 45%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.certificate-body .parties-info {
+    margin: 5px 0;
+    font-size: 7px;
+    line-height: 1.2;
+    color: #4A002A; /* Updated text color */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+
+.certificate-body .parties-info > * {
+    flex: 1 1 45%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+h1 {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4A002A; /* Updated text color */
+}
+
+.subtitle {
+    font-size: 8px;
+    font-style: italic;
+    margin: 2px 0;
+    color: #6d5507; /* Updated text color */
+}
+
+.field-label {
+    font-weight: bold;
+    font-size: 7px;
+    text-transform: uppercase;
+    color: #6d5507; /* Updated text color */
+}
+
+.field-value {
+    border-bottom: 1px dotted #ffb433; /* Updated border */
+    padding: 1px 0;
+    min-height: 10px;
+    color: #4A002A; /* Updated text color */
+}
+
+.footer {
+    font-size: 6px;
+    text-align: center;
+    margin-top: 5px;
+    font-style: italic;
+    position: absolute;
+    bottom: 5px;
+    width: calc(100% - 16px);
+    color: #6d5507; /* Updated text color */
+}
+
+.seal {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ffb433; /* Updated border */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5px;
+    text-align: center;
+    opacity: 0.5;
+    color: #4A002A; /* Updated text color */
+    background: #C2AE6D; /* Updated background */
+}
+
+.print-button {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 15px;
+    background: #6d5507; /* Updated background */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.print-button:hover {
+    background: #C2AE6D; /* Updated hover background */
+    color: #4A002A; /* Updated hover text color */
+}
+
+.print-guide {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 5px;
+    color: #4A002A; /* Updated text color */
+}
+
+.parties-title {
+    font-size: 8px;
+    font-weight: bold;
+    text-align: center;
+    margin: 5px 0;
+    color: #4A002A; /* Updated text color */
+}
+
+
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .card-container,
+    .card-container *,
+    .footer,
+    .footer *,
+    .seal,
+    .seal * {
+        visibility: visible;
+    }
+    .card-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0;
+        box-shadow: none;
+        z-index: 9999;
+    }
+    .print-button, .print-guide {
+        display: none !important;
+    }
+}
+@media print {
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+    }
+    .card-container,
+    .footer,
+    .seal {
+        visibility: visible !important;
+    }
+    .card-container {
+        position: static;
+        margin: 0 auto;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        transform: none;
+    }
+}
