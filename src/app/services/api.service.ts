@@ -7,7 +7,7 @@ import { LoginResponse } from '../login/login.component';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://christian-biodata-backend.onrender.com/api';  // Backend URL
+  private baseUrl = 'https://christian-biodata-backend.onrender.com/api'; // Backend URL
   // private baseUrl = 'http://localhost:3000/api';  // Backend URL
 
   constructor(private http: HttpClient) {}
