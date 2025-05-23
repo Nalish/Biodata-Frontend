@@ -58,22 +58,24 @@ body {
 }
 
 .search-box {
-    padding: 10px;
+    padding: 0px 20px;
     width: 70%;
     border: 2px solid #c2ae6d;
     border-radius: 20px 0 0 20px;
     outline: none;
     background-color: #c2ae6d;
+    color: #4a002a; /* Add text color for contrast */
 }
 
 .search-button {
     background-color: #c2ae6d;
     color: white;
     border: none;
-    border-left: #fff 2px solid;
+    border-left: 2px solid #fff; /* Consistent border syntax */
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 0 20px 20px 0;
+    transition: background-color 0.3s; /* Add transition for hover */
 }
 
 .search-button:hover {
@@ -163,12 +165,36 @@ span a:hover {
     transform: scale(1.05);
 }
 
+#print-card {
+    background-color: #4a002a;
+    color: #fffbe6;
+    border: 2px solid #c2ae6d;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(74, 0, 42, 0.10);
+    padding: 7px 12px;
+    margin: 10px auto;
+    width: 100px;
+    max-width: 120px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
 .error {
     color: red;
     margin-top: 10px;
 }
 
 
+.christian-actions {
+    display: flex;
+    flex-direction: column;
+    margin-top:auto;
+    /* justify-content: center; */
+    /* align-items: center; */
+
+}
 
 
 .update-button {
@@ -178,10 +204,10 @@ span a:hover {
     padding: 10px;
     color: white;
     cursor: pointer;
-    margin:10px;
+    margin:auto;
     border-radius: 5px;
-    margin-top: 0px;
-    margin-bottom: 20px;
+    margin-top: auto;
+    /* margin-bottom: 20px; */
     width: 80%;
     max-width: 300px;
 }
@@ -199,7 +225,8 @@ span a:hover {
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    margin: 10px auto;
+    margin: auto;
+    margin-top: 5px;
     width: fit-content;
     text-align: center;
     transition: background-color 0.3s ease, transform 0.2s ease;

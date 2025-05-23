@@ -69,37 +69,37 @@ h1 {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #4A002A; /* Updated text color */
+    color: #4A002A;
 }
 
 .subtitle {
     font-size: 8px;
     font-style: italic;
     margin: 2px 0;
-    color: #6d5507; /* Updated text color */
+    color: #6d5507;
 }
 
 .field-label {
     font-weight: bold;
     font-size: 7px;
     text-transform: uppercase;
-    color: #6d5507; /* Updated text color */
+    color: #6d5507;
 }
 
 .field-value {
-    border-bottom: 1px dotted #ffb433; /* Updated border */
+    border-bottom: 1px dotted #ffb433;
     padding: 1px 0;
     min-height: 10px;
-    color: #4A002A; /* Updated text color */
+    color: black;
 }
 
 .footer {
-    font-size: 6px;
+    font-size: 5px;
     text-align: center;
     margin-top: 5px;
     font-style: italic;
     position: absolute;
-    bottom: 5px;
+    bottom: 0px;
     width: calc(100% - 16px);
     color: #6d5507; /* Updated text color */
 }
@@ -151,61 +151,48 @@ h1 {
     font-weight: bold;
     text-align: center;
     margin: 5px 0;
-    color: #4A002A; /* Updated text color */
+    color: #3d0123;
 }
 
 
 
 @media print {
     body * {
-        visibility: hidden;
+        visibility: hidden !important;
     }
     .card-container,
-    .card-container *,
-    .footer,
-    .footer *,
-    .seal,
-    .seal * {
-        visibility: visible;
+    .card-container * {
+        visibility: visible !important;
     }
     .card-container {
         position: absolute;
         left: 0;
         top: 0;
-        margin: 0;
-        box-shadow: none;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        box-shadow: none !important;
         z-index: 9999;
+        width: 85.6mm !important;
+        height: 58mm !important;
+        background: #F1E9E9 !important;
+        border: 1px solid #4A002A !important;
+        padding: 8px !important;
     }
     .print-button, .print-guide {
         display: none !important;
     }
-}
-@media print {
     html, body {
         height: 100%;
         width: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important;
     }
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        width: 100vw;
-    }
-    .card-container,
-    .footer,
-    .seal {
-        visibility: visible !important;
-    }
+}
+@media print {
     .card-container {
-        position: static;
-        margin: 0 auto;
-        top: auto;
-        left: auto;
-        right: auto;
-        bottom: auto;
-        transform: none;
+        width: 85.6mm !important;
+        height: 58mm !important;
     }
 }
