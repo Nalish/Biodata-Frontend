@@ -12,13 +12,16 @@
 
     <!-- Dashboard Content -->
     <div class="dashboard">
-        <h1>Welcome to Christian Management</h1>
-        <div *ngIf="showBanner" class="role-banner">
-            {{ bannerMessage }}
-        </div>
+        <h1>Diocese of Nyeri</h1>
+        <h2>Christian Data Management System</h2>
+        
 
         <div class="total-christians" (change)="loadUserCount()">
             Total Christians: <span id="christianCount">{{ christianCount }}</span>
+        </div>
+
+        <div *ngIf="showBanner" class="role-banner">
+            {{ bannerMessage }}
         </div>
     </div>
 </body>

@@ -31,7 +31,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder)
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   })
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class LoginComponent {
     this.errorMessage = '';
     this.login.loginChristian(this.form.value).subscribe(
       (response) => {
-        localStorage.setItem('userLoggedIn', JSON.stringify(response))
+        localStorage.setItem('userLoggedIn', JSON.stringify(response.user));
         console.log('Login successful:', response.user.email);
         // console.log(this.form);
         // Store the token in local storage or session storage

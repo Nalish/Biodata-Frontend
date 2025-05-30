@@ -3,16 +3,25 @@
     <div class="auth-container">
         <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
             <h2>Register Account</h2>
-                <input type="text" id="name" placeholder="Full Name" formControlName="name" required>
-                <div *ngIf="!form.controls.name?.valid && form.controls.name.touched">
-                    <p *ngIf="form.controls.name.errors?.['required']">
-                        Full name is required!
-                    </p>
-                </div>
-            <p>
-                <input type="email" id="email" placeholder="Email Address" formControlName="email">
-            </p>
-            <div *ngIf="!form.controls.email?.valid && form.controls.email.touched">
+
+            <input type="text" id="first_name" placeholder="First Name" formControlName="first_name" required>
+            <div *ngIf="form.controls.first_name?.touched && form.controls.first_name?.invalid">
+                <p *ngIf="form.controls.first_name.errors?.['required']">
+                    First name is required!
+                </p>
+            </div>
+
+            <input type="text" id="last_name" placeholder="Last Name" formControlName="last_name" required>
+            <div *ngIf="form.controls.last_name?.touched && form.controls.last_name?.invalid">
+                <p *ngIf="form.controls.last_name.errors?.['required']">
+                    Last name is required!
+                </p>
+            </div>
+
+            <input type="text" id="middle_name" placeholder="Middle Name" formControlName="middle_name">
+
+            <input type="email" id="email" placeholder="Email Address" formControlName="email" required>
+            <div *ngIf="form.controls.email?.touched && form.controls.email?.invalid">
                 <p *ngIf="form.controls.email.errors?.['required']">
                     Email is required!
                 </p>
@@ -20,61 +29,50 @@
                     Email is invalid!
                 </p>
             </div>
-            <p>
-                <input type="password" id="password" placeholder="Password" formControlName="password">
-            </p>
-            <div *ngIf="!form.controls.password.valid && form.controls.password.touched">
+
+            <input type="password" id="password" placeholder="Password" formControlName="password" required>
+            <div *ngIf="form.controls.password?.touched && form.controls.password?.invalid">
                 <p *ngIf="form.controls.password.errors?.['required']">
                     Password is required!
                 </p>
-                <p *ngIf="form.controls.email.errors?.['email']">
-                    Password is invalid!
+                <p *ngIf="form.controls.password.errors?.['minlength']">
+                    Password must be at least 4 characters!
                 </p>
             </div>
 
-            
+            <input type="text" id="phone_number" placeholder="Phone Number" formControlName="phone_number">
+
             <label for="role">Select Role</label>
             <select id="role" formControlName="role" required>
                 <option value="" disabled selected>Select Role</option>
-                    <!-- <option value="admin">admin</option> -->
-                    <option value="archbishop">archbishop</option>
-                    <option value="dean">dean</option>
-                    <option value="clerk">clerk</option>
-                    <option value="priest">priest</option>
-                    <option value="member">member</option>
+                <option value="superuser">superuser</option>
+                <option value="editor">editor</option>
+                <option value="viewer">viewer</option>
             </select>
-            <div *ngIf="!form.controls.role.valid && form.controls.role.touched">
+            <div *ngIf="form.controls.role?.touched && form.controls.role?.invalid">
                 <p *ngIf="form.controls.role.errors?.['required']">
                     Role is required!
                 </p>
+                <p *ngIf="form.controls.role.errors?.['pattern']">
+                    Invalid role selected!
+                </p>
             </div>
 
-            <label for="deanery">Deanery</label>
-                <select id="deanery" formControlName="deanery" required>
-                    <option value="" disabled selected>Select your deanery</option>
-                    <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
-                </select>
-                <div *ngIf="!form.controls.deanery?.valid && form.controls.deanery.touched">
-                    <p *ngIf="form.controls.deanery.errors?.['required']">
-                        Deanery is required!
-                    </p>
-                </div>
-
-                <label for="parish_name">Parish</label>
-                <select id="parish_name" formControlName="parish_name" required>
-                    <option value="" disabled selected>Select your parish</option>
-                    <option *ngFor="let parish of filteredParishes" [value]="parish.parish_name">{{ parish.parish_name }}</option>
-                </select>
-                <div *ngIf="!form.controls.parish_name?.valid && form.controls.parish_name.touched">
-                    <p *ngIf="form.controls.parish_name.errors?.['required']">
-                        Parish is required!
-                    </p>
-                </div>
+            <label for="parish_id">Select Parish</label>
+            <select id="parish_id" formControlName="parish_id" required>
+                <option value="" disabled selected>Select Parish</option>
+                <option *ngFor="let parish of parishes" [value]="parish.parish_id">{{ parish.parish_name }}</option>
+            </select>
+            <div *ngIf="form.controls.parish_id?.touched && form.controls.parish_id?.invalid">
+                <p *ngIf="form.controls.parish_id.errors?.['required']">
+                    Parish is required!
+                </p>
+            </div>
 
             <p *ngIf="successMessage">{{ successMessage }}</p>
             <p *ngIf="errorMessage">{{ errorMessage }}</p>
             <p *ngIf="registerMessage">{{ registerMessage }}</p>
-            
+
             <button type="submit" [disabled]="form.invalid">Register</button>
             <!-- <p *ngIf="!form.valid && errorMessage" class="error-message">{{ errorMessage }}</p> -->
             <p class="login-link">Already have an account? <span><a routerLink="/login">Login</a></span></p>
