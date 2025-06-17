@@ -24,20 +24,17 @@ export class DashboardComponent {
     const userData = localStorage.getItem('userLoggedIn');
     if (userData) {
       const user = JSON.parse(userData);
-      const role = user.user.role;
+      const role = user.role;
 
-      if (role === 'admin' || role === 'archbishop') {
+      if (role === 'superuser') {
         this.showBanner = true;
-        this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You have full access to view and manage all Christians in the system.`;
-      } else if (role === 'dean') {
+        this.bannerMessage = `You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.`;
+      } else if (role === 'editor' ) {
         this.showBanner = true;
-        this.bannerMessage = `You are logged in as DEAN. You can view and manage Christians from all parishes in your deanery.`;
-      } else if (role === 'priest' || role === 'clerk') {
+        this.bannerMessage = `You are logged in as EDITOR. You can view and manage Christians from your own parish only.`;
+      } else if (role === 'viewer') {
         this.showBanner = true;
-        this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You can view and manage Christians from your own parish only.`;
-      } else if (role === 'member') {
-        this.showBanner = true;
-        this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.`;
+        this.bannerMessage = `You are logged in as VIEWER. You only have view access.`;
       } else {
         this.showBanner = true;
         this.bannerMessage = 'You are not logged in. Go to login page.';
@@ -81,7 +78,7 @@ export class DashboardComponent {
 
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      const email = parsedData?.user.email;
+      const email = parsedData?.email;
       if (email) {
         this.apiService.logoutChristian(email).subscribe(
           (response) => {

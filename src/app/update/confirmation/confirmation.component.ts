@@ -20,7 +20,7 @@ export class ConfirmationUpdateComponent implements OnInit {
   confirmationForm = this.fb.group({ // Create a form group for the confirmation form
     confirmation_place: [''],
     confirmation_date: [''],
-    confirmed_by: [''],
+    minister: [''],
     confirmation_no: [''],
     user_id: ['']
   });
@@ -65,7 +65,7 @@ export class ConfirmationUpdateComponent implements OnInit {
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.id;
+      this.userId = parsedData?.user_id;
 
       this.confirmationForm.patchValue({ user_id: this.userId }); // Assign userId from local storage to the form data
 

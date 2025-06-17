@@ -7,8 +7,8 @@ import { LoginResponse } from '../login/login.component';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://christian-biodata-backend.onrender.com'; // Backend URL
-  // private baseUrl = 'http://localhost:3000';  // Backend URL
+  // private baseUrl = 'https://christian-biodata-backend.onrender.com'; // Backend URL
+  private baseUrl = 'http://localhost:3000';  // Backend URL
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/auth/login`, data, { withCredentials: true });
   }
   registerChristian(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/register`, data);
+    return this.http.post(`${this.baseUrl}/auth/register`, data, { withCredentials: true });
   }
 
   logoutChristian(data: any): Observable<any> {

@@ -7,11 +7,20 @@
         <form [formGroup]="eucharistForm" (ngSubmit)="onSubmitEucharistForm()" class="formContainer">
             <div class="section">
                 <h3>Eucharist Information</h3>
-                <label for="eucharist_place">Place:</label>
-                <input type="text" id="eucharist_place" formControlName="eucharist_place">
 
-                <label for="eucharist_date">Date:</label>
-                <input type="date" id="eucharist_date" formControlName="eucharist_date">
+                <label for="eucharist_place">Place: <span class="required">*</span></label>
+                <input type="text" id="eucharist_place" formControlName="eucharist_place"
+                    [class.error]="hasFieldError('eucharist_place')" placeholder="Enter Eucharist place">
+                <span *ngIf="hasFieldError('eucharist_place')" class="error-message">
+                    {{ getFieldError('eucharist_place') }}
+                </span>
+
+                <label for="eucharist_date">Date: <span class="required">*</span></label>
+                <input type="date" id="eucharist_date" formControlName="eucharist_date"
+                    [class.error]="hasFieldError('eucharist_date')">
+                <span *ngIf="hasFieldError('eucharist_date')" class="error-message">
+                    {{ getFieldError('eucharist_date') }}
+                </span>
 
                 <p *ngIf="successMessage">{{ successMessage }}</p>
                 <p *ngIf="errorMessage">{{ errorMessage }}</p>

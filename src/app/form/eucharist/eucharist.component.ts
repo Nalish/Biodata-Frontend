@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,8 +18,8 @@ export class EucharistComponent {
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
   eucharistForm = this.fb.group({ // Create a form group for the eucharist form
-    eucharist_place: [''],
-    eucharist_date: [''],
+    eucharist_place: ['', Validators.required],
+    eucharist_date: ['', Validators.required],
     user_id: [''],
   });
 
@@ -59,11 +59,11 @@ export class EucharistComponent {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-    const localStorageData = localStorage.getItem('addedChristian'); // Get the user ID from local storage
+    const localStorageData = localStorage.getItem('addedUser'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       // const userId = parsedData?.id;
-    this.eucharistForm.value['user_id'] = parsedData?.id;
+    this.eucharistForm.value['user_id'] = parsedData?.user_id;
     this.eucharistService.createEucharist(this.eucharistForm.value).subscribe(
       (response) => {
         console.log('Eucharist information added successfully:', response); // Log the successful registration response
@@ -73,6 +73,31 @@ export class EucharistComponent {
       })
     }
   }
+
+    // Helper method to check if a field has errors and is touched
+hasFieldError(fieldName: string): boolean {
+  const field = this.eucharistForm.get(fieldName);
+  return !!(field && field.invalid && field.touched);
+}
+
+// Helper method to get field error message
+getFieldError(fieldName: string): string {
+  const field = this.eucharistForm.get(fieldName);
+  if (field && field.errors && field.touched) {
+    if (field.errors['required']) {
+      return `${this.getFieldLabel(fieldName)} is required.`;
+    }
+  }
+  return '';
+}
+
+private getFieldLabel(fieldName: string): string {
+  const labels: { [key: string]: string } = {
+    'eucharist_place': 'Eucharist Place',
+    'eucharist_date': 'Eucharist Date',
+  };
+  return labels[fieldName] || fieldName;
+}
 
   navigateToConfirmation() {
     setTimeout(() => {

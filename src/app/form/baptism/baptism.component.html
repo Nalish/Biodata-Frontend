@@ -7,24 +7,58 @@
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">
                 <h3>Baptism Information</h3>
-                <label for="baptism_place">Place of Baptism:</label>
-                <input type="text" id="baptism_place" formControlName="baptism_place">
+                
+                <label for="parish">Parish/Church:</label>
+                <input 
+                    type="text" 
+                    id="parish" 
+                    formControlName="parish"
+                    [class.error]="hasFieldError('parish')"
+                    placeholder="Enter the parish or church name">
+                <div class="error-message" *ngIf="hasFieldError('parish')">
+                    {{ getFieldError('parish') }}
+                </div>
 
-                <label for="baptism_date">Date:</label>
-                <input type="date" id="baptism_date" formControlName="baptism_date">
+                <label for="baptism_date">Date of Baptism:</label>
+                <input 
+                    type="date" 
+                    id="baptism_date" 
+                    formControlName="baptism_date"
+                    [class.error]="hasFieldError('baptism_date')">
+                <div class="error-message" *ngIf="hasFieldError('baptism_date')">
+                    {{ getFieldError('baptism_date') }}
+                </div>
 
-                <label for="baptised_by">Person that Baptised You:</label>
-                <input type="text" id="baptised_by" formControlName="baptised_by">
+                <label for="minister">Minister/Priest:</label>
+                <input 
+                    type="text" 
+                    id="minister" 
+                    formControlName="minister"
+                    [class.error]="hasFieldError('minister')"
+                    placeholder="Enter the name of the minister/priest">
+                <div class="error-message" *ngIf="hasFieldError('minister')">
+                    {{ getFieldError('minister') }}
+                </div>
 
-                <label for="administrator">Administrator(Msimamizi):</label>
-                <input type="text" id="administrator" formControlName="administrator">
+                <label for="sponsor">Sponsor/Godparent:</label>
+                <input 
+                    type="text" 
+                    id="sponsor" 
+                    formControlName="sponsor"
+                    [class.error]="hasFieldError('sponsor')"
+                    placeholder="Enter the name of your sponsor/godparent">
+                <div class="error-message" *ngIf="hasFieldError('sponsor')">
+                    {{ getFieldError('sponsor') }}
+                </div>
 
-                <p *ngIf="successMessage">{{ successMessage }}</p>
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+                <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
             </div>
             <div class="div-btns">
                 <button type="button" (click)="navigateToPersonalInfo()">Back</button>
-                <button type="submit" [disabled]="baptismForm.invalid">Save       </button>
+                <button type="submit" [disabled]="baptismForm.invalid || successMessage">
+                    {{ successMessage ? 'Saving...' : 'Save' }}
+                </button>
                 <button type="button" (click)="navigateToEucharist()">Next</button>
             </div>
         </form>

@@ -18,10 +18,10 @@ export class BaptismUpdateComponent implements OnInit {
 
   private fb = inject(FormBuilder) // Inject FormBuilder for form creation
   baptismForm = this.fb.group({ // Create a form group for the baptism form
-    baptism_place: [''],
+    parish: [''],
     baptism_date: [''],
-    baptised_by: [''],
-    administrator: [''],
+    minister: [''],
+    sponsor: [''],
     user_id: [''],
   })
 
@@ -65,7 +65,7 @@ export class BaptismUpdateComponent implements OnInit {
     const localStorageData = localStorage.getItem('selectedChristian'); // Get the user ID from local storage
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      this.userId = parsedData?.id;
+      this.userId = parsedData?.user_id;
 
       this.baptismForm.patchValue({ user_id: this.userId });  // Assign userId from local storage to the form data
 

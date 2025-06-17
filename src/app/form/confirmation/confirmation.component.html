@@ -7,26 +7,42 @@
         <form [formGroup]="confirmationForm" (ngSubmit)="onSubmitConfirmationForm()" class="formContainer">
             <div class="section">
                 <h3>Confirmation Information</h3>
-                <label for="confirmation_place">Place:</label>
-                <input type="text" id="confirmation_place" formControlName="confirmation_place">
 
-                <label for="confirmation_date">Date:</label>
-                <input type="date" id="confirmation_date" formControlName="confirmation_date">
+                <label for="confirmation_place">Place: <span class="required">*</span></label>
+                <input type="text" id="confirmation_place" formControlName="confirmation_place"
+                    [class.error]="hasFieldError('confirmation_place')" placeholder="Enter confirmation place">
+                <span *ngIf="hasFieldError('confirmation_place')" class="error-message">
+                    {{ getFieldError('confirmation_place') }}
+                </span>
 
-                <label for="confirmed_by">Confirmed By:</label>
-                <input type="text" id="confirmed_by" formControlName="confirmed_by">
+                <label for="confirmation_date">Date: <span class="required">*</span></label>
+                <input type="date" id="confirmation_date" formControlName="confirmation_date"
+                    [class.error]="hasFieldError('confirmation_date')">
+                <span *ngIf="hasFieldError('confirmation_date')" class="error-message">
+                    {{ getFieldError('confirmation_date') }}
+                </span>
 
-                <label for="confirmation_no">Confirmation No:</label>
-                <input type="text" id="confirmation_no" formControlName="confirmation_no">
+                <label for="minister">Minister: <span class="required">*</span></label>
+                <input type="text" id="minister" formControlName="minister" [class.error]="hasFieldError('minister')"
+                    placeholder="Enter minister name">
+                <span *ngIf="hasFieldError('minister')" class="error-message">
+                    {{ getFieldError('minister') }}
+                </span>
 
-                <p *ngIf="successMessage">{{ successMessage }}</p>
-                <p *ngIf="errorMessage">{{ errorMessage }}</p>
+                <label for="confirmation_no">Confirmation No: <span class="required">*</span></label>
+                <input type="text" id="confirmation_no" formControlName="confirmation_no"
+                    [class.error]="hasFieldError('confirmation_no')" placeholder="Enter confirmation number">
+                <span *ngIf="hasFieldError('confirmation_no')" class="error-message">
+                    {{ getFieldError('confirmation_no') }}
+                </span>
+
+                <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+                <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
             </div>
-
 
             <div class="div-btns">
                 <button type="button" (click)="navigateToEucharist()">Back</button>
-                <button type="submit" [disabled]="confirmationForm.invalid">Save       </button>
+                <button type="submit" [disabled]="confirmationForm.invalid">Save</button>
                 <button type="button" (click)="navigateToMarriage()">Next</button>
             </div>
         </form>

@@ -7,17 +7,17 @@
         <form [formGroup]="baptismForm" (ngSubmit)="onSubmitBaptismForm()" class="formContainer">
             <div class="section">
                 <h3>Baptism Information</h3>
-                <label for="baptism_place">Place of Baptism:</label>
-                <input type="text" id="baptism_place" formControlName="baptism_place">
+                <label for="parish">Parish:</label>
+                <input type="text" id="parish" formControlName="parish">
 
                 <label for="baptism_date">Date:</label>
                 <input type="date" id="baptism_date" formControlName="baptism_date">
 
-                <label for="baptised_by">Person that Baptised You:</label>
-                <input type="text" id="baptised_by" formControlName="baptised_by">
+                <label for="minister">Minister:</label>
+                <input type="text" id="minister" formControlName="minister">
 
-                <label for="administrator">Administrator(Msimamizi):</label>
-                <input type="text" id="administrator" formControlName="administrator">
+                <label for="sponsor">sponsor:</label>
+                <input type="text" id="sponsor" formControlName="sponsor">
 
                 <p *ngIf="successMessage">{{ successMessage }}</p>
                 <p *ngIf="errorMessage">{{ errorMessage }}</p>

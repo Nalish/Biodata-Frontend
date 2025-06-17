@@ -25,8 +25,8 @@ export class RegisterComponent implements OnInit {
     last_name: ['', Validators.required],
     middle_name: [''],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4)]],
-    role: ['', [Validators.required, Validators.pattern(/^(superuser|editor|viewer)$/)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    role: ['', [Validators.required, Validators.pattern(/^(superuser|editor|viewer|member)$/)]],
     phone_number: [''],
     parish_id: [0]
   })
@@ -59,17 +59,24 @@ export class RegisterComponent implements OnInit {
     this.errorMessage = '';
     this.register.registerChristian(this.form.value).subscribe(
       (response) => {
-        console.log('Registration successful:', response);
+        // console.log('Registration successful:', response);
         // console.log(this.form);
-        // Store the token in local storage or session storage
-        // localStorage.setItem('token', response.token); // Adjust according to your API response
-        
+
         this.registerMessage = '';
         this.errorMessage = '';
-        this.successMessage = 'Registration successful! Redirecting to login...';
+        this.successMessage = 'Registration successful! Redirecting...';
         // Set loading state to true
         // this.isLoading = true;
-        this.navigateToLogin();
+
+        localStorage.setItem('userLoggedIn', JSON.stringify(response.user));
+        console.log('Registration and Login successful:', response.user.email);
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 1500);
+        
+
+        // this.navigateToLogin();
+
       },
 
       (error: any) => {

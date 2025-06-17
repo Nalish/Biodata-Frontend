@@ -1,9 +1,8 @@
-
 body {
     font-family: Arial, sans-serif;
     background-image: url(../../../../public/sunset-sky.jpg);
     color: black;
-    margin: 0;
+    margin: auto;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -18,16 +17,26 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
 }
+
 h2 {
     text-align: center;
     color: #333;
 }
+
 label {
     font-weight: bold;
     display: block;
     margin-top: 10px;
 }
-input, select {
+
+.required {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+
+input,
+select {
     width: calc(100% - 22px);
     padding: 10px;
     margin: 5px 0;
@@ -36,7 +45,41 @@ input, select {
     border: 1px solid #ffb433;
     border-radius: 5px;
     display: block;
+    transition: border-color 0.3s ease;
 }
+
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6d5507;
+    box-shadow: 0 0 5px rgba(109, 85, 7, 0.3);
+}
+
+input.error {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: normal;
+}
+
+.success-message {
+    color: #2e7d32;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
 button {
     background: #6d5507;
     color: white;
@@ -48,15 +91,25 @@ button {
     width: 30%;
     margin-top: 15px;
 }
+button:hover:not(:disabled) {
+    background: #C2AE6D;
+}
 
-.div-btns{
+button:disabled {
+    background-color: #d3d3d3;
+    color: #a9a9a9;
+    cursor: not-allowed;
+}
+
+.div-btns {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.div-home{
+
+.div-home {
     a {
         text-decoration: none;
         background: #6d5507;
@@ -66,16 +119,16 @@ button {
         display: inline-block;
         text-align: center;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+        background: #C2AE6D;
     }
 }
-button:hover {
-    background:#C2AE6D;
-}
-button:disabled{
-    background-color: #d3d3d3; /* Light gray */
-    color: #a9a9a9; /* Darker gray for text */
-    cursor: not-allowed;
-}
+
+
+
 .section {
     margin-bottom: 20px;
     padding: 10px;
@@ -84,14 +137,63 @@ button:disabled{
     background: #C2AE6D;
 }
 
-input.ng-touched.ng-invalid, select.ng-touched.ng-invalid{
-    border-left: 5px solid #a94442;
+
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-input.ng-touched.ng-valid, select.ng-touched.ng-valid{
-    border-left: 5px solid green;
+.form-group {
+    margin-bottom: 15px;
 }
 
-div p {
+.required-asterisk {
     color: red;
+    font-weight: bold;
+}
+
+
+textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    color: #4A002A;
+    font-weight: bold;
+    border: 1px solid #ffb433;
+    border-radius: 5px;
+    display: block;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.formContainer {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .div-btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
 }

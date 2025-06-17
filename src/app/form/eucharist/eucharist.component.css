@@ -28,6 +28,12 @@ label {
     display: block;
     margin-top: 10px;
 }
+
+.required {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
 input, select {
     width: calc(100% - 22px);
     padding: 10px;
@@ -37,7 +43,40 @@ input, select {
     border: 1px solid #ffb433;
     border-radius: 5px;
     display: block;
+    transition: border-color 0.3s ease;
 }
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6d5507;
+    box-shadow: 0 0 5px rgba(109, 85, 7, 0.3);
+}
+
+input.error {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: normal;
+}
+
+.success-message {
+    color: #2e7d32;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
 button {
     background: #6d5507;
     color: white;
@@ -48,10 +87,19 @@ button {
     display: block;
     width: 30%;
     margin-top: 15px;
+    transition: background-color 0.3s ease;
 }
-button:hover {
-    background:#C2AE6D;
+
+button:hover:not(:disabled) {
+    background: #C2AE6D;
 }
+
+button:disabled {
+    background-color: #d3d3d3;
+    color: #a9a9a9;
+    cursor: not-allowed;
+}
+
 .div-btns{
     display: flex;
     justify-content: space-between;
@@ -69,13 +117,13 @@ button:hover {
         display: inline-block;
         text-align: center;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+        a:hover {
+        background: #C2AE6D;
     }
 }
-button:disabled{
-    background-color: #d3d3d3; /* Light gray */
-    color: #a9a9a9; /* Darker gray for text */
-    cursor: not-allowed;
-}
+
 .section {
     margin-bottom: 20px;
     padding: 10px;

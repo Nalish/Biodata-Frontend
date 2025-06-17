@@ -9,43 +9,63 @@
             <h2>Personal Information Form</h2>
         </div>
 
-        <form [formGroup]="christianForm" (ngSubmit)="onSubmitChristianForm()" class="formContainer">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmitUserForm()" class="formContainer">
             <div class="section">
                 <h3>Personal Information</h3>
 
                 <!-- Required Fields Section -->
                 <div class="required-fields">
-                    <div class="form-group">
-                        <label for="name">Full Name <span class="required-asterisk">*</span></label>
-                        <input type="text" id="name" formControlName="name" placeholder="Enter your full name">
-                        <div *ngIf="christianForm.get('name')?.invalid && christianForm.get('name')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('name')?.errors?.['required']">Full name is required!</p>
-                            <p *ngIf="christianForm.get('name')?.errors?.['minlength']">Name must be at least 3
-                                characters!
-                            </p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first_name">First Name <span class="required-asterisk">*</span></label>
+                            <input type="text" id="first_name" formControlName="first_name"
+                                placeholder="Enter your first name" [class.error]="hasFieldError('first_name')">
+                            <span *ngIf="hasFieldError('first_name')" class="error-message">
+                                {{ getFieldError('first_name') }}
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name <span class="required-asterisk">*</span></label>
+                            <input type="text" id="last_name" formControlName="last_name"
+                                placeholder="Enter your last name" [class.error]="hasFieldError('last_name')">
+                            <span *ngIf="hasFieldError('last_name')" class="error-message">
+                                {{ getFieldError('last_name') }}
+                            </span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email <span class="required-asterisk">*</span></label>
-                        <input type="email" id="email" formControlName="email" placeholder="example@gmail.com">
-                        <div *ngIf="christianForm.get('email')?.invalid && christianForm.get('email')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('email')?.errors?.['required']">Email is required!</p>
-                            <p *ngIf="christianForm.get('email')?.errors?.['email']">Email is invalid!</p>
+                        <label for="middle_name">Middle Name</label>
+                        <input type="text" id="middle_name" formControlName="middle_name"
+                            placeholder="Enter your middle name (optional)">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email <span class="required-asterisk">*</span></label>
+                            <input type="email" id="email" formControlName="email" placeholder="example@gmail.com"
+                                [class.error]="hasFieldError('email')">
+                            <span *ngIf="hasFieldError('email')" class="error-message">
+                                {{ getFieldError('email') }}
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="tel" id="phone_number" formControlName="phone_number"
+                                placeholder="+256700000000">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password <span class="required-asterisk">*</span></label>
                         <input type="password" id="password" formControlName="password"
-                            placeholder="Include special characters for security">
-                        <div *ngIf="christianForm.get('password')?.invalid && christianForm.get('password')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('password')?.errors?.['minlength']">Password must be at least 8
-                                characters long!</p>
-                        </div>
+                            placeholder="Include special characters for security"
+                            [class.error]="hasFieldError('password')">
+                        <span *ngIf="hasFieldError('password')" class="error-message">
+                            {{ getFieldError('password') }}
+                        </span>
                     </div>
                 </div>
 
@@ -54,44 +74,28 @@
                     <div class="form-group">
                         <label for="role">Role <span class="required-asterisk">*</span></label>
                         <select id="role" formControlName="role">
-                            <option value="" disabled selected>Select your role</option>
-                            <!-- <option value="admin">Admin</option> -->
-                            <option value="archbishop">Archbishop</option>
-                            <option value="dean">Dean</option>
-                            <option value="clerk">Clerk</option>
-                            <option value="priest">Priest</option>
+                            <option value="" disabled>Select your role</option>
+                            <option value="superuser">Super User</option>
+                            <option value="editor">Editor</option>
+                            <option value="viewer">Viewer</option>
                             <option value="member">Member</option>
                         </select>
-                        <div *ngIf="christianForm.get('role')?.invalid && christianForm.get('role')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('role')?.errors?.['required']">Role is required!</p>
-                        </div>
+                        <span *ngIf="hasFieldError('role')" class="error-message">
+                            {{ getFieldError('role') }}
+                        </span>
                     </div>
 
                     <div class="form-group">
-                        <label for="deanery">Deanery <span class="required-asterisk">*</span></label>
-                        <select id="deanery" formControlName="deanery">
-                            <option value="" disabled selected>Select your deanery</option>
-                            <option *ngFor="let deanery of deaneries" [value]="deanery">{{ deanery }}</option>
-                        </select>
-                        <div *ngIf="christianForm.get('deanery')?.invalid && christianForm.get('deanery')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('deanery')?.errors?.['required']">Deanery is required!</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="parish_name">Parish <span class="required-asterisk">*</span></label>
-                        <select id="parish_name" formControlName="parish_name">
-                            <option value="" disabled selected>
-                                {{ filteredParishes.length ? 'Select your parish' : 'Select a deanery first' }}
+                        <label for="parish_id">Parish <span class="required-asterisk">*</span></label>
+                        <select id="parish_id" formControlName="parish_id">
+                            <option value="" disabled selected>Select your parish</option>
+                            <option *ngFor="let parish of parishes" [value]="parish.parish_id">
+                                {{ parish.parish_name }}
                             </option>
-                            <option *ngFor="let parish of filteredParishes" [value]="parish">{{ parish }}</option>
                         </select>
-                        <div *ngIf="christianForm.get('parish_name')?.invalid && christianForm.get('parish_name')?.touched"
-                            class="error-message">
-                            <p *ngIf="christianForm.get('parish_name')?.errors?.['required']">Parish is required!</p>
-                        </div>
+                        <span *ngIf="hasFieldError('parish_id')" class="error-message">
+                            {{ getFieldError('parish_id') }}
+                        </span>
                     </div>
                 </div>
 
@@ -109,6 +113,12 @@
                             <label for="mother">Mother's Name</label>
                             <input type="text" id="mother" formControlName="mother" placeholder="Mother's name">
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="siblings">Siblings</label>
+                        <textarea id="siblings" formControlName="siblings" rows="3"
+                            placeholder="List your siblings (optional)"></textarea>
                     </div>
 
                     <div class="form-row">
@@ -132,19 +142,18 @@
 
                         <div class="form-group">
                             <label for="birth_date">Date of Birth <span class="required-asterisk">*</span></label>
-                            <input type="date" id="birth_date" formControlName="birth_date">
-                        </div>
-                        <div *ngIf="christianForm.get('birth_date')?.invalid" class="error-message">
-                            <p *ngIf="christianForm.get('birth_date')?.errors?.['required']">Date of Birth is required!
-                            </p>
+                            <input type="date" id="birth_date" formControlName="birth_date" placeholder="Your date of birth" 
+                                [class.error]="hasFieldError('birth_date')">
+                            <span *ngIf="hasFieldError('birth_date')" class="error-message">
+                                {{ getFieldError('birth_date') }}
+                            </span>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="sub_county">Subcounty</label>
-                            <input type="text" id="sub_county" formControlName="sub_county"
-                                placeholder="Your subcounty">
+                            <label for="subcounty">Subcounty</label>
+                            <input type="text" id="subcounty" formControlName="subcounty" placeholder="Your subcounty">
                         </div>
 
                         <div class="form-group">
@@ -168,16 +177,17 @@
 
             <!-- Form Navigation Buttons -->
             <div class="div-btns">
-                <button type="button" (click)="navigateToDashboard()" class="btn-back">
+                <button type="button" (click)="navigateToDashboard()">
                     <i class="fa fa-arrow-left"></i> Back
                 </button>
-                <button type="submit" [disabled]="christianForm.invalid || isSubmitting" class="btn-save">
+                <button type="submit" [disabled]="userForm.invalid || isSubmitting">
                     <i class="fa fa-save"></i> {{ isSubmitting ? 'Saving...' : 'Save' }}
                 </button>
-                <button type="button" (click)="navigateToBaptism()" class="btn-next">
+                <button type="button" (click)="navigateToBaptism()">
                     Next <i class="fa fa-arrow-right"></i>
                 </button>
             </div>
         </form>
     </div>
+
 </body>

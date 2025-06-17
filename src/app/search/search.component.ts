@@ -1,8 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, forkJoin, of, EMPTY } from 'rxjs';
+import { takeUntil, catchError, switchMap, map } from 'rxjs/operators';
+
+// Updated interfaces to match database schema
+interface Christian {
+  user_id: string; // Changed from 'id: number' to match database UUID
+  email: string;
+  password_hash: string;
+  role: string;
+  phone_number: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  mother: string;
+  father: string;
+  siblings: string;
+  birth_place: string;
+  subcounty: string;
+  birth_date: string;
+  tribe: string;
+  clan: string;
+  residence: string;
+  parish_id: string; // Changed from number to string (UUID)
+  created_at: string;
+}
+
+interface SacramentData {
+  baptism: any;
+  eucharist: any;
+  confirmation: any;
+  marriage: any;
+}
+
+interface UserSession {
+  role: string;
+  parishId: string; // Changed from number to string (UUID)
+}
 
 @Component({
   selector: 'app-search',
@@ -11,493 +48,392 @@ import { Router } from '@angular/router';
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  // Add any methods or properties needed for the search functionality
-  searchQuery: string = '';
-  christians: any[] = []; // Replace 'any' with your actual data type
-  baptismData: any[] = [];
-  eucharistData: any[] = [];
-  confirmationData: any[] = [];
-  marriageData: any[] = [];
+  // Search and display properties
+  searchQuery = '';
+  christians: Christian[] = [];
+  selectedChristian: Christian | null = null;
+  errorMessage = '';
+  parishName = '';
 
-  selectedChristian: any = null;
-  errorMessage: string = '';
-  selectedBaptism: any = null; // Added to store baptism data
-  selectedEucharist: any = null; // Added to store eucharist data
-  selectedConfirmation: any = null; // Added to store confirmation data
-  selectedMarriage: any = null; // Added to store marriage data
-  parishName: any = ''; // Added to store parish name
+  // Sacrament data
+  selectedBaptism: any = null;
+  selectedEucharist: any = null;
+  selectedConfirmation: any = null;
+  selectedMarriage: any = null;
 
-  showBanner: boolean = false; // Added to control banner visibility
-  bannerMessage: string = ''; // Added to store banner message
+  // UI state
+  showBanner = false;
+  bannerMessage = '';
 
-  constructor(private apiService: ApiService,
+  constructor(
+    private apiService: ApiService,
     private router: Router
   ) { }
-  // Method to handle search functionality
-
 
   ngOnInit(): void {
+    this.initializeComponent();
+  }
 
-    const userData = localStorage.getItem('userLoggedIn');
-    if (userData) {
-      const user = JSON.parse(userData);
-      const role = user.user.role;
-      const userParishId = user.user.parishId;
-      const userDeanery = user.user.deanery;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-      this.apiService.getChristians().subscribe((data: any[]) => {
-        if (role === 'admin' || role === 'archbishop') {
-          this.christians = data;
-          // Show banner for admin or archbishop
-          this.showBanner = true;
-          this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You have full access to view and manage all Christians in the system.`;
-        } else if (role === 'dean') {
-          this.showBanner = true;
-          this.bannerMessage = `You are logged in as DEAN. You can view and manage Christians from all parishes in your deanery.`;
-          // Dean can view Christians from parishes in their deanery
-          this.christians = data.filter(c => c.deanery === userDeanery);
-        } else if (role === 'priest' || role === 'clerk') {
-          this.showBanner = true;
-          this.bannerMessage = `You are logged in as ${role.toUpperCase()}. You can view and manage Christians from your own parish only.`;
-          // Priest/Clerk can view Christians from their own parish
-          this.christians = data.filter(c => c.parish_id === userParishId);
-        } else if (role === 'member') {
-          this.showBanner = true;
-          this.bannerMessage = `You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.`;
-          // Member cannot view any Christians
-          this.christians = [];
-        } else {
-          // this.showBanner = false;
-          // this.bannerMessage = 'You are not logged in. Go to login page.';
-          // if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          //   this.router.navigate(['/login']);
-          // }
-          // // Handle other roles if needed
+  private initializeComponent(): void {
+    const userSession = this.getUserSession();
 
-          this.christians = [];
-        }
-        this.christians.sort((a, b) => a.name.localeCompare(b.name));
-      });
-    } else {
-      setTimeout(() => {
-        if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-      }, 3000);
+    // Debug: Log the userSession to see its structure
+    console.log('UserSession from localStorage:', userSession);
+
+    if (!userSession) {
+      console.log('No userSession found');
+      this.handleUnauthenticatedUser();
       return;
+    }
+
+    // Check if userSession has the expected structure
+    if (!userSession.parishId && !userSession.role) {
+      console.log('UserSession does not have expected structure:', userSession);
+      this.handleUnauthenticatedUser();
+      return;
+    }
+
+    this.loadChristians(userSession);
+  }
+
+  private getUserSession(): any {
+    try {
+      const userData = localStorage.getItem('userLoggedIn');
+      if (!userData) {
+        console.log('No userLoggedIn data in localStorage');
+        return null;
+      }
+
+      const parsedData = JSON.parse(userData);
+      console.log('Parsed userData:', parsedData);
+      return parsedData;
+    } catch (error) {
+      console.error('Error parsing userLoggedIn from localStorage:', error);
+      return null;
     }
   }
 
-  displayChristians(): void {
-    this.apiService.getChristians().subscribe((data) => {
-      this.christians = data
-      this.christians.sort((a, b) => a.name.localeCompare(b.name));
-      // console.log(this.christians); // Check the structure of the data received
+  private handleUnauthenticatedUser(): void {
+    setTimeout(() => {
+      if (confirm('You are not logged in. Do you want to go to the login page?')) {
+        this.router.navigate(['/login']);
+      }
+    }, 3000);
+  }
+
+  private loadChristians(userSession: any): void {
+    // Handle different possible structures of userSession
+    let role: string;
+    let parishId: string;
+
+    if (userSession) {
+      // Structure: { user: { role: '', parishId: '' } }
+      role = userSession.role;
+      parishId = userSession.parishId;
+    } else if (userSession.role) {
+      // Structure: { role: '', parishId: '' } or { role: '', parish_id: '' }
+      role = userSession.role;
+      parishId = userSession.parishId || userSession.parish_id;
+    } else {
+      console.error('Cannot determine user role from session:', userSession);
+      this.handleUnauthenticatedUser();
+      return;
+    }
+
+    console.log('User role:', role, 'Parish ID:', parishId);
+
+    this.apiService.getChristians()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data: Christian[]) => {
+          this.christians = this.filterChristiansByRole(data, role, parishId);
+          this.sortChristians();
+          this.setBannerMessage(role);
+        },
+        error: (error) => this.handleLoadError(error)
+      });
+  }
+
+  private filterChristiansByRole(
+    christians: Christian[],
+    role: string,
+    parishId: string
+  ): Christian[] {
+    console.log('Filtering Christians by role:', role, 'Parish ID:', parishId);
+
+    if (!role) {
+      console.warn('No role provided for filtering');
+      return [];
+    }
+
+    switch (role.toLowerCase()) {
+      case 'viewer':
+      case 'superuser':
+        return christians;
+      case 'editor':
+      case 'priest':
+        if (!parishId) {
+          console.warn('No parish ID provided for editor/priest role');
+          return christians; // Show all if no parish restriction
+        }
+        return christians.filter(c => c.parish_id === parishId);
+      case 'member':
+      default:
+        return [];
+    }
+  }
+
+  private setBannerMessage(role: string): void {
+    this.showBanner = true;
+    const messages = {
+      superuser: 'You are logged in as SUPERUSER. You have full access to view and manage all Christians in the system.',
+      editor: 'You are logged in as PRIEST. You can view and manage Christians from your own parish only.',
+      viewer: 'You are logged in as VIEWER. You can only view Christians in the system.',
+      member: 'You are logged in as MEMBER. You can only view your own personal information and not other Christians in the system.'
+    };
+
+    this.bannerMessage = messages[role as keyof typeof messages] || '';
+  }
+
+  private handleLoadError(error: any): void {
+    console.error('Error loading Christians:', error);
+    this.errorMessage = error.error?.message || 'Something went wrong while fetching Christians. Try again.';
+    this.showBanner = true;
+    this.bannerMessage = 'You are not logged in. Go to login page.';
+
+    setTimeout(() => {
+      if (confirm('You are not logged in. Do you want to go to the login page?')) {
+        this.router.navigate(['/login']);
+      }
+    }, 3000);
+  }
+
+  private sortChristians(): void {
+    this.christians.sort((a, b) => {
+      const nameA = `${a.first_name} ${a.last_name}`.trim();
+      const nameB = `${b.first_name} ${b.last_name}`.trim();
+      return nameA.localeCompare(nameB);
     });
   }
+
+  // Public methods
+  displayChristians(): void {
+    this.apiService.getChristians()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.christians = data;
+          this.sortChristians();
+        },
+        error: (error) => console.error('Error displaying Christians:', error)
+      });
+  }
+
   searchChristianById(id: string): void {
-    this.apiService.getChristianById(id).subscribe((data) => {
-      this.christians = [data]; // Assuming you want to display a single Christian
-    });
+    this.apiService.getChristianById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.christians = [data];
+        },
+        error: (error) => console.error('Error searching Christian by ID:', error)
+      });
   }
 
   clearSearch(): void {
     this.searchQuery = '';
-    this.displayChristians(); // Reset to all Christians if search query is cleared 
+    this.displayChristians();
   }
 
+  selectChristian(christian: Christian): void {
+    this.scrollToTop();
+    this.clearErrorMessage();
 
-  redirectToUpdateChristian() {
-    const selectedChristian = localStorage.getItem('selectedChristian');
-    if (selectedChristian) {
-      const christianData = JSON.parse(selectedChristian);
-      const id = christianData.id;
-      const email = christianData.email;
-      // Redirect to the update Christian page with the ID and email
+    if (!christian) {
+      this.handleChristianNotFound();
+      return;
+    }
+
+    this.selectedChristian = christian;
+    this.storeSelectedChristian(christian);
+
+    // Load parish and sacrament data using user_id instead of id
+    this.loadParishName(christian.parish_id);
+    this.loadSacramentData(christian.user_id);
+  }
+
+  searchChristianByName(): void {
+    if (!this.searchQuery.trim()) {
+      return;
+    }
+
+    this.apiService.getChristians()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (christians: Christian[]) => {
+          const found = this.findChristianByName(christians);
+
+          if (found) {
+            this.selectChristian(found);
+          } else {
+            this.handleChristianNotFound();
+          }
+        },
+        error: (error) => this.handleLoadError(error)
+      });
+  }
+
+  private findChristianByName(christians: Christian[]): Christian | undefined {
+    return christians.find(christian => {
+      const fullName = `${christian.first_name} ${christian.last_name}`.trim();
+      return fullName.toLowerCase().includes(this.searchQuery.toLowerCase().trim());
+    });
+  }
+
+  deleteChristian(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+
+    if (!selectedChristianData) {
+      console.error('No Christian selected for deletion.');
+      return;
+    }
+
+    if (confirm(`Are you sure you want to delete ${selectedChristianData.name}?`)) {
+      this.apiService.deleteChristian(selectedChristianData.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.christians = this.christians.filter(c => c.user_id !== selectedChristianData.id);
+            console.log(`Deleted Christian: ${selectedChristianData.name}`);
+            this.clearSelectedChristian();
+          },
+          error: (error) => {
+            console.error('Error deleting Christian:', error);
+            this.errorMessage = 'Error deleting Christian.';
+          }
+        });
+    }
+  }
+
+  redirectToUpdateChristian(): void {
+    const selectedChristianData = this.getStoredSelectedChristian();
+
+    if (selectedChristianData) {
       setTimeout(() => {
-        this.router.navigate(['/edit-personal-info'], { queryParams: { id } });
+        this.router.navigate(['/edit-personal-info'], {
+          queryParams: { id: selectedChristianData.id }
+        });
       }, 1000);
     } else {
       console.error('No Christian selected for redirection.');
     }
   }
 
-
-  deleteChristian(christian: any): void {
-    // get selectedChristian from localStorage
-    const getSelectedChristian = localStorage.getItem('selectedChristian');
-    if (getSelectedChristian) {
-      const selectedChristian = JSON.parse(getSelectedChristian);
-      if (confirm(`Are you sure you want to delete ${selectedChristian?.name}?`)) {
-        this.apiService.deleteChristian(selectedChristian.id).subscribe(() => {
-          // Remove the deleted Christian from the list
-          this.christians = this.christians.filter(c => c.id !== selectedChristian.id);
-          console.log(`Deleted Christian: ${selectedChristian.name}`);
-          // Clear the selected Christian from local storage
-          localStorage.removeItem('selectedChristian');
-          this.selectedChristian = null;
-          this.errorMessage = '';
-        }, error => {
-          console.error('Error deleting Christian:', error);
-          this.errorMessage = 'Error deleting Christian.';
-        });
-      }
-    }
-  }
-
-
-  selectChristian(christian: any): void {
-    this.selectedChristian = christian;
-    console.clear();
-    console.log(christian);
-    // localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name }));
-
-
-    // Scroll to the top of the page
+  // Helper methods
+  private scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (christian) {
-      localStorage.setItem('selectedChristian', JSON.stringify({ id: christian.id, email: christian.email, role: christian.role, name: christian.name, parishId: christian.parish_id, deanery: christian.deanery })); // Store the selected Christian in local storage
-
-      const parishId = christian.parish_id;
-      if (parishId) {
-        this.apiService.getParishById(parishId.toString()).subscribe(
-          (parishData: any) => {
-            this.parishName = parishData?.parish_name || '';
-          },
-          error => {
-            console.error('Error fetching parish name:', error);
-            this.parishName = '';
-          }
-        );
-      } else {
-        this.parishName = '';
-      }
-
-      this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
-        const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === christian.id);
-        console.log(baptism);
-        if (baptism) {
-          this.apiService.getBaptismById(baptism.baptism_id.toString()).subscribe((detailedBaptismData) => {
-            this.selectedBaptism = detailedBaptismData;
-            this.selectedChristian = christian;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-          }, error => {
-            this.selectedBaptism = null;
-            this.selectedChristian = christian;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            console.error('Error fetching detailed baptism data:', error);
-            this.errorMessage = '';
-          });
-        } else {
-          this.selectedBaptism = null;
-          this.selectedChristian = christian;
-          this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          console.error('No matching baptism found for the selected Christian');
-          this.errorMessage = '';
-        }
-      }, error => {
-        this.selectedBaptism = null;
-        console.error('Error fetching baptism data:', error);
-        this.errorMessage = 'Error fetching baptism data.';
-      });
-
-      this.apiService.getEucharists().subscribe((eucharistData: { user_id: number; eucharist_id: number }[]) => {
-        const eucharist = eucharistData.find((e: { user_id: number; eucharist_id: number }) => e.user_id === christian.id);
-        console.log(eucharist);
-        if (eucharist) {
-          this.apiService.getEucharistById(eucharist.eucharist_id.toString()).subscribe((detailedEucharistData) => {
-            this.selectedEucharist = detailedEucharistData;
-            this.selectedChristian = christian;
-            this.errorMessage = '';
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          }, error => {
-            this.selectedEucharist = null;
-            this.selectedChristian = christian;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            console.error('Error fetching detailed eucharist data:', error);
-            this.errorMessage = '';
-          });
-        } else {
-          this.selectedEucharist = null;
-          this.selectedChristian = christian;
-          this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          this.errorMessage = '';
-          console.error('No matching eucharist found for the selected Christian');
-        }
-      }, error => {
-        this.selectedEucharist = null;
-        console.error('Error fetching eucharist data:', error);
-        this.errorMessage = 'Error fetching eucharist data.';
-      });
-
-      this.apiService.getConfirmations().subscribe((confirmationData: { user_id: number; confirmation_id: number }[]) => {
-        const confirmation = confirmationData.find((c: { user_id: number; confirmation_id: number }) => c.user_id === christian.id);
-        console.log(confirmation);
-        if (confirmation) {
-          this.apiService.getConfirmationById(confirmation.confirmation_id.toString()).subscribe((detailedConfirmationData) => {
-            this.selectedConfirmation = detailedConfirmationData;
-            this.selectedChristian = christian;
-            this.errorMessage = '';
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          }, error => {
-            this.selectedConfirmation = null;
-            this.selectedChristian = christian;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-            console.error('Error fetching detailed confirmation data:', error);
-          });
-        } else {
-          this.selectedConfirmation = null;
-          this.selectedChristian = christian;
-          this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          this.errorMessage = '';
-          console.error('No matching confirmation found for the selected Christian');
-        }
-      }, error => {
-        this.selectedConfirmation = null;
-        console.error('Error fetching confirmation data:', error);
-        this.errorMessage = 'Error fetching confirmation data.';
-      });
-
-      this.apiService.getMarriages().subscribe((marriageData: { user_id: number; marriage_id: number }[]) => {
-        const marriage = marriageData.find((m: { user_id: number; marriage_id: number }) => m.user_id === christian.id);
-        console.log(marriage);
-        if (marriage) {
-          this.apiService.getMarriageById(marriage.marriage_id.toString()).subscribe((detailedMarriageData) => {
-            this.selectedMarriage = detailedMarriageData;
-            this.selectedChristian = christian;
-            this.errorMessage = '';
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          }, error => {
-            this.selectedMarriage = null;
-            this.selectedChristian = christian;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-            console.error('Error fetching detailed marriage data:', error);
-          });
-        } else {
-          this.selectedMarriage = null;
-          this.selectedChristian = christian;
-          this.christians.sort((a, b) => a.name.localeCompare(b.name));
-          this.errorMessage = '';
-          console.error('No matching marriage found for the selected Christian');
-        }
-      }, error => {
-        this.selectedMarriage = null;
-        console.error('Error fetching marriage data:', error);
-        this.errorMessage = 'Error fetching marriage data.';
-      });
-    } else {
-      this.selectedChristian = null;
-      console.error('Christian not found');
-      this.errorMessage = 'Christian not found.';
-      this.christians.sort((a, b) => a.name.localeCompare(b.name));
-    }
   }
 
+  private clearErrorMessage(): void {
+    this.errorMessage = '';
+  }
 
+  private handleChristianNotFound(): void {
+    this.selectedChristian = null;
+    this.errorMessage = 'Christian not found.';
+    console.error('Christian not found');
+    this.sortChristians();
+  }
 
+  private storeSelectedChristian(christian: Christian): void {
+    const christianData = {
+      id: christian.user_id, // Map user_id to id for compatibility
+      email: christian.email,
+      role: christian.role,
+      name: `${christian.first_name} ${christian.last_name}`.trim(),
+      parishId: christian.parish_id
+    };
+    localStorage.setItem('selectedChristian', JSON.stringify(christianData));
+  }
 
-  searchChristianByName(name: string): void {
-    this.apiService.getChristians().subscribe((christians: any[]) => {
-      // Check the structure of the data received
-      // console.log(christians); // Check the structure of the data received
-      // Find the matching Christian by name
-      const found = christians.find(christian =>
-        christian.name.toLowerCase().includes(this.searchQuery.toLowerCase().trim())
-      );
-      console.log(found); // Check the found Christian
+  private getStoredSelectedChristian(): any {
+    const data = localStorage.getItem('selectedChristian');
+    return data ? JSON.parse(data) : null;
+  }
 
-      // Scroll to the top of the page
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  private clearSelectedChristian(): void {
+    localStorage.removeItem('selectedChristian');
+    this.selectedChristian = null;
+    this.clearErrorMessage();
+  }
 
-      if (found) {
+  private loadParishName(parishId: string): void {
+    if (!parishId) {
+      this.parishName = '';
+      return;
+    }
 
-        localStorage.setItem('selectedChristian', JSON.stringify({ id: found.id, email: found.email, role: found.role, name: found.name, parishId: found.parish_id, deanery: found.deanery })); // Store the selected Christian in local storage
-        // localStorage.setItem('userId', found.id); // Store the user ID in local storage
-
-        // Fetch parish name by ID
-        const parishId = found.parish_id;
-        if (parishId) {
-          this.apiService.getParishById(parishId.toString()).subscribe(
-            (parishData: any) => {
-              this.parishName = parishData?.parish_name || '';
-            },
-            error => {
-              console.error('Error fetching parish name:', error);
-              this.parishName = '';
-            }
-          );
-        } else {
+    this.apiService.getParishById(parishId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (parishData: any) => {
+          this.parishName = parishData?.parish_name || '';
+        },
+        error: (error) => {
+          console.error('Error fetching parish name:', error);
           this.parishName = '';
         }
+      });
+  }
 
-        this.apiService.getBaptisms().subscribe((baptismData: { user_id: number; baptism_id: number }[]) => {
-          const baptism = baptismData.find((b: { user_id: number; baptism_id: number }) => b.user_id === found.id);
-          console.log(baptism); // Check the baptism data
-          if (baptism) {
-            this.apiService.getBaptismById(baptism.baptism_id.toString()).subscribe((detailedBaptismData) => {
-              this.selectedBaptism = detailedBaptismData; // Assign the detailed baptism data to selectedBaptism
-              this.selectedChristian = found; // Set the selectedChristian to the found Christian
-              // Sort the Christians in alphabetical order by name
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              this.errorMessage = '';
-            }, error => {
-              this.selectedBaptism = null;
-              this.selectedChristian = found;
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-              console.error('Error fetching detailed baptism data:', error);
-              this.errorMessage = '';
-              // this.errorMessage = 'Error fetching detailed baptism data.';
-            });
-          } else {
-            this.selectedBaptism = null;
-            this.selectedChristian = found;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            console.error('No matching baptism found for the selected Christian');
-            this.errorMessage = '';
+  private loadSacramentData(christianId: string): void {
+    // Use forkJoin to load all sacrament data simultaneously
+    const sacramentRequests = {
+      baptisms: this.apiService.getBaptisms(),
+      eucharists: this.apiService.getEucharists(),
+      confirmations: this.apiService.getConfirmations(),
+      marriages: this.apiService.getMarriages()
+    };
 
-            // this.errorMessage = 'No matching Baptism found for the selected Christian.';
+    forkJoin(sacramentRequests)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(({ baptisms, eucharists, confirmations, marriages }) => {
+          // Find matching sacraments for the Christian
+          const baptism = baptisms.find((b: any) => b.user_id === christianId);
+          const eucharist = eucharists.find((e: any) => e.user_id === christianId);
+          const confirmation = confirmations.find((c: any) => c.user_id === christianId);
+          const marriage = marriages.find((m: any) => m.user_id === christianId);
 
-          }
+          // Create requests for detailed sacrament data
+          const detailRequests = {
+            baptism: baptism ? this.apiService.getBaptismById(baptism.baptism_id.toString()) : of(null),
+            eucharist: eucharist ? this.apiService.getEucharistById(eucharist.eucharist_id.toString()) : of(null),
+            confirmation: confirmation ? this.apiService.getConfirmationById(confirmation.confirmation_id.toString()) : of(null),
+            marriage: marriage ? this.apiService.getMarriageById(marriage.marriage_id.toString()) : of(null)
+          };
 
-        }, error => {
-          this.selectedBaptism = null;
-          console.error('Error fetching baptism data:', error);
-          this.errorMessage = 'Error fetching baptism data.';
-        });
-
-        // Fetch eucharist data to compare IDs
-        this.apiService.getEucharists().subscribe((eucharistData: { user_id: number; eucharist_id: number }[]) => {
-          const eucharist = eucharistData.find((e: { user_id: number; eucharist_id: number }) => e.user_id === found.id);
-          console.log(eucharist); // Check the eucharist data
-          if (eucharist) {
-            this.apiService.getEucharistById(eucharist.eucharist_id.toString()).subscribe((detailedEucharistData) => {
-              this.selectedEucharist = detailedEucharistData; // Assign the detailed eucharist data to selectedEucharist
-              this.selectedChristian = found; // Set the selectedChristian to the found Christian
-              this.errorMessage = ''; // Clear any previous error messages
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            }, error => {
-              this.selectedEucharist = null;
-              this.selectedChristian = found;
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-              console.error('Error fetching detailed eucharist data:', error);
-              this.errorMessage = '';
-            });
-          } else {
-            this.selectedEucharist = null;
-            this.selectedChristian = found;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-            // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            console.error('No matching eucharist found for the selected Christian');
-          }
-        }, error => {
-          this.selectedEucharist = null;
-          console.error('Error fetching eucharist data:', error);
-          this.errorMessage = 'Error fetching eucharist data.';
-        });
-
-
-        // Fetch confirmation data to compare IDs
-        this.apiService.getConfirmations().subscribe((confirmationData: { user_id: number; confirmation_id: number }[]) => {
-          const confirmation = confirmationData.find((c: { user_id: number; confirmation_id: number }) => c.user_id === found.id);
-          console.log(confirmation); // Check the confirmation data
-          if (confirmation) {
-            this.apiService.getConfirmationById(confirmation.confirmation_id.toString()).subscribe((detailedConfirmationData) => {
-              this.selectedConfirmation = detailedConfirmationData; // Assign the detailed confirmation data to selectedConfirmation
-              this.selectedChristian = found; // Set the selectedChristian to the found Christian
-              this.errorMessage = ''; // Clear any previous error messages
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            }, error => {
-              this.selectedConfirmation = null;
-              this.selectedChristian = found;
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              this.errorMessage = '';
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-              console.error('Error fetching detailed confirmation data:', error);
-            });
-          } else {
-            this.selectedConfirmation = null;
-            this.selectedChristian = found;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-            // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            console.error('No matching confirmation found for the selected Christian');
-          }
-        }, error => {
-          this.selectedConfirmation = null;
-          console.error('Error fetching confirmation data:', error);
-          this.errorMessage = 'Error fetching confirmation data.';
-        });
-
-
-        // Fetch marriage data to compare IDs
-        this.apiService.getMarriages().subscribe((marriageData: { user_id: number; marriage_id: number }[]) => {
-          const marriage = marriageData.find((m: { user_id: number; marriage_id: number }) => m.user_id === found.id);
-          console.log(marriage); // Check the marriage data
-          if (marriage) {
-            this.apiService.getMarriageById(marriage.marriage_id.toString()).subscribe((detailedMarriageData) => {
-              this.selectedMarriage = detailedMarriageData; // Assign the detailed marriage data to selectedMarriage
-              this.selectedChristian = found; // Set the selectedChristian to the found Christian
-              this.errorMessage = ''; // Clear any previous error messages
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            }, error => {
-              this.selectedMarriage = null;
-              this.selectedChristian = found;
-              this.christians.sort((a, b) => a.name.localeCompare(b.name));
-              this.errorMessage = '';
-              // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-              console.error('Error fetching detailed marriage data:', error);
-            });
-          } else {
-            this.selectedMarriage = null;
-            this.selectedChristian = found;
-            this.christians.sort((a, b) => a.name.localeCompare(b.name));
-            this.errorMessage = '';
-            // this.christians = [found, ...christians.filter(c => c !== found)]; // Bring the found Christian to the top of the list
-            console.error('No matching marriage found for the selected Christian');
-          }
-        }, error => {
-          this.selectedMarriage = null;
-          console.error('Error fetching marriage data:', error);
-          this.errorMessage = 'Error fetching marriage data.';
-        });
-
-
-      } else {
-        this.selectedChristian = null;
-        console.error('Christian not found');
-        this.errorMessage = 'Christian not found.';
-        // this.christians = [];
-        this.christians.sort((a, b) => a.name.localeCompare(b.name));
-      }
-    }
-      , error => {
-        // Handle error when fetching Christians
-        console.error('Something went wrong while fetching Christians. Try again.', error);
-        this.errorMessage = error.error.message || 'Something went wrong while fetching Christians. Try again.';
-
-        this.showBanner = true;
-        this.bannerMessage = 'You are not logged in. Go to login page.';
-        setTimeout(() => {
-          if (confirm('You are not logged in. Do you want to go to the login page?')) {
-          this.router.navigate(['/login']);
-        }
-        }, 3000);
-      }
-    );
+          return forkJoin(detailRequests);
+        }),
+        catchError((error) => {
+          console.error('Error loading sacrament data:', error);
+          return of({ baptism: null, eucharist: null, confirmation: null, marriage: null });
+        })
+      )
+      .subscribe((sacramentData: SacramentData) => {
+        this.selectedBaptism = sacramentData.baptism;
+        this.selectedEucharist = sacramentData.eucharist;
+        this.selectedConfirmation = sacramentData.confirmation;
+        this.selectedMarriage = sacramentData.marriage;
+        this.sortChristians();
+      });
   }
 }
-
-
