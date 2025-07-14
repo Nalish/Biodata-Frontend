@@ -1,0 +1,59 @@
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+fieldset {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #999;
+  border-radius: 8px;
+}
+
+legend {
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  border: none;
+  border-bottom: 1px dotted #000;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  padding: 4px 0;
+  margin-bottom: 8px;
+}
+
+input:focus {
+  border-bottom: 1px solid #000;
+}
+.field-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.field-label {
+    display:inline-block;
+    margin-bottom: 0;
+  width: 150px;
+  font-weight: bold;
+}
+
+.field-line-input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
+  outline: none;
+  height: 24px;
+}

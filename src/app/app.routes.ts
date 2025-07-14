@@ -18,6 +18,7 @@ import { MarriageCardComponent } from "./marriage-card/marriage-card.component";
 import { VerifyEmailComponent } from "./verify-email/verify-email.component";
 
 
+
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },//the default page
     { path: 'login', component: LoginComponent },
@@ -36,5 +37,6 @@ export const routes: Routes = [
     { path: 'edit-marriage', component: MarriageUpdateComponent },
     { path: 'marriage-card', component: MarriageCardComponent },
     {path:'verifyEmail',component:VerifyEmailComponent},
+    
 
 ]

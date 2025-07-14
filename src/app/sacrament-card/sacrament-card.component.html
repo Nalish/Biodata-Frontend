@@ -1,0 +1,51 @@
+<div class="container">
+  <h2>Sacrament Card Form</h2>
+  <form [formGroup]="sacramentForm" (ngSubmit)="onSubmit()">
+
+    <fieldset formGroupName="personal">
+      <legend>Personal Information</legend>
+      <label>Jina: <input formControlName="jina" /></label><br />
+      <label>Baba: <input formControlName="baba" /></label><br />
+      <label>Mama: <input formControlName="mama" /></label><br />
+      <label>Kabila: <input formControlName="kabila" /></label>
+      <label>Clan: <input formControlName="clan" /></label><br />
+      <label>Kijiji: <input formControlName="kijiji" /></label><br />
+      <label>Sub-County: <input formControlName="subCounty" /></label><br />
+      <label>Tarehe: <input formControlName="tarehe" type="date" /></label><br />
+      <label>Anakaa: <input formControlName="anaka" /></label>
+    </fieldset>
+
+    <fieldset formGroupName="ubatizo">
+      <legend>UBATIZO</legend>
+      <label>Kwa: <input formControlName="kwa" /></label><br />
+      <label>Tarehe: <input formControlName="tarehe" type="date" /></label><br />
+      <label>Mbatizaji: <input formControlName="mbatizaji" /></label><br />
+      <label>Msimamizi: <input formControlName="msimamizi" /></label>
+    </fieldset>
+
+    <fieldset formGroupName="eukaristi">
+      <legend>EUKARISTI</legend>
+      <label>Kwa: <input formControlName="kwa" /></label><br />
+      <label>Tarehe: <input formControlName="tarehe" type="date" /></label>
+    </fieldset>
+
+    <fieldset formGroupName="kipaimara">
+      <legend>KIPAIMARA</legend>
+      <label>Kwa: <input formControlName="kwa" /></label><br />
+      <label>Tarehe: <input formControlName="tarehe" type="date" /></label><br />
+      <label>Reg. No: <input formControlName="regNo" /></label><br />
+      <label>Conf. No: <input formControlName="confNo" /></label>
+    </fieldset>
+
+    <fieldset formGroupName="ndoa">
+      <legend>NDOA</legend>
+      <label>Pamoja na: <input formControlName="pamojaNa" /></label><br />
+      <label>Kwa: <input formControlName="kwa" /></label><br />
+      <label>Tarehe: <input formControlName="tarehe" type="date" /></label><br />
+      <label>Reg. No: <input formControlName="regNo" /></label><br />
+      <label>Marr. No: <input formControlName="marrNo" /></label>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
